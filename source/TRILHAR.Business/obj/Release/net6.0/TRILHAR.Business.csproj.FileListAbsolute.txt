@@ -1,0 +1,12 @@
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\bin\Release\net6.0\TRILHAR.Business.deps.json
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\bin\Release\net6.0\TRILHAR.Business.dll
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\bin\Release\net6.0\TRILHAR.Business.pdb
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\obj\Release\net6.0\TRILHAR.Business.csproj.AssemblyReference.cache
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\obj\Release\net6.0\TRILHAR.Business.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\obj\Release\net6.0\TRILHAR.Business.AssemblyInfoInputs.cache
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\obj\Release\net6.0\TRILHAR.Business.AssemblyInfo.cs
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\obj\Release\net6.0\TRILHAR.Business.csproj.CoreCompileInputs.cache
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\obj\Release\net6.0\TRILHAR.Business.dll
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\obj\Release\net6.0\refint\TRILHAR.Business.dll
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\obj\Release\net6.0\TRILHAR.Business.pdb
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Business\obj\Release\net6.0\ref\TRILHAR.Business.dll

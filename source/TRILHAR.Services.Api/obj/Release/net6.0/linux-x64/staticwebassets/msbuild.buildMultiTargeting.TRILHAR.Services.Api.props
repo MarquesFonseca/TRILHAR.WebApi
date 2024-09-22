@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\TRILHAR.Services.Api.props" />
+</Project>

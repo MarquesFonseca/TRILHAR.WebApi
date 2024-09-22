@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TRILHAR.Services.Api</name>
+    </assembly>
+    <members>
+        <member name="T:TRILHAR.Services.Api.Controllers.AlunoController">
+            <summary>
+            Categoria.
+            Contém todos os métodos dessa funcionalidade.
+            </summary>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.AlunoController.#ctor(TRILHAR.Business.Interfaces.Notificador.INotificador,Microsoft.Extensions.Logging.ILogger{TRILHAR.Business.Entities.AlunoEntity},TRILHAR.Business.Interfaces.Services.IAlunoService)">
+            <summary>
+            Construtor
+            </summary>
+            <param name="notificador"></param>
+            <param name="logger"></param>
+            <param name="alunoService"></param>
+            
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.AlunoController.Get">
+            <summary>
+            Retorna todos os Aluno
+            </summary>
+            <returns>Retorna todos alunos</returns>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.AlunoController.Get(System.Int32)">
+            <summary>
+            Retorna Aluno por codigo
+            </summary>
+            <param name="id">Informe o id.</param>
+            <returns>Retorna aluno</returns>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.AlunoController.GetCodigoCadastro(System.String)">
+            <summary>
+            Retorna Aluno por Codigo Cadastro
+            </summary>
+            <param name="CodigoCadastro">Informe o código cadastro.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.AlunoController.Post(TRILHAR.Business.IO.Aluno.AlunoInput)">
+            <summary>
+            Incluir
+            </summary>
+            <param name="registro">Informe o registro</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.AlunoController.Put(TRILHAR.Business.IO.Aluno.AlunoInput)">
+            <summary>
+            Alteração
+            </summary>
+            <param name="registro">Informe o registro</param>
+            <returns></returns>
+        </member>
+        <member name="T:TRILHAR.Services.Api.Controllers.BaseApiController">
+            <summary>
+            BaseApi
+            </summary>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.BaseApiController.#ctor(TRILHAR.Business.Interfaces.Notificador.INotificador)">
+            <summary>
+            Construtor
+            </summary>
+            <param name="notificador"></param>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.BaseApiController.OperacaoValida">
+            <summary>
+            OperacaoValida
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.BaseApiController.CustomResponse(System.Object,System.Nullable{System.Int32})">
+            <summary>
+            CustomResponse
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.BaseApiController.CustomResponse(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)">
+            <summary>
+            CustomResponse
+            </summary>
+            <param name="modelState"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.BaseApiController.NotificarErroModelInvalida(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)">
+            <summary>
+            NotificarErroModelInvalida
+            </summary>
+            <param name="modelState"></param>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Controllers.BaseApiController.NotificarErro(System.String)">
+            <summary>
+            NotificarErro
+            </summary>
+            <param name="mensagem"></param>
+        </member>
+        <member name="T:TRILHAR.Services.Api.Extensions.AddAutoMapperSetupExtensions">
+            <summary>
+            AutoMapper Extension
+            </summary>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Extensions.AddAutoMapperSetupExtensions.AddAutoMapperSetup(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Extensão autoMapper
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="T:TRILHAR.Services.Api.Extensions.SwaggerConfigExtensions">
+            <summary>
+            SwaggerConfigExtensions
+            </summary>
+        </member>
+        <member name="M:TRILHAR.Services.Api.Extensions.SwaggerConfigExtensions.AddSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            AddSwagger
+            </summary>
+            <param name="services"></param>
+        </member>
+    </members>
+</doc>

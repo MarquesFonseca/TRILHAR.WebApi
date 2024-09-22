@@ -1,0 +1,15 @@
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\bin\Debug\net6.0\TRILHAR.Infra.Data.deps.json
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\bin\Debug\net6.0\TRILHAR.Infra.Data.dll
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\bin\Debug\net6.0\TRILHAR.Infra.Data.pdb
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\bin\Debug\net6.0\TRILHAR.Business.dll
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\bin\Debug\net6.0\TRILHAR.Business.pdb
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\obj\Debug\net6.0\TRILHAR.Infra.Data.csproj.AssemblyReference.cache
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\obj\Debug\net6.0\TRILHAR.Infra.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\obj\Debug\net6.0\TRILHAR.Infra.Data.AssemblyInfoInputs.cache
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\obj\Debug\net6.0\TRILHAR.Infra.Data.AssemblyInfo.cs
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\obj\Debug\net6.0\TRILHAR.Infra.Data.csproj.CoreCompileInputs.cache
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\obj\Debug\net6.0\TRILHAR..8337FA2B.Up2Date
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\obj\Debug\net6.0\TRILHAR.Infra.Data.dll
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\obj\Debug\net6.0\refint\TRILHAR.Infra.Data.dll
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\obj\Debug\net6.0\TRILHAR.Infra.Data.pdb
+C:\Users\marques_fonseca\Documents\Marques\Projetos_Estudos\TrilharWebApi\source\TRILHAR.Infra.Data\obj\Debug\net6.0\ref\TRILHAR.Infra.Data.dll
