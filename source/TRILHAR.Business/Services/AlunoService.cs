@@ -30,69 +30,69 @@ namespace TRILHAR.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<int> AtualizarRegistro(AlunoInput registro)
+        public async Task<int> AtualizarRegistroAsync(AlunoInput registro)
         {
             var registroEntity = _mapper.Map<AlunoInput, AlunoEntity>(registro);
 
             registroEntity = _objectExtensionGenerics.TrataCamposNulls(registroEntity);
 
-            return await _repository.AtualizarRegistro(registroEntity);
+            return await _repository.AtualizarRegistroAsync(registroEntity);
         }
 
-        public async Task<int> DeletarRegistro(int codigo)
+        public async Task<int> DeletarRegistroAsync(int codigo)
         {
-            return await _repository.DeletarRegistro(codigo);
+            return await _repository.DeletarRegistroAsync(codigo);
         }
 
-        public async Task<int> ExecuteSql(string sql, string condicao = null, object parametros = null, CommandType commandType = CommandType.Text)
+        public async Task<int> ExecuteSqlAsync(string sql, string condicao = null, object parametros = null, CommandType commandType = CommandType.Text)
         {
             return await _repository.ExecuteAsync(sql, condicao, parametros, commandType);
         }
 
-        public async Task<int> NovoRegistro(AlunoInput registro)
+        public async Task<int> NovoRegistroAsync(AlunoInput registro)
         {
             //Convert o registro de entrada em uma entidade para inclusão
             var registroEntity = _mapper.Map<AlunoInput, AlunoEntity>(registro);
 
             registroEntity = _objectExtensionGenerics.TrataCamposNulls(registroEntity);
 
-            return await _repository.NovoRegistro(registroEntity);
+            return await _repository.NovoRegistroAsync(registroEntity);
         }
 
-        public async Task<IEnumerable<AlunoEntity>> RetornaAll()
+        public async Task<IEnumerable<AlunoEntity>> RetornaAllAsync(bool isPaginacao = false, int page = 1, int pageSize = 10)
         {
-            return await _repository.RetornaAll();
+            return await _repository.RetornaAllAsync(isPaginacao, page, pageSize);
         }
 
-        public async Task<AlunoEntity> RetornaByCodigo(int codigo)
+        public async Task<AlunoEntity> RetornaByCodigoAsync(int codigo)
         {
-            return await _repository.RetornaByCodigo(codigo);
+            return await _repository.RetornaByCodigoAsync(codigo);
         }
 
-        public async Task<AlunoEntity> RetornaByCodigoCadastro(string codigoCadastro)
+        public async Task<AlunoEntity> RetornaByCodigoCadastroAsync(string codigoCadastro)
         {
-            var retorno = await _repository.RetornaByCodigoCadastro(codigoCadastro);
+            var retorno = await _repository.RetornaByCodigoCadastroAsync(codigoCadastro);
             return retorno;
         }
 
-        public async Task<AlunoEntity> RetornaByCondicao(string condicao, object parametros)
+        public async Task<AlunoEntity> RetornaByCondicaoAsync(string condicao, object parametros)
         {
-            return await _repository.RetornaByCondicao(condicao, parametros);
+            return await _repository.RetornaByCondicaoAsync(condicao, parametros);
         }
 
-        public async Task<AlunoEntity> RetornaSingleBySqlConsultaCondicao(string sqlConsulta, string condicao = null, object parametros = null)
+        public async Task<AlunoEntity> RetornaSingleBySqlConsultaCondicaoAsync(string sqlConsulta, string condicao = null, object parametros = null)
         {
             return await _repository.RetornaSingleBySqlConsultaCondicao(sqlConsulta, condicao, parametros);
         }
 
-        public async Task<IEnumerable<AlunoEntity>> RetornaListaByCondicao(string condicao, object parametros)
+        public async Task<IEnumerable<AlunoEntity>> RetornaListaByCondicaoAsync(string condicao, object parametros)
         {
-            return await _repository.RetornaListaByCondicao(condicao, parametros);
+            return await _repository.RetornaListaByCondicaoAsync(condicao, parametros);
         }
 
-        public async Task<int> RetornaMaxCodigoCadastro()
+        public async Task<int> RetornaMaxCodigoCadastroAsync()
         {
-            return await _repository.RetornaMaxCodigoCadastro();
+            return await _repository.RetornaMaxCodigoCadastroAsync();
         }
 
         public void Dispose()

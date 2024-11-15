@@ -8,14 +8,14 @@ namespace TRILHAR.Business.Interfaces.Services
 {
     public interface IAlunoService : IDisposable
     {
-        Task<IEnumerable<AlunoEntity>> RetornaAll();
-        Task<AlunoEntity> RetornaByCodigo(int codigo);
-        Task<int> NovoRegistro(AlunoInput entity);
-        Task<int> AtualizarRegistro(AlunoInput entity);
-        Task<int> DeletarRegistro(int codigo);
-        Task<AlunoEntity> RetornaByCodigoCadastro(string codigoCadastro);
-        Task<AlunoEntity> RetornaByCondicao(string condicao, object parametros);
-        Task<IEnumerable<AlunoEntity>> RetornaListaByCondicao(string condicao, object parametros);
-        Task<int> RetornaMaxCodigoCadastro();
+        Task<IEnumerable<AlunoEntity>> RetornaAllAsync(bool isPaginacao = false, int page = 1, int pageSize = 10);
+        Task<AlunoEntity> RetornaByCodigoAsync(int codigo);
+        Task<int> NovoRegistroAsync(AlunoInput entity);
+        Task<int> AtualizarRegistroAsync(AlunoInput entity);
+        Task<int> DeletarRegistroAsync(int codigo);
+        Task<AlunoEntity> RetornaByCodigoCadastroAsync(string codigoCadastro);
+        Task<AlunoEntity> RetornaByCondicaoAsync(string condicao, object parametros);
+        Task<IEnumerable<AlunoEntity>> RetornaListaByCondicaoAsync(string condicao, object parametros);
+        Task<int> RetornaMaxCodigoCadastroAsync();
     }
 }

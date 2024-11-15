@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Trilhar.Forms.Repository.Extensions;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Infra.Data.EF;
@@ -12,159 +13,140 @@ namespace TRILHAR.Infra.Data.Repositories
 {
     public class AlunoRepository : RepositoryGenericsBase<SqlConnection, AlunoEntity>, IAlunoRepository
     {
-        private readonly SqlConnection _conn;
+        private readonly SqlConnection db;
         public AlunoRepository(SqlConnection sqlConnection) : base(sqlConnection)
         {
-            _conn = sqlConnection;
+            db = sqlConnection;
         }
 
-        public async Task<IEnumerable<AlunoEntity>> RetornaAll()
+        public async Task<IEnumerable<AlunoEntity>> RetornaAllAsync(bool isPaginacao = false, int page = 1, int pageSize = 10)
         {
-            using (IDbConnection db = new SqlConnection(_conn.ConnectionString))
-            {
-                const string stringSql = "SELECT " +
-                    "Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro " +
-                    "FROM Aluno";
-
-                var retornaListaAluno = await db.QueryAsync<AlunoEntity>(sql: stringSql, commandType: CommandType.Text);
-                return retornaListaAluno;
-            }
-        }
-
-        public async Task<AlunoEntity> RetornaByCodigo(int codigo)
-        {
-            using (IDbConnection db = new SqlConnection(_conn.ConnectionString))
-            {
-                var parametros = new { Codigo = codigo };
-
-                const string stringSql =
-                    "SELECT " +
+            string stringSql = "SELECT " +
                     "Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro " +
                     "FROM Aluno " +
-                    "WHERE Codigo = @Codigo";
+                    "ORDER BY Codigo ";
 
-                var retornaAluno = db.QuerySingleOrDefaultAsync<AlunoEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
-                return await retornaAluno;
+            if (isPaginacao)
+            {
+                var parametros = new object();
+                RepositoryExtension.TratamentoPaginacao(ref stringSql, ref parametros, isPaginacao, page, pageSize);
+                var retornaListaAluno1 = await db.QueryAsync<AlunoEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
+                return retornaListaAluno1;
             }
+
+            var retornaListaAluno = await db.QueryAsync<AlunoEntity>(sql: stringSql, commandType: CommandType.Text);
+            return retornaListaAluno;
         }
 
-        public async Task<int> NovoRegistro(AlunoEntity entity)
+        public async Task<AlunoEntity> RetornaByCodigoAsync(int codigo)
         {
-            using (IDbConnection db = new SqlConnection(_conn.ConnectionString))
-            {
-                const string stringSql = "INSERT INTO Aluno OUTPUT INSERTED.Codigo " +
-                    //"(CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro) " +
-                    "VALUES(@CodigoCadastro, @NomeCrianca, @DataNascimento, @NomeMae, @NomePai, @OutroResponsavel, @Telefone, @EnderecoEmail, @Alergia, @DescricaoAlergia, @RestricaoAlimentar, @DescricaoRestricaoAlimentar, @DeficienciaOuSituacaoAtipica, @DescricaoDeficiencia, @Batizado, @DataBatizado, @IgrejaBatizado, @Ativo, @CodigoUsuarioLogado, @DataAtualizacao, @DataCadastro)";
+            var parametros = new { Codigo = codigo };
 
-                var retorno = db.ExecuteScalarAsync<int>(sql: stringSql, param: entity, commandType: CommandType.Text);
-                return await retorno;
-            }
+            const string stringSql =
+                "SELECT " +
+                "Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro " +
+                "FROM Aluno " +
+                "WHERE Codigo = @Codigo";
+
+            var retornaAluno = await db.QuerySingleOrDefaultAsync<AlunoEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
+            return retornaAluno;
         }
 
-        public async Task<int> AtualizarRegistro(AlunoEntity entity)
+        public async Task<int> NovoRegistroAsync(AlunoEntity entity)
         {
-            using (IDbConnection db = new SqlConnection(_conn.ConnectionString))
-            {
-                const string stringSql = "UPDATE Aluno SET " +
-                                         "CodigoCadastro                = @CodigoCadastro,                  " +
-                                         "NomeCrianca                   = @NomeCrianca,                     " +
-                                         "DataNascimento                = @DataNascimento,                  " +
-                                         "NomeMae                       = @NomeMae,                         " +
-                                         "NomePai                       = @NomePai,                         " +
-                                         "OutroResponsavel              = @OutroResponsavel,                " +
-                                         "Telefone                      = @Telefone,                        " +
-                                         "EnderecoEmail                 = @EnderecoEmail,                   " +
-                                         "Alergia                       = @Alergia,                         " +
-                                         "DescricaoAlergia              = @DescricaoAlergia,                " +
-                                         "RestricaoAlimentar            = @RestricaoAlimentar,              " +
-                                         "DescricaoRestricaoAlimentar   = @DescricaoRestricaoAlimentar,     " +
-                                         "DeficienciaOuSituacaoAtipica  = @DeficienciaOuSituacaoAtipica,    " +
-                                         "DescricaoDeficiencia          = @DescricaoDeficiencia,            " +
-                                         "Batizado                      = @Batizado,                        " +
-                                         "DataBatizado                  = @DataBatizado,                    " +
-                                         "IgrejaBatizado                = @IgrejaBatizado,                  " +
-                                         "Ativo                         = @Ativo,                           " +
-                                         "CodigoUsuarioLogado           = @CodigoUsuarioLogado,             " +
-                                         "DataAtualizacao               = @DataAtualizacao,                 " +
-                                         "DataCadastro                  = @DataCadastro                     " +
-                                         "WHERE Codigo                  = @Codigo                           ";
+            const string stringSql = "INSERT INTO Aluno OUTPUT INSERTED.Codigo " +
+                //"(CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro) " +
+                "VALUES(@CodigoCadastro, @NomeCrianca, @DataNascimento, @NomeMae, @NomePai, @OutroResponsavel, @Telefone, @EnderecoEmail, @Alergia, @DescricaoAlergia, @RestricaoAlimentar, @DescricaoRestricaoAlimentar, @DeficienciaOuSituacaoAtipica, @DescricaoDeficiencia, @Batizado, @DataBatizado, @IgrejaBatizado, @Ativo, @CodigoUsuarioLogado, @DataAtualizacao, @DataCadastro)";
 
-                var retorno = db.ExecuteAsync(sql: stringSql, param: entity, commandType: CommandType.Text);
-                return await retorno;
-            }
+            var retorno = await db.ExecuteScalarAsync<int>(sql: stringSql, param: entity, commandType: CommandType.Text);
+            return retorno;
         }
 
-        public async Task<int> DeletarRegistro(int codigo)
+        public async Task<int> AtualizarRegistroAsync(AlunoEntity entity)
         {
-            using (IDbConnection db = new SqlConnection(_conn.ConnectionString))
-            {
-                var parametros = new { Codigo = codigo };
+            const string stringSql = "UPDATE Aluno SET " +
+                                     "CodigoCadastro                = @CodigoCadastro,                  " +
+                                     "NomeCrianca                   = @NomeCrianca,                     " +
+                                     "DataNascimento                = @DataNascimento,                  " +
+                                     "NomeMae                       = @NomeMae,                         " +
+                                     "NomePai                       = @NomePai,                         " +
+                                     "OutroResponsavel              = @OutroResponsavel,                " +
+                                     "Telefone                      = @Telefone,                        " +
+                                     "EnderecoEmail                 = @EnderecoEmail,                   " +
+                                     "Alergia                       = @Alergia,                         " +
+                                     "DescricaoAlergia              = @DescricaoAlergia,                " +
+                                     "RestricaoAlimentar            = @RestricaoAlimentar,              " +
+                                     "DescricaoRestricaoAlimentar   = @DescricaoRestricaoAlimentar,     " +
+                                     "DeficienciaOuSituacaoAtipica  = @DeficienciaOuSituacaoAtipica,    " +
+                                     "DescricaoDeficiencia          = @DescricaoDeficiencia,            " +
+                                     "Batizado                      = @Batizado,                        " +
+                                     "DataBatizado                  = @DataBatizado,                    " +
+                                     "IgrejaBatizado                = @IgrejaBatizado,                  " +
+                                     "Ativo                         = @Ativo,                           " +
+                                     "CodigoUsuarioLogado           = @CodigoUsuarioLogado,             " +
+                                     "DataAtualizacao               = @DataAtualizacao,                 " +
+                                     "DataCadastro                  = @DataCadastro                     " +
+                                     "WHERE Codigo                  = @Codigo                           ";
 
-                const string stringSql = "DELETE FROM Aluno " +
-                                         "WHERE Codigo = @Codigo";
-
-                var retorno = db.ExecuteAsync(sql: stringSql, param: parametros, commandType: CommandType.Text);
-                return await retorno;
-            }
+            var retorno = await db.ExecuteAsync(sql: stringSql, param: entity, commandType: CommandType.Text);
+            return retorno;
         }
 
-        public async Task<AlunoEntity> RetornaByCodigoCadastro(string codigoCadastro)
+        public async Task<int> DeletarRegistroAsync(int codigo)
         {
-            using (IDbConnection db = new SqlConnection(_conn.ConnectionString))
-            {
-                var parametros = new { CodigoCadastro = codigoCadastro };
+            var parametros = new { Codigo = codigo };
 
-                const string stringSql =
-                    "SELECT " +
-                    "Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro " +
-                    "FROM Aluno " +
-                    "WHERE CodigoCadastro = @CodigoCadastro";
+            const string stringSql = "DELETE FROM Aluno " +
+                                     "WHERE Codigo = @Codigo";
 
-                var retornaAluno = await db.QuerySingleOrDefaultAsync<AlunoEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
-
-
-                return retornaAluno;
-            }
+            var retorno = await db.ExecuteAsync(sql: stringSql, param: parametros, commandType: CommandType.Text);
+            return retorno;
         }
 
-        public async Task<AlunoEntity> RetornaByCondicao(string condicao, object parametros)
+        public async Task<AlunoEntity> RetornaByCodigoCadastroAsync(string codigoCadastro)
         {
-            using (IDbConnection db = new SqlConnection(_conn.ConnectionString))
-            {
-                string stringSql =
-                    $"SELECT " +
-                    $"Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro " +
-                    $"FROM Aluno " +
-                    $"WHERE {condicao}";
+            var parametros = new { CodigoCadastro = codigoCadastro };
 
-                var retornaAluno = db.QuerySingleOrDefaultAsync<AlunoEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
-                return await retornaAluno;
-            }
+            const string stringSql =
+                "SELECT " +
+                "Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro " +
+                "FROM Aluno " +
+                "WHERE CodigoCadastro = @CodigoCadastro";
+
+            var retornaAluno = await db.QuerySingleOrDefaultAsync<AlunoEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
+
+            return retornaAluno;
         }
 
-        public async Task<IEnumerable<AlunoEntity>> RetornaListaByCondicao(string condicao, object parametros)
+        public async Task<AlunoEntity> RetornaByCondicaoAsync(string condicao, object parametros)
         {
-            using (IDbConnection db = new SqlConnection(_conn.ConnectionString))
-            {
-                string stringSql =
-                   $"SELECT " +
-                   $"Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro " +
-                   $"FROM Aluno " +
-                   $"WHERE {condicao}";
+            string stringSql =
+                $"SELECT " +
+                $"Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro " +
+                $"FROM Aluno " +
+                $"WHERE {condicao}";
 
-                var retornaAluno = db.QueryAsync<AlunoEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
-                return await retornaAluno;
-            }
-        }        
-        
-        public async Task<int> RetornaMaxCodigoCadastro()
+            var retornaAluno = await db.QuerySingleOrDefaultAsync<AlunoEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
+            return retornaAluno;
+        }
+
+        public async Task<IEnumerable<AlunoEntity>> RetornaListaByCondicaoAsync(string condicao, object parametros)
         {
-            using (IDbConnection db = new SqlConnection(_conn.ConnectionString))
-            {
-                string stringSql = $"SELECT MAX(CodigoCadastro) FROM Aluno a ";
-                var retornaMax = db.QueryFirstOrDefaultAsync<int>(sql: stringSql, commandType: CommandType.Text);
-                return await retornaMax;
-            }
+            string stringSql =
+               $"SELECT " +
+               $"Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro " +
+               $"FROM Aluno " +
+               $"WHERE {condicao}";
+
+            var retornaAluno = await db.QueryAsync<AlunoEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
+            return retornaAluno;
+        }
+
+        public async Task<int> RetornaMaxCodigoCadastroAsync()
+        {
+            string stringSql = $"SELECT MAX(CodigoCadastro) FROM Aluno a ";
+            var retornaMax = await db.QueryFirstOrDefaultAsync<int>(sql: stringSql, commandType: CommandType.Text);
+            return retornaMax;
         }
     }
 }

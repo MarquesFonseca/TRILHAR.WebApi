@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using TRILHAR.Business.Entities;
 using Microsoft.Extensions.Logging;
 using TRILHAR.Business.IO.Aluno;
+using System.ComponentModel.DataAnnotations;
 
 namespace TRILHAR.Services.Api.Controllers
 {
@@ -48,7 +49,21 @@ namespace TRILHAR.Services.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
-            var resultado = await _alunoService.RetornaAll();
+            var resultado = await _alunoService.RetornaAllAsync();
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
+        /// Retorna todos os Aluno
+        /// </summary>
+        /// <returns>Retorna todos alunos</returns>
+        [HttpGet("page/{page}/pageSize/{pageSize}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Get(
+            [FromRoute] [Required] int page, 
+            [FromRoute][Required] int pageSize)
+        {
+            var resultado = await _alunoService.RetornaAllAsync(true, page, pageSize);
             return CustomResponse(resultado);
         }
 
@@ -61,7 +76,7 @@ namespace TRILHAR.Services.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = await _alunoService.RetornaByCodigo(id);
+            var resultado = await _alunoService.RetornaByCodigoAsync(id);
             return CustomResponse(resultado);
         }
 
@@ -74,7 +89,7 @@ namespace TRILHAR.Services.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetCodigoCadastro(string CodigoCadastro)
         {
-            var resultado = await _alunoService.RetornaByCodigoCadastro(CodigoCadastro);
+            var resultado = await _alunoService.RetornaByCodigoCadastroAsync(CodigoCadastro);
             return CustomResponse(resultado);
         }
 
@@ -89,7 +104,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _alunoService.NovoRegistro(registro);
+            var resultado = await _alunoService.NovoRegistroAsync(registro);
             return CustomResponse(resultado);
         }
 
@@ -104,7 +119,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var reg = await _alunoService.RetornaByCodigo(registro.Codigo);
+            var reg = await _alunoService.RetornaByCodigoAsync(registro.Codigo);
 
             if (reg == null)
             {
@@ -112,7 +127,7 @@ namespace TRILHAR.Services.Api.Controllers
                 return CustomResponse();
             }
 
-            var resultado = await _alunoService.AtualizarRegistro(registro);
+            var resultado = await _alunoService.AtualizarRegistroAsync(registro);
             return CustomResponse(resultado);
         }
     }
