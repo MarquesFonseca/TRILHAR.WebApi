@@ -256,3 +256,8 @@ paket-files/
 **/*TRILHAR.Services.Api.xml
 *TRILHAR.Services.Api.xml
 source/.vs/TrilharWebApi/v17/.suo
+*.bin
+/source/.vs
+/source/.vs
+/source/TRILHAR.Business/bin
+/source/TRILHAR.Business/obj
