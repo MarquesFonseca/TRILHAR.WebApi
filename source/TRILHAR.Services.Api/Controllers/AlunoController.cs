@@ -84,6 +84,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] AlunoInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -98,6 +99,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPut]
+        [AllowAnonymous]
         public async Task<IActionResult> Put([FromBody] AlunoInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);

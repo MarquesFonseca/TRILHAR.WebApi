@@ -40,6 +40,7 @@ using TRILHAR.CrossCutting.IoC.Config;
 using TRILHAR.Infra.Data;
 using TRILHAR.Services.Api.Middlewares;
 using TRILHAR.Infra.Data.Extensions;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,6 +80,15 @@ services.AddSwagger(configuration);
 //               .AllowCredentials();
 //    });
 //});
+services.AddCors(options =>
+{
+    options.AddPolicy("AllowMyOrigin", builder =>
+    {
+        builder.AllowAnyOrigin() // Permite qualquer origem
+               .AllowAnyMethod()
+               .AllowAnyHeader(); // Remover AllowCredentials() se não for necessário
+    });
+});
 
 var app = builder.Build();
 
