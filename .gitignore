@@ -250,8 +250,8 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
-/source/SIGGO.PPO.Api/App_Data
+/source/TRILHAR.Service.Api/App_Data
 
 # XML Documentation
-**/*SIGGO.AFC.Services.Api.xml
-*SIGGO.AFC.Services.Api.xml
+**/*TRILHAR.Services.Api.xml
+*TRILHAR.Services.Api.xml
