@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\TRILHAR.Services.Api.props" />
-</Project>
