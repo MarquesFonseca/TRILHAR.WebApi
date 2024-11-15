@@ -26,37 +26,42 @@ namespace TRILHAR.Services.Api.Controllers
             _notificador = notificador;
         }
 
-        /// <summary>
-        /// OperacaoValida
-        /// </summary>
-        /// <returns></returns>
-        protected bool OperacaoValida()
+        protected ActionResult CreatedResponse(object result, object id)
         {
-            return !_notificador.TemNotificacao();
-        }
+            var url = $"{Request.Scheme}://{Request.Host}{Request.Path}/{id}";
+
+            return Created(url, result);
+        }        
 
         /// <summary>
         /// CustomResponse
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected ActionResult CustomResponse(object result = null, int? totalCount = null)
+        protected ActionResult CustomResponse(object result = null, bool isNotFound = false)
         {
             if (OperacaoValida())
             {
-                if(result == null)
-                {
-                    return NotFound();
-                }
-
-                if (totalCount.HasValue)
-                {
-                    HttpContext.Response.Headers.Add("total-count", totalCount.Value.ToString());
-                }
-
-                return Ok(result);
+                return Ok(new { Dados = result });
             }
-            return BadRequest(_notificador.ObterNotificacoes().Select(n => n.Mensagem));
+
+            string msgsString = string.Empty;
+
+            foreach (var item in _notificador.ObterNotificacoes())
+            {
+                msgsString += string.Concat(item.Mensagem, "\n");
+            }
+
+            string[] listMSGs = new string[] { msgsString };
+
+            var erros = new { erros = listMSGs };
+
+            var objectResult = new ObjectResult(erros)
+            {
+                StatusCode = isNotFound ? 404 : 400
+            };
+
+            return objectResult;
         }
 
         /// <summary>
@@ -82,6 +87,15 @@ namespace TRILHAR.Services.Api.Controllers
                 var errorMsg = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
                 NotificarErro(errorMsg);
             }
+        }
+
+        /// <summary>
+        /// OperacaoValida
+        /// </summary>
+        /// <returns></returns>
+        protected bool OperacaoValida()
+        {
+            return !_notificador.TemNotificacao();
         }
 
         /// <summary>
