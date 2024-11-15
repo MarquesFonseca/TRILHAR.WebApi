@@ -1,40 +1,7 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{E0F2BAEE-826F-4896-A4EF-4DF77E64E240}|TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj|c:\\users\\marques_fonseca\\documents\\marques\\projetos_estudos\\trilharwebapi\\source\\trilhar.infra.data\\trilhar.infra.data.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{E0F2BAEE-826F-4896-A4EF-4DF77E64E240}|TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj|solutionrelative:trilhar.infra.data\\trilhar.infra.data.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E0F2BAEE-826F-4896-A4EF-4DF77E64E240}|TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj|c:\\users\\marques_fonseca\\documents\\marques\\projetos_estudos\\trilharwebapi\\source\\trilhar.infra.data\\repositories\\alunorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E0F2BAEE-826F-4896-A4EF-4DF77E64E240}|TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj|solutionrelative:trilhar.infra.data\\repositories\\alunorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E0F2BAEE-826F-4896-A4EF-4DF77E64E240}|TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj|c:\\users\\marques_fonseca\\documents\\marques\\projetos_estudos\\trilharwebapi\\source\\trilhar.infra.data\\ef\\trilharcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E0F2BAEE-826F-4896-A4EF-4DF77E64E240}|TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj|solutionrelative:trilhar.infra.data\\ef\\trilharcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00644947-1471-48FB-8527-02486EFADA73}|TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj|c:\\users\\marques_fonseca\\documents\\marques\\projetos_estudos\\trilharwebapi\\source\\trilhar.services.api\\controllers\\alunocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{00644947-1471-48FB-8527-02486EFADA73}|TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj|solutionrelative:trilhar.services.api\\controllers\\alunocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0B790001-3592-42AE-970D-150DC53E07CB}|TRILHAR.Business\\TRILHAR.Business.csproj|c:\\users\\marques_fonseca\\documents\\marques\\projetos_estudos\\trilharwebapi\\source\\trilhar.business\\services\\alunoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0B790001-3592-42AE-970D-150DC53E07CB}|TRILHAR.Business\\TRILHAR.Business.csproj|solutionrelative:trilhar.business\\services\\alunoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E0F2BAEE-826F-4896-A4EF-4DF77E64E240}|TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj|c:\\users\\marques_fonseca\\documents\\marques\\projetos_estudos\\trilharwebapi\\source\\trilhar.infra.data\\mappings\\alunomap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E0F2BAEE-826F-4896-A4EF-4DF77E64E240}|TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj|solutionrelative:trilhar.infra.data\\mappings\\alunomap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00644947-1471-48FB-8527-02486EFADA73}|TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj|c:\\users\\marques_fonseca\\documents\\marques\\projetos_estudos\\trilharwebapi\\source\\trilhar.services.api\\trilhar.services.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{00644947-1471-48FB-8527-02486EFADA73}|TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj|solutionrelative:trilhar.services.api\\trilhar.services.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00644947-1471-48FB-8527-02486EFADA73}|TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj|C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\trilhar.services.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{00644947-1471-48FB-8527-02486EFADA73}|TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj|solutionrelative:trilhar.services.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "WorkspaceRootPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\",
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -42,86 +9,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": -1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TRILHAR.Infra.Data",
-              "DocumentMoniker": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
-              "RelativeDocumentMoniker": "TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
-              "ToolTip": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
-              "RelativeToolTip": "TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAlAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-09-22T14:46:09.303Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AlunoRepository.cs",
-              "DocumentMoniker": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\Repositories\\AlunoRepository.cs",
-              "RelativeDocumentMoniker": "TRILHAR.Infra.Data\\Repositories\\AlunoRepository.cs",
-              "ToolTip": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\Repositories\\AlunoRepository.cs",
-              "RelativeToolTip": "TRILHAR.Infra.Data\\Repositories\\AlunoRepository.cs",
-              "ViewState": "AQIAABgAAAAAAAAAAAAtwBYAAAAwAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-22T14:44:38.694Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TrilharContext.cs",
-              "DocumentMoniker": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\EF\\TrilharContext.cs",
-              "RelativeDocumentMoniker": "TRILHAR.Infra.Data\\EF\\TrilharContext.cs",
-              "ToolTip": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\EF\\TrilharContext.cs",
-              "RelativeToolTip": "TRILHAR.Infra.Data\\EF\\TrilharContext.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-22T14:44:26.528Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AlunoController.cs",
-              "DocumentMoniker": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\Controllers\\AlunoController.cs",
-              "RelativeDocumentMoniker": "TRILHAR.Services.Api\\Controllers\\AlunoController.cs",
-              "ToolTip": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\Controllers\\AlunoController.cs",
-              "RelativeToolTip": "TRILHAR.Services.Api\\Controllers\\AlunoController.cs",
-              "ViewState": "AQIAAD0AAAAAAAAAAAA3wAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-22T14:44:13.461Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AlunoService.cs",
-              "DocumentMoniker": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\Services\\AlunoService.cs",
-              "RelativeDocumentMoniker": "TRILHAR.Business\\Services\\AlunoService.cs",
-              "ToolTip": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\Services\\AlunoService.cs",
-              "RelativeToolTip": "TRILHAR.Business\\Services\\AlunoService.cs",
-              "ViewState": "AQIAACcAAAAAAAAAAAAtwDoAAAAtAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-22T14:42:32.656Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AlunoMap.cs",
-              "DocumentMoniker": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\Mappings\\AlunoMap.cs",
-              "RelativeDocumentMoniker": "TRILHAR.Infra.Data\\Mappings\\AlunoMap.cs",
-              "ToolTip": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\Mappings\\AlunoMap.cs",
-              "RelativeToolTip": "TRILHAR.Infra.Data\\Mappings\\AlunoMap.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-22T14:42:17.467Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -137,31 +26,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "TRILHAR.Services.Api.csproj",
-              "DocumentMoniker": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj",
-              "RelativeDocumentMoniker": "TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj",
-              "ToolTip": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj",
-              "RelativeToolTip": "TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAhwAcAAAASAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-06-04T01:03:42.485Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\Program.cs",
-              "RelativeDocumentMoniker": "TRILHAR.Services.Api\\Program.cs",
-              "ToolTip": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\Program.cs",
-              "RelativeToolTip": "TRILHAR.Services.Api\\Program.cs",
-              "ViewState": "AQIAAEsAAAAAAAAAAAAkwFYAAAAOAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-04T00:46:12.713Z"
             }
           ]
         },
@@ -180,10 +44,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:6:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
               "$type": "Bookmark",

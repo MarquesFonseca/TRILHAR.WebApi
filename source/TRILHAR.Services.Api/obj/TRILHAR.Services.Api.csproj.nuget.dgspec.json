@@ -1,24 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj": {}
+    "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj": {
+    "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj",
+        "projectUniqueName": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj",
         "projectName": "TRILHAR.Business",
-        "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj",
-        "packagesPath": "C:\\Users\\marques_fonseca\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\obj\\",
+        "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj",
+        "packagesPath": "C:\\Users\\Marques\\.nuget\\packages\\",
+        "outputPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\marques_fonseca\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Marques\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -28,7 +27,6 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "http://fazendasrv512:9999/nuget": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -109,25 +107,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.CrossCutting.IoC\\TRILHAR.CrossCutting.IoC.csproj": {
+    "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.CrossCutting.IoC\\TRILHAR.CrossCutting.IoC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.CrossCutting.IoC\\TRILHAR.CrossCutting.IoC.csproj",
+        "projectUniqueName": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.CrossCutting.IoC\\TRILHAR.CrossCutting.IoC.csproj",
         "projectName": "TRILHAR.CrossCutting.IoC",
-        "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.CrossCutting.IoC\\TRILHAR.CrossCutting.IoC.csproj",
-        "packagesPath": "C:\\Users\\marques_fonseca\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.CrossCutting.IoC\\obj\\",
+        "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.CrossCutting.IoC\\TRILHAR.CrossCutting.IoC.csproj",
+        "packagesPath": "C:\\Users\\Marques\\.nuget\\packages\\",
+        "outputPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.CrossCutting.IoC\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\marques_fonseca\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Marques\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -137,18 +134,17 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "http://fazendasrv512:9999/nuget": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj": {
-                "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj"
+              "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj": {
+                "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj"
               },
-              "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj": {
-                "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj"
+              "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj": {
+                "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj"
               }
             }
           }
@@ -205,25 +201,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj": {
+    "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
+        "projectUniqueName": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
         "projectName": "TRILHAR.Infra.Data",
-        "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
-        "packagesPath": "C:\\Users\\marques_fonseca\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\obj\\",
+        "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
+        "packagesPath": "C:\\Users\\Marques\\.nuget\\packages\\",
+        "outputPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\marques_fonseca\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Marques\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -233,15 +228,14 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "http://fazendasrv512:9999/nuget": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj": {
-                "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj"
+              "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj": {
+                "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj"
               }
             }
           }
@@ -326,25 +320,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj": {
+    "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj",
+        "projectUniqueName": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj",
         "projectName": "TRILHAR.Services.Api",
-        "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj",
-        "packagesPath": "C:\\Users\\marques_fonseca\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Services.Api\\obj\\",
+        "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Services.Api\\TRILHAR.Services.Api.csproj",
+        "packagesPath": "C:\\Users\\Marques\\.nuget\\packages\\",
+        "outputPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Services.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\marques_fonseca\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Marques\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -354,21 +347,20 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "http://fazendasrv512:9999/nuget": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj": {
-                "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj"
+              "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj": {
+                "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj"
               },
-              "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.CrossCutting.IoC\\TRILHAR.CrossCutting.IoC.csproj": {
-                "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.CrossCutting.IoC\\TRILHAR.CrossCutting.IoC.csproj"
+              "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.CrossCutting.IoC\\TRILHAR.CrossCutting.IoC.csproj": {
+                "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.CrossCutting.IoC\\TRILHAR.CrossCutting.IoC.csproj"
               },
-              "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj": {
-                "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj"
+              "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj": {
+                "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj"
               }
             }
           }
@@ -512,7 +504,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -8466,25 +8466,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\marques_fonseca\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Marques\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
+      "projectUniqueName": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
       "projectName": "TRILHAR.Infra.Data",
-      "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
-      "packagesPath": "C:\\Users\\marques_fonseca\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Infra.Data\\obj\\",
+      "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\TRILHAR.Infra.Data.csproj",
+      "packagesPath": "C:\\Users\\Marques\\.nuget\\packages\\",
+      "outputPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Infra.Data\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\marques_fonseca\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Marques\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -8494,15 +8492,14 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
-        "http://fazendasrv512:9999/nuget": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj": {
-              "projectPath": "C:\\Users\\marques_fonseca\\Documents\\Marques\\Projetos_Estudos\\TrilharWebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj"
+            "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj": {
+              "projectPath": "D:\\Projetos\\TRILHAR.WebApi\\source\\TRILHAR.Business\\TRILHAR.Business.csproj"
             }
           }
         }
@@ -8587,17 +8584,11 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   },
   "logs": [
-    {
-      "code": "NU1803",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Você está executando a operação 'restore' com uma fonte 'HTTP', 'http://fazendasrv512:9999/nuget'. O acesso não HTTPS será removido em uma versão futura. Considere migrar para uma fonte 'HTTPS'."
-    },
     {
       "code": "NU1902",
       "level": "Warning",
