@@ -7,14 +7,14 @@ namespace TRILHAR.Business.Interfaces.Repositories
 {
     public interface IAlunoRepository : IRepositoryGenericsBase<AlunoEntity>
     {
-        Task<IEnumerable<AlunoEntity>> RetornaAll();
-        Task<AlunoEntity> RetornaByCodigo(int codigo);
-        Task<int> NovoRegistro(AlunoEntity entity);
-        Task<int> AtualizarRegistro(AlunoEntity entity);
-        Task<int> DeletarRegistro(int codigo);
-        Task<AlunoEntity> RetornaByCodigoCadastro(string codigoCadastro);
-        Task<AlunoEntity> RetornaByCondicao(string condicao, object parametros);
-        Task<IEnumerable<AlunoEntity>> RetornaListaByCondicao(string condicao, object parametros);
-        Task<int> RetornaMaxCodigoCadastro();
+        Task<IEnumerable<AlunoEntity>> RetornaAllAsync(bool isPaginacao = false, int page = 1, int pageSize = 10);
+        Task<AlunoEntity> RetornaByCodigoAsync(int codigo);
+        Task<int> NovoRegistroAsync(AlunoEntity entity);
+        Task<int> AtualizarRegistroAsync(AlunoEntity entity);
+        Task<int> DeletarRegistroAsync(int codigo);
+        Task<AlunoEntity> RetornaByCodigoCadastroAsync(string codigoCadastro);
+        Task<AlunoEntity> RetornaByCondicaoAsync(string condicao, object parametros);
+        Task<IEnumerable<AlunoEntity>> RetornaListaByCondicaoAsync(string condicao, object parametros);
+        Task<int> RetornaMaxCodigoCadastroAsync();
     }
 }
