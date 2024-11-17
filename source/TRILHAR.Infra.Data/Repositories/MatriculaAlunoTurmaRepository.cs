@@ -17,6 +17,9 @@ namespace TRILHAR.Infra.Data.Repositories
             _conn = sqlConnection;
         }
 
+        protected override string ObterCampos() => "";
+
+        protected override string ObterTabela() => "MatriculaAlunoTurma";
 
     }
 }

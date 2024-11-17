@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TRILHAR.Business.Interfaces.Notificador;
-using TRILHAR.Business.Interfaces.Services;
-using TRILHAR.Business.Interfaces.Usuario;
-using System.Threading.Tasks;
-using TRILHAR.Services.Api.Controllers;
-using System.Collections.Generic;
-using TRILHAR.Business.Entities;
-using Microsoft.Extensions.Logging;
-using TRILHAR.Business.IO.Aluno;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
+using TRILHAR.Business.Entities;
+using TRILHAR.Business.Interfaces.Notificador;
+using TRILHAR.Business.Interfaces.Repositories;
+using TRILHAR.Business.Interfaces.Services;
+using TRILHAR.Business.IO.Aluno;
+using TRILHAR.Business.IO.Paginacao;
+using TRILHAR.Business.Pagination;
+using TRILHAR.Infra.Data.Repositories;
 
 namespace TRILHAR.Services.Api.Controllers
 {
@@ -19,10 +19,12 @@ namespace TRILHAR.Services.Api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
+    [AllowAnonymous]
     public class AlunoController : BaseApiController
     {
         private readonly ILogger<AlunoEntity> _logger;
         private readonly IAlunoService _alunoService;
+        private readonly IAlunoRepository _alunoRepository;
 
         /// <summary>
         /// Construtor
@@ -30,15 +32,18 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="notificador"></param>
         /// <param name="logger"></param>
         /// <param name="alunoService"></param>
+        /// <param name="alunoRepository"></param>
         /// 
         public AlunoController(
             INotificador notificador,
             ILogger<AlunoEntity> logger,
-            IAlunoService alunoService
+            IAlunoService alunoService,
+            IAlunoRepository alunoRepository
             ) : base(notificador)
         {
             _logger = logger;
             _alunoService = alunoService;
+            _alunoRepository = alunoRepository;
         }
 
         /// <summary>
@@ -46,24 +51,59 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <returns>Retorna todos alunos</returns>
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
-            var resultado = await _alunoService.RetornaAllAsync();
+            var resultado = await _alunoRepository.GetAllAsync();
             return CustomResponse(resultado);
         }
 
+        ///// <summary>
+        ///// Retorna todos com paginação
+        ///// </summary>
+        ///// <returns>Retorna todos alunos</returns>
+        //[HttpGet("pagina/{page}/{pageSize}")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<AlunoEntity>))]        
+        //public async Task<IActionResult> Get(
+        //    [FromRoute] [Required] int page, 
+        //    [FromRoute][Required] int pageSize)
+        //{
+        //    var resultado = await _alunoRepository.GetAllAsync();
+        //    if (OperacaoValida())
+        //    {
+        //        return Ok(resultado);
+        //    }
+        //    return CustomResponse(resultado);
+        //}
+
         /// <summary>
-        /// Retorna todos os Aluno
+        /// Retorna todos por parametros e paginação
         /// </summary>
         /// <returns>Retorna todos alunos</returns>
-        [HttpGet("page/{page}/pageSize/{pageSize}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Get(
-            [FromRoute] [Required] int page, 
-            [FromRoute][Required] int pageSize)
+        [HttpPost("ListarPorFiltro")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<AlunoEntity>))]
+        public async Task<IActionResult> ListarPorFiltro(
+            [FromBody] InputPaginado input)
         {
-            var resultado = await _alunoService.RetornaAllAsync(true, page, pageSize);
+            if (input == null)
+            {
+                return BadRequest("O filtro não pode ser nulo.");
+            }
+
+            if(input.IsPaginacao && input.Page == 0)
+            {
+                return BadRequest("O filtro 'Page 'não pode ser 0.");
+            }
+
+            if (input.IsPaginacao && input.PageSize == 0)
+            {
+                return BadRequest("O filtro 'PageSize 'não pode ser 0.");
+            }
+
+            var resultado = await _alunoRepository.GetByPaginacaoAsync(input);
+            if (OperacaoValida())
+            {
+                return Ok(resultado);
+            }
             return CustomResponse(resultado);
         }
 
@@ -73,10 +113,9 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="id">Informe o id.</param>
         /// <returns>Retorna aluno</returns>
         [HttpGet("{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = await _alunoService.RetornaByCodigoAsync(id);
+            var resultado = await _alunoRepository.GetByCodigoAsync(id);
             return CustomResponse(resultado);
         }
 
@@ -86,7 +125,6 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="CodigoCadastro">Informe o código cadastro.</param>
         /// <returns></returns>
         [HttpGet("CodigoCadastro/{CodigoCadastro}")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetCodigoCadastro(string CodigoCadastro)
         {
             var resultado = await _alunoService.RetornaByCodigoCadastroAsync(CodigoCadastro);
@@ -99,7 +137,6 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] AlunoInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -114,12 +151,11 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPut]
-        [AllowAnonymous]
         public async Task<IActionResult> Put([FromBody] AlunoInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var reg = await _alunoService.RetornaByCodigoAsync(registro.Codigo);
+            var reg = await _alunoRepository.GetByCodigoAsync(registro.Codigo);
 
             if (reg == null)
             {

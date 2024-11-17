@@ -9,6 +9,7 @@ using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO.Aluno;
+using TRILHAR.Business.Pagination;
 
 namespace TRILHAR.Business.Services
 {
@@ -59,15 +60,15 @@ namespace TRILHAR.Business.Services
             return await _repository.NovoRegistroAsync(registroEntity);
         }
 
-        public async Task<IEnumerable<AlunoEntity>> RetornaAllAsync(bool isPaginacao = false, int page = 1, int pageSize = 10)
-        {
-            return await _repository.RetornaAllAsync(isPaginacao, page, pageSize);
-        }
+        //public async Task<PagedResult<IEnumerable<AlunoEntity>>> RetornaAllAsync(bool isPaginacao = false, int page = 1, int pageSize = 10)
+        //{
+        //    return await _repository.RetornaAllAsync(isPaginacao, page, pageSize);
+        //}
 
-        public async Task<AlunoEntity> RetornaByCodigoAsync(int codigo)
-        {
-            return await _repository.RetornaByCodigoAsync(codigo);
-        }
+        //public async Task<AlunoEntity> RetornaByCodigoAsync(int codigo)
+        //{
+        //    return await _repository.RetornaByCodigoAsync(codigo);
+        //}
 
         public async Task<AlunoEntity> RetornaByCodigoCadastroAsync(string codigoCadastro)
         {
