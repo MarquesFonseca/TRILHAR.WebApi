@@ -16,9 +16,6 @@ namespace TRILHAR.Infra.Data.Repositories
     public class AlunoRepository : RepositoryGenericsBase<SqlConnection, AlunoEntity>, IAlunoRepository
     {
         private readonly SqlConnection db;
-        //private const string CAMPOS = "Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro ";
-        //private const string TABELA = "Aluno ";
-
         protected override string ObterCampos() => "Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro";
         protected override string ObterTabela() => "Aluno";
 

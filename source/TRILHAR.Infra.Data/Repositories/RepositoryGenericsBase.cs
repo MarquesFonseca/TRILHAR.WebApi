@@ -14,8 +14,6 @@ namespace TRILHAR.Infra.Data.Repositories
     public abstract class RepositoryGenericsBase<SqlConnection, TEntity> : IRepositoryGenericsBase<TEntity> where TEntity : EntityBase where SqlConnection : IDbConnection
     {
         private readonly SqlConnection _sqlConnection;
-        private const string CAMPOS = "Codigo, CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro ";
-        private const string TABELA = "Aluno ";
 
         public RepositoryGenericsBase(SqlConnection sqlConnection)
         {

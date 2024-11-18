@@ -17,7 +17,7 @@ namespace TRILHAR.Infra.Data.Repositories
             _conn = sqlConnection;
         }
 
-        protected override string ObterCampos() => "";
+        protected override string ObterCampos() => "Codigo, DataFrequencia, CodigoAluno, CodigoTurma, Presenca, TurmaDescricao, TurmaIdadeInicialAluno, TurmaIdadeFinalAluno, TurmaAnoLetivo, TurmaSemestreLetivo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro";
 
         protected override string ObterTabela() => "Frequencia";
 

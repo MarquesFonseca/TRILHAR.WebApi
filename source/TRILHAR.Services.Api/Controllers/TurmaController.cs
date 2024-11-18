@@ -6,7 +6,7 @@ using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
-using TRILHAR.Business.IO.Aluno;
+using TRILHAR.Business.IO.Turma;
 using TRILHAR.Business.IO.Paginacao;
 using TRILHAR.Business.Pagination;
 using TRILHAR.Infra.Data.Repositories;
@@ -20,49 +20,49 @@ namespace TRILHAR.Services.Api.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [AllowAnonymous]
-    public class AlunoController : BaseApiController
+    public class TurmaController : BaseApiController
     {
-        private readonly ILogger<AlunoEntity> _logger;
-        private readonly IAlunoService _alunoService;
-        private readonly IAlunoRepository _alunoRepository;
+        private readonly ILogger<TurmaEntity> _logger;
+        private readonly ITurmaService _TurmaService;
+        private readonly ITurmaRepository _TurmaRepository;
 
         /// <summary>
         /// Construtor
         /// </summary>
         /// <param name="notificador"></param>
         /// <param name="logger"></param>
-        /// <param name="alunoService"></param>
-        /// <param name="alunoRepository"></param>
+        /// <param name="TurmaService"></param>
+        /// <param name="TurmaRepository"></param>
         /// 
-        public AlunoController(
+        public TurmaController(
             INotificador notificador,
-            ILogger<AlunoEntity> logger,
-            IAlunoService alunoService,
-            IAlunoRepository alunoRepository
+            ILogger<TurmaEntity> logger,
+            ITurmaService TurmaService,
+            ITurmaRepository TurmaRepository
             ) : base(notificador)
         {
             _logger = logger;
-            _alunoService = alunoService;
-            _alunoRepository = alunoRepository;
+            _TurmaService = TurmaService;
+            _TurmaRepository = TurmaRepository;
         }
 
         /// <summary>
         /// Retorna todos os Registro
         /// </summary>
-        /// <returns>Retorna todos alunos</returns>
+        /// <returns>Retorna todos Turmas</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var resultado = await _alunoRepository.GetAllAsync();
+            var resultado = await _TurmaRepository.GetAllAsync();
             return CustomResponse(resultado);
         }
 
         /// <summary>
         /// Retorna todos por parametros e paginação
         /// </summary>
-        /// <returns>Retorna todos alunos</returns>
+        /// <returns>Retorna todos Turmas</returns>
         [HttpPost("ListarPorFiltro")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<AlunoEntity>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<TurmaEntity>))]
         public async Task<IActionResult> ListarPorFiltro(
             [FromBody] InputPaginado input)
         {
@@ -81,7 +81,7 @@ namespace TRILHAR.Services.Api.Controllers
                 return BadRequest("O filtro 'PageSize 'não pode ser 0.");
             }
 
-            var resultado = await _alunoRepository.GetByPaginacaoAsync(input);
+            var resultado = await _TurmaRepository.GetByPaginacaoAsync(input);
             if (OperacaoValida())
             {
                 return Ok(resultado);
@@ -93,23 +93,11 @@ namespace TRILHAR.Services.Api.Controllers
         /// Retorna o Registro por codigo
         /// </summary>
         /// <param name="id">Informe o id.</param>
-        /// <returns>Retorna aluno</returns>
+        /// <returns>Retorna Turma</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = await _alunoRepository.GetByCodigoAsync(id);
-            return CustomResponse(resultado);
-        }
-
-        /// <summary>
-        /// Retorna Registro por Codigo Cadastro
-        /// </summary>
-        /// <param name="CodigoCadastro">Informe o código cadastro.</param>
-        /// <returns></returns>
-        [HttpGet("CodigoCadastro/{CodigoCadastro}")]
-        public async Task<IActionResult> GetCodigoCadastro(string CodigoCadastro)
-        {
-            var resultado = await _alunoService.RetornaByCodigoCadastroAsync(CodigoCadastro);
+            var resultado = await _TurmaRepository.GetByCodigoAsync(id);
             return CustomResponse(resultado);
         }
 
@@ -119,11 +107,12 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AlunoInput registro)
+        public async Task<IActionResult> Post([FromBody] TurmaInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _alunoService.NovoRegistroAsync(registro);
+            //var resultado = await _TurmaService.NovoRegistroAsync(registro);
+            var resultado = new TurmaEntity();
             return CustomResponse(resultado);
         }
 
@@ -133,11 +122,11 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] AlunoInput registro)
+        public async Task<IActionResult> Put([FromBody] TurmaInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var reg = await _alunoRepository.GetByCodigoAsync(registro.Codigo);
+            var reg = await _TurmaRepository.GetByCodigoAsync(registro.Codigo);
 
             if (reg == null)
             {
@@ -145,7 +134,8 @@ namespace TRILHAR.Services.Api.Controllers
                 return CustomResponse();
             }
 
-            var resultado = await _alunoService.AtualizarRegistroAsync(registro);
+            //var resultado = await _TurmaService.AtualizarRegistroAsync(registro);
+            var resultado = new TurmaEntity();
             return CustomResponse(resultado);
         }
     }
