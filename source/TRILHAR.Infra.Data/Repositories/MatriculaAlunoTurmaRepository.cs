@@ -1,20 +1,15 @@
-﻿using Dapper;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
+﻿using System.Data.SqlClient;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Repositories;
-using TRILHAR.Infra.Data.EF;
 
 namespace TRILHAR.Infra.Data.Repositories
 {
     public class MatriculaAlunoTurmaRepository : RepositoryGenericsBase<SqlConnection, MatriculaAlunoTurmaEntity>, IMatriculaAlunoTurmaRepository
     {
-        private readonly SqlConnection _conn;
+        private readonly SqlConnection db;
         public MatriculaAlunoTurmaRepository(SqlConnection sqlConnection) : base(sqlConnection)
         {
-            _conn = sqlConnection;
+            db = sqlConnection;
         }
 
         protected override string ObterCampos() => "Codigo, CodigoAluno, CodigoTurma, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro";

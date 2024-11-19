@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.IO;
 using TRILHAR.Business.Pagination;
 
-namespace TRILHAR.Business.Interfaces.Repositories
+namespace TRILHAR.Business.Interfaces.Services
 {
-    public interface IRepositoryGenericsBase<TEntity> : IDisposable where TEntity : EntityBase
+    public interface IServiceGenericsBase<TEntity> : IDisposable where TEntity : EntityBase
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> GetByCodigoAsync(int codigo);
@@ -20,11 +21,5 @@ namespace TRILHAR.Business.Interfaces.Repositories
         Task<bool> DeleteAsync(TEntity entity);
         Task<bool> DeleteAsync(IEnumerable<TEntity> list);
         Task<int> DeleteByCodigoAsync(int codigo);
-        Task<int> ExecuteAsync(InputConsultaPersonalizada input, CommandType commandType = CommandType.Text);
-        Task<int> RetornaMaxCodigoAsync();
-        Task<TEntity?> RetornaSingleBySqlConsultaCondicao(InputConsultaPersonalizada input);
-        Task<IEnumerable<TEntity>> RetornaListaBySqlConsultaCondicao(InputConsultaPersonalizada input);
-        Task<TEntity?> RetornaByCondicaoAsync(InputCondicaoParametros input);
-        Task<IEnumerable<TEntity>> RetornaListaByCondicaoAsync(InputCondicaoParametros input);
     }
 }

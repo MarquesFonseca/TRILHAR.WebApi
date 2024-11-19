@@ -11,14 +11,23 @@ namespace TRILHAR.Infra.Data.Repositories
 {
     public class TurmaRepository : RepositoryGenericsBase<SqlConnection, TurmaEntity>, ITurmaRepository
     {
-        private readonly SqlConnection _conn;
+        private readonly SqlConnection db;
         public TurmaRepository(SqlConnection sqlConnection) : base(sqlConnection)
         {
-            _conn = sqlConnection;
+            db = sqlConnection;
         }
 
         protected override string ObterCampos() => "Codigo, Descricao, IdadeInicialAluno, IdadeFinalAluno, AnoLetivo, SemestreLetivo, LimiteMaximo, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro";
 
         protected override string ObterTabela() => "Turma";
+
+        public async Task<int> InsertOutputInsertedAsync(AlunoEntity entity)
+        {
+            const string stringSql = "INSERT INTO Turma OUTPUT INSERTED.Codigo " +
+                "VALUES(@Descricao, @IdadeInicialAluno, @IdadeFinalAluno, @AnoLetivo, @SemestreLetivo, @LimiteMaximo, @Ativo, @CodigoUsuarioLogado, @DataAtualizacao, @DataCadastro)";
+
+            var retorno = await db.ExecuteScalarAsync<int>(sql: stringSql, param: entity, commandType: CommandType.Text);
+            return retorno;
+        }
     }
 }

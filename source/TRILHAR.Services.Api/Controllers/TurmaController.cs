@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
+using TRILHAR.Business.IO;
 using TRILHAR.Business.IO.Turma;
-using TRILHAR.Business.IO.Paginacao;
 using TRILHAR.Business.Pagination;
-using TRILHAR.Infra.Data.Repositories;
 
 namespace TRILHAR.Services.Api.Controllers
 {

@@ -12,8 +12,7 @@ namespace TRILHAR.Business.Interfaces.Repositories
     {
         Task<AlunoEntity?> RetornaByCodigoCadastroAsync(string codigoCadastro);
         Task<int> RetornaMaxCodigoCadastroAsync();
-        Task<int> NovoRegistroAsync(AlunoEntity entity);
+        Task<int> InsertOutputInsertedAsync(AlunoEntity entity);
         Task<int> AtualizarRegistroAsync(AlunoEntity entity);
-        Task<int> DeletarRegistroAsync(int codigo);
     }
 }

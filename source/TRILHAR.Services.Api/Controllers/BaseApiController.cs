@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Notificacoes;
 using TRILHAR.Services.Api.Attributes;
-using System.Linq;
 
 namespace TRILHAR.Services.Api.Controllers
 {

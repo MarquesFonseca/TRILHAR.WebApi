@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
+using TRILHAR.Business.IO;
 using TRILHAR.Business.IO.Aluno;
-using TRILHAR.Business.IO.Paginacao;
 using TRILHAR.Business.Pagination;
-using TRILHAR.Infra.Data.Repositories;
 
 namespace TRILHAR.Services.Api.Controllers
 {
@@ -24,7 +21,6 @@ namespace TRILHAR.Services.Api.Controllers
     {
         private readonly ILogger<AlunoEntity> _logger;
         private readonly IAlunoService _alunoService;
-        private readonly IAlunoRepository _alunoRepository;
 
         /// <summary>
         /// Construtor
@@ -43,7 +39,6 @@ namespace TRILHAR.Services.Api.Controllers
         {
             _logger = logger;
             _alunoService = alunoService;
-            _alunoRepository = alunoRepository;
         }
 
         /// <summary>
@@ -53,7 +48,7 @@ namespace TRILHAR.Services.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var resultado = await _alunoRepository.GetAllAsync();
+            var resultado = await _alunoService.GetAllAsync();
             return CustomResponse(resultado);
         }
 
@@ -81,7 +76,7 @@ namespace TRILHAR.Services.Api.Controllers
                 return BadRequest("O filtro 'PageSize 'não pode ser 0.");
             }
 
-            var resultado = await _alunoRepository.GetByPaginacaoAsync(input);
+            var resultado = await _alunoService.GetByPaginacaoAsync(input);
             if (OperacaoValida())
             {
                 return Ok(resultado);
@@ -97,7 +92,7 @@ namespace TRILHAR.Services.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = await _alunoRepository.GetByCodigoAsync(id);
+            var resultado = await _alunoService.GetByCodigoAsync(id);
             return CustomResponse(resultado);
         }
 
@@ -109,7 +104,8 @@ namespace TRILHAR.Services.Api.Controllers
         [HttpGet("CodigoCadastro/{CodigoCadastro}")]
         public async Task<IActionResult> GetCodigoCadastro(string CodigoCadastro)
         {
-            var resultado = await _alunoService.RetornaByCodigoCadastroAsync(CodigoCadastro);
+            //var resultado = await _alunoService.RetornaByCodigoCadastroAsync(CodigoCadastro);
+            var resultado = new object();
             return CustomResponse(resultado);
         }
 
@@ -123,7 +119,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _alunoService.NovoRegistroAsync(registro);
+            var resultado = await _alunoService.InsertAsync(registro);
             return CustomResponse(resultado);
         }
 
@@ -137,7 +133,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var reg = await _alunoRepository.GetByCodigoAsync(registro.Codigo);
+            var reg = await _alunoService.GetByCodigoAsync(registro.Codigo);
 
             if (reg == null)
             {
@@ -145,7 +141,7 @@ namespace TRILHAR.Services.Api.Controllers
                 return CustomResponse();
             }
 
-            var resultado = await _alunoService.AtualizarRegistroAsync(registro);
+            var resultado = await _alunoService.UpdateAsync(registro);
             return CustomResponse(resultado);
         }
     }

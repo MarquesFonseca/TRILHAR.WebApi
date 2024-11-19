@@ -1,13 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.IO.Paginacao;
 using TRILHAR.Infra.Data.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace TRILHAR.Infra.Data.Repositories
 {
@@ -15,7 +11,6 @@ namespace TRILHAR.Infra.Data.Repositories
     {
         protected readonly TDbContext Context;
         protected readonly DbSet<TEntity> DbSet;
-
 
         public RepositoryBase(TDbContext context)
         {

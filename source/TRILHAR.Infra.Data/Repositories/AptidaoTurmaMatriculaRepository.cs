@@ -11,10 +11,10 @@ namespace TRILHAR.Infra.Data.Repositories
 {
     public class AptidaoTurmaMatriculaRepository : RepositoryGenericsBase<SqlConnection, AptidaoTurmaMatriculaEntity>, IAptidaoTurmaMatriculaRepository
     {
-        private readonly SqlConnection _conn;
+        private readonly SqlConnection db;
         public AptidaoTurmaMatriculaRepository(SqlConnection sqlConnection) : base(sqlConnection)
         {
-            _conn = sqlConnection;
+            db = sqlConnection;
         }
 
         protected override string ObterCampos() => "";

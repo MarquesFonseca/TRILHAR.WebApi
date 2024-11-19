@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using System.Text.Json;
-using TRILHAR.Business.IO.Paginacao;
 
 namespace Trilhar.Forms.Repository.Extensions
 {

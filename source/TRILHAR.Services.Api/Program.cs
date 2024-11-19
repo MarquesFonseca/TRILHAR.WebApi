@@ -1,46 +1,12 @@
-//var builder = WebApplication.CreateBuilder(args);
-
-//// Add services to the container.
-
-//builder.Services.AddControllers();
-//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
-//var app = builder.Build();
-
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
-//app.UseHttpsRedirection();
-
-//app.UseAuthorization();
-
-//app.MapControllers();
-
-//app.Run();
-
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Serilog;
-using TRILHAR.Services.Api.Extensions;
-using System;
-using System.IO;
 using DinkToPdf;
 using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TRILHAR.CrossCutting.IoC.Config;
 using TRILHAR.Infra.Data;
-using TRILHAR.Services.Api.Middlewares;
 using TRILHAR.Infra.Data.Extensions;
-using Microsoft.Extensions.Options;
+using TRILHAR.Services.Api.Extensions;
+using TRILHAR.Services.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,7 +52,7 @@ services.AddCors(options =>
     {
         builder.AllowAnyOrigin() // Permite qualquer origem
                .AllowAnyMethod()
-               .AllowAnyHeader(); // Remover AllowCredentials() se n„o for necess·rio
+               .AllowAnyHeader(); // Remover AllowCredentials() se n√£o for necess√°rio
     });
 });
 

@@ -5,7 +5,7 @@ using System.Data;
 using Trilhar.Forms.Repository.Extensions;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Repositories;
-using TRILHAR.Business.IO.Paginacao;
+using TRILHAR.Business.IO;
 using TRILHAR.Business.Pagination;
 using TRILHAR.Infra.Data.Extensions;
 
@@ -29,17 +29,6 @@ namespace TRILHAR.Infra.Data.Repositories
         {
             return await _sqlConnection.GetAsync<TEntity>(codigo);
         }
-
-        //public virtual async Task<TEntity?> RetornaByCodigoAsync(int codigo)
-        //{
-        //    var parametros = new { Codigo = codigo };
-
-        //    string stringSql = $"SELECT {ObterCampos()} FROM {ObterTabela()} WHERE Codigo = @Codigo";
-
-        //    var retornaAluno = await _sqlConnection.QuerySingleOrDefaultAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
-
-        //    return retornaAluno;
-        //}
 
         public virtual async Task<PagedResult<TEntity>> GetByPaginacaoAsync(InputPaginado input)
         {
@@ -96,11 +85,25 @@ namespace TRILHAR.Infra.Data.Repositories
         {
             return await _sqlConnection.DeleteAsync(list);
         }
-        
-        public virtual Task<int> ExecuteAsync(string? sql, string? condicao = null, object? parametros = null, CommandType commandType = CommandType.Text)
+
+        public virtual async Task<int> DeleteByCodigoAsync(int codigo)
         {
-            string stringSql = $"{sql} ";
-            if (condicao != null) stringSql += $"WHERE { condicao} ";
+            var parametros = new { Codigo = codigo };
+
+            string stringSql = $"DELETE FROM {ObterTabela()} " +
+                $"WHERE Codigo = @Codigo";
+
+            var retorno = await _sqlConnection.ExecuteAsync(sql: stringSql, param: parametros, commandType: CommandType.Text);
+            
+            return retorno;
+        }
+
+        public virtual Task<int> ExecuteAsync(InputConsultaPersonalizada input, CommandType commandType = CommandType.Text)
+        {
+            string stringSql = $"{input.ConsultaPersonalizada} ";
+            if (input.Condicao != null) stringSql += $"WHERE { input.Condicao} ";
+
+            var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
 
             if (commandType == CommandType.Text)
             {
@@ -114,39 +117,55 @@ namespace TRILHAR.Infra.Data.Repositories
             }
             return Task.FromResult(0);
         }
-        
-        public virtual async Task<TEntity?> RetornaSingleBySqlConsultaCondicao(string? sqlConsulta, string? condicao = null, object? parametros = null)
-        {
-            string stringSql = $"{sqlConsulta} ";
-            if (condicao != null) stringSql += $"WHERE { condicao} ";
 
-            var retornaSingle = _sqlConnection.QuerySingleOrDefaultAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
-            return await retornaSingle;
+        public virtual async Task<int> RetornaMaxCodigoAsync()
+        {
+            string stringSql = $"SELECT MAX(Codigo) FROM {ObterTabela()} ";
+            var retornaMax = await _sqlConnection.QueryFirstOrDefaultAsync<int>(sql: stringSql, commandType: CommandType.Text);
+            return retornaMax;
+        }
+
+        public virtual async Task<TEntity?> RetornaSingleBySqlConsultaCondicao(InputConsultaPersonalizada input)
+        {
+            string stringSql = $"{input.ConsultaPersonalizada} ";
+            if (input.Condicao != null) stringSql += $"WHERE {input.Condicao} ";
+
+            var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
+            
+            var retornaSingle = await _sqlConnection.QuerySingleOrDefaultAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
+            
+            return retornaSingle;
         }
         
-        public virtual async Task<IEnumerable<TEntity>> RetornaListaBySqlConsultaCondicao(string? sqlConsulta, string? condicao = null, object? parametros = null)
+        public virtual async Task<IEnumerable<TEntity>> RetornaListaBySqlConsultaCondicao(InputConsultaPersonalizada input)
         {
-            string stringSql = $"{sqlConsulta} ";
-            if (condicao != null) stringSql += $"WHERE { condicao} ";
+            string stringSql = $"{input.ConsultaPersonalizada} ";
+            if (input.Condicao != null) stringSql += $"WHERE {input.Condicao} ";
+
+            var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
 
             var retornaLista = _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
             return await retornaLista;
         }
 
-        public virtual async Task<TEntity?> RetornaByCondicaoAsync(string? condicao, object? parametros)
+        public virtual async Task<TEntity?> RetornaByCondicaoAsync(InputCondicaoParametros input)
         {
             string stringSql = $"SELECT {ObterCampos()} FROM {ObterTabela()} " +
-                $"WHERE {condicao}";
+                $"WHERE {input.Condicao}";
+
+            var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
 
             var retornaAluno = await _sqlConnection.QuerySingleOrDefaultAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
             
             return retornaAluno;
         }
 
-        public virtual async Task<IEnumerable<TEntity>> RetornaListaByCondicaoAsync(string? condicao, object? parametros)
+        public virtual async Task<IEnumerable<TEntity>> RetornaListaByCondicaoAsync(InputCondicaoParametros input)
         {
             string stringSql = $"SELECT {ObterCampos()} FROM {ObterTabela()} " +
-               $"WHERE {condicao}";
+               $"WHERE {input.Condicao}";
+
+            var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
 
             var retornaAluno = await _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
             

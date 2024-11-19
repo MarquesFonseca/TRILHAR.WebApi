@@ -43,10 +43,9 @@ namespace TRILHAR.Infra.Data.Repositories
             return retornaMax;
         }
 
-        public async Task<int> NovoRegistroAsync(AlunoEntity entity)
+        public async Task<int> InsertOutputInsertedAsync(AlunoEntity entity)
         {
             const string stringSql = "INSERT INTO Aluno OUTPUT INSERTED.Codigo " +
-                //"(CodigoCadastro, NomeCrianca, DataNascimento, NomeMae, NomePai, OutroResponsavel, Telefone, EnderecoEmail, Alergia, DescricaoAlergia, RestricaoAlimentar, DescricaoRestricaoAlimentar, DeficienciaOuSituacaoAtipica, DescricaoDeficiencia, Batizado, DataBatizado, IgrejaBatizado, Ativo, CodigoUsuarioLogado, DataAtualizacao, DataCadastro) " +
                 "VALUES(@CodigoCadastro, @NomeCrianca, @DataNascimento, @NomeMae, @NomePai, @OutroResponsavel, @Telefone, @EnderecoEmail, @Alergia, @DescricaoAlergia, @RestricaoAlimentar, @DescricaoRestricaoAlimentar, @DeficienciaOuSituacaoAtipica, @DescricaoDeficiencia, @Batizado, @DataBatizado, @IgrejaBatizado, @Ativo, @CodigoUsuarioLogado, @DataAtualizacao, @DataCadastro)";
 
             var retorno = await db.ExecuteScalarAsync<int>(sql: stringSql, param: entity, commandType: CommandType.Text);
@@ -80,17 +79,6 @@ namespace TRILHAR.Infra.Data.Repositories
                                      "WHERE Codigo                  = @Codigo                           ";
 
             var retorno = await db.ExecuteAsync(sql: stringSql, param: entity, commandType: CommandType.Text);
-            return retorno;
-        }
-
-        public async Task<int> DeletarRegistroAsync(int codigo)
-        {
-            var parametros = new { Codigo = codigo };
-
-            string stringSql = $"DELETE FROM {ObterTabela()} " +
-                $"WHERE Codigo = @Codigo";
-
-            var retorno = await db.ExecuteAsync(sql: stringSql, param: parametros, commandType: CommandType.Text);
             return retorno;
         }
     }
