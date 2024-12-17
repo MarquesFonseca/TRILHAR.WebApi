@@ -31,6 +31,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: ./source/TRILHAR.Services.Api
+
+    - name: Check publish directory
+      run: ls -l ./source/TRILHAR.Services.Api/bin/Release/net6.0/publish/
       
     - name: Publish artifact
       if: success()
@@ -38,6 +41,7 @@ jobs:
       with:
         name: publish
         path: ./source/TRILHAR.Services.Api/bin/Release/net6.0/publish/
+        retention-days: 1
 
   ftp-deploy:
     needs: build
