@@ -8,7 +8,7 @@ on:
     branches:
       - main
     
-  # Allows you to run this workflow manually from the Actions tab
+  # Permite que você execute este fluxo de trabalho manualmente na guia Ações
   workflow_dispatch:
 
 jobs:
@@ -17,30 +17,30 @@ jobs:
     runs-on: ubuntu-latest 
         
     steps:
-    - name: checkout Action
+    - name: Checando do GitHub Action
       uses: actions/checkout@v3
     
-    - name: Setup .NET
+    - name: Configurando o .NETCore
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x   
   
-    - name: Restore dependencies
+    - name: Restaurando dependências
       run: dotnet restore
       working-directory: ./source/TRILHAR.Services.Api
       
-    - name: Build
+    - name: Contruíndo em Release com dotnet build --no-restore --configuration Release
       run: dotnet build --no-restore --configuration Release
       working-directory: ./source/TRILHAR.Services.Api
 
-    - name: Publish
+    - name: Publicando com dotnet publish --no-build --configuration Release --output ./publish
       run: dotnet publish --no-build --configuration Release --output ./publish
       working-directory: ./source/TRILHAR.Services.Api
       
     # - name: Check publish directory
     #   run: ls -l ./source/TRILHAR.Services.Api/publish
       
-    - name: Upload artifact
+    - name: Subindo artefatos para serem usados no próximo fluxo
       if: success()
       uses: actions/upload-artifact@v3
       with:
@@ -52,14 +52,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Download artifacts created at previous job
+    - name: Baixando artefatos criados no fluxo anterior
       if: success()
       uses: actions/download-artifact@v3
       with:
         name: publish
         path: ./artifact
 
-    - name: Deploy to FTP
+    - name: Implantando no servidor FTP
       if: success()
       uses: SamKirkland/FTP-Deploy-Action@master
       with:
@@ -70,5 +70,5 @@ jobs:
         server-dir: httpdocs/webapp/
         protocol: ftps
         dangerous-clean-slate: true
-        retries: 5   # Tentativas adicionais
+        retries: 2   # Tentativas adicionais
         retry-delay: 30  # Atraso entre tentativas em segundos
