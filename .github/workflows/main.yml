@@ -40,6 +40,7 @@ jobs:
       run: ls -l ./source/TRILHAR.Services.Api/publish
       
     - name: Upload artifact
+      if: success()
       uses: actions/upload-artifact@v3
       with:
         name: publish
@@ -51,12 +52,14 @@ jobs:
 
     steps:
     - name: Download artifacts created at previous job
+      if: success()
       uses: actions/download-artifact@v3
       with:
         name: publish
         path: ./artifact
 
     - name: Deploy to FTP
+      if: success()
       uses: SamKirkland/FTP-Deploy-Action@master
       with:
         server: ${{ secrets.FTP_SERVER }}
