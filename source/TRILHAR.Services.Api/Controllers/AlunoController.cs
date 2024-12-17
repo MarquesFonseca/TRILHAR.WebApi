@@ -119,25 +119,12 @@ namespace TRILHAR.Services.Api.Controllers
         /// <summary>
         /// Retorna o Registro por codigo
         /// </summary>
-        /// <param name="id">Informe o id.</param>
+        /// <param name="idAluno">Informe o id.</param>
         /// <returns>Retorna aluno</returns>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("{idAluno}")]
+        public async Task<IActionResult> Get(int idAluno)
         {
-            var resultado = await _alunoService.GetByCodigoAsync(id);
-            return CustomResponse(resultado);
-        }
-
-        /// <summary>
-        /// Retorna o Registro por codigo
-        /// </summary>
-        /// <param name="id">Informe o id.</param>
-        /// <param name="temp">Informe o id.</param>
-        /// <returns>Retorna aluno</returns>
-        [HttpGet("{id:int}/{temp:int}")]
-        public async Task<IActionResult> Get(int id, int temp)
-        {
-            var resultado = await _alunoService.GetByCodigoAsync(id);
+            var resultado = await _alunoService.GetByCodigoAsync(idAluno);
             return CustomResponse(resultado);
         }
 
