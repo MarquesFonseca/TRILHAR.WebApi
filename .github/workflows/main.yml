@@ -36,8 +36,8 @@ jobs:
       run: dotnet publish --no-build --configuration Release --output ./publish
       working-directory: ./source/TRILHAR.Services.Api
       
-    - name: Check publish directory
-      run: ls -l ./source/TRILHAR.Services.Api/publish
+    # - name: Check publish directory
+    #   run: ls -l ./source/TRILHAR.Services.Api/publish
       
     - name: Upload artifact
       if: success()
@@ -70,4 +70,4 @@ jobs:
         protocol: ftps
         dangerous-clean-slate: true
         retries: 5   # Tentativas adicionais
-        retry-delay: 10  # Atraso entre tentativas em segundos
+        retry-delay: 30  # Atraso entre tentativas em segundos
