@@ -64,5 +64,5 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./artifact/
         server-dir: httpdocs/webapp/
-        protocol: ftps
+        protocol: ftp
         dangerous-clean-slate: true
