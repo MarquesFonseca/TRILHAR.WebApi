@@ -21,22 +21,19 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
-  
-    - name: List files
-      run: ls -R
+        dotnet-version: 6.0.x   
   
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: TRILHAR.Services.Api # Atualize com base no resultado do `ls`
+      working-directory: ./source/TRILHAR.Services.Api # Atualize com base no resultado do `ls`
       
     - name: Build
       run: dotnet build --no-restore
-      working-directory: TRILHAR.Services.Api # Atualize com base no resultado do `ls`
+      working-directory: ./source/TRILHAR.Services.Api # Atualize com base no resultado do `ls`
       
     - name: Publish artifact
       if: success()
       uses: actions/upload-artifact@v3
       with:
         name: publish
-        path: TRILHAR.Services.Api/bin/Release/net6.0/publish/
+        path: ./source/TRILHAR.Services.Api/bin/Release/net6.0/publish/
