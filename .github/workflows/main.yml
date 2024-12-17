@@ -18,15 +18,15 @@ jobs:
         
     steps:
     - name: Checando do GitHub Action
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Configurando o .NETCore
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x   
   
     - name: Restaurando dependências
-      run: dotnet restore
+      run: dotnet restore --locked-mode
       working-directory: ./source/TRILHAR.Services.Api
       
     - name: Contruíndo em Release com dotnet build --no-restore --configuration Release
@@ -42,7 +42,7 @@ jobs:
       
     - name: Subindo artefatos para serem usados no próximo fluxo
       if: success()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: publish
         path: ./source/TRILHAR.Services.Api/publish
@@ -54,21 +54,21 @@ jobs:
     steps:
     - name: Baixando artefatos criados no fluxo anterior
       if: success()
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: publish
         path: ./artifact
 
     - name: Implantando no servidor FTP
       if: success()
-      uses: SamKirkland/FTP-Deploy-Action@master
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./artifact/
         server-dir: httpdocs/webapp/
-        protocol: ftps
+        # protocol: ftps
         dangerous-clean-slate: true
         retries: 2   # Tentativas adicionais
         retry-delay: 30  # Atraso entre tentativas em segundos
