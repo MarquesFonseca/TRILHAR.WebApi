@@ -29,19 +29,21 @@ jobs:
       working-directory: ./source/TRILHAR.Services.Api
       
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration Release
       working-directory: ./source/TRILHAR.Services.Api
 
-    - name: Check publish directory
-      run: ls -l ./source/TRILHAR.Services.Api/bin/Release/net6.0/publish/
+    - name: Publish
+      run: dotnet publish --no-build --configuration Release --output ./publish
+      working-directory: ./source/TRILHAR.Services.Api
       
-    - name: Publish artifact
-      if: success()
+    - name: Check publish directory
+      run: ls -l ./source/TRILHAR.Services.Api/publish
+      
+    - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: publish
-        path: ./source/TRILHAR.Services.Api/bin/Release/net6.0/publish/
-        retention-days: 1
+        path: ./source/TRILHAR.Services.Api/publish
 
   ftp-deploy:
     needs: build
