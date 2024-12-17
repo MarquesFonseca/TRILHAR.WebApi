@@ -44,20 +44,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
     - name: Download artifacts created at previous job
-      if: success()
       uses: actions/download-artifact@v3
       with:
-        name: deploy_webApp
-        path: dist
+        name: publish # Mesma string usada no passo `upload-artifact`
+        path: ./artifact # O caminho local onde o artefato será extraído
+
     - name: Deploy to FTP
       uses: SamKirkland/FTP-Deploy-Action@master
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./source/TRILHAR.Services.Api/bin/Release/net6.0/publish/
-        server-dir: /httpdocs/webapp
+        local-dir: ./artifact # Use o mesmo `path` do `download-artifact`
+        server-dir: iques.com.br/httpdocs/webapp/
         protocol: ftps
-        dangerous-clean-slate: true # optional
+        dangerous-clean-slate: true # opcional
