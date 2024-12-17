@@ -121,10 +121,10 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <param name="id">Informe o id.</param>
         /// <returns>Retorna aluno</returns>
-        [HttpGet("{idAluno}")]
-        public async Task<IActionResult> Get(int idAluno)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            var resultado = await _alunoService.GetByCodigoAsync(idAluno);
+            var resultado = await _alunoService.GetByCodigoAsync(id);
             return CustomResponse(resultado);
         }
 
