@@ -25,16 +25,15 @@ jobs:
   
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: TRILHAR.Services.Api
+      working-directory: TRILHAR.WebApi/TRILHAR.Services.Api
       
     - name: Build
       run: dotnet build --no-restore
-      working-directory: TRILHAR.Services.Api # Mesmo diretório do restore
+      working-directory: TRILHAR.WebApi/TRILHAR.Services.Api
       
     - name: Publish artifact
       if: success()
       uses: actions/upload-artifact@v3
       with:
-        name: Publish
-        run: dotnet publish -c Release
-        working-directory: TRILHAR.Services.Api
+        name: publish
+        path: TRILHAR.WebApi/TRILHAR.Services.Api/bin/Release/net6.0/publish/
