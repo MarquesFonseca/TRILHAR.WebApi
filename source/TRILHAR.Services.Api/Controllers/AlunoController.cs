@@ -56,6 +56,38 @@ namespace TRILHAR.Services.Api.Controllers
         /// Retorna todos por parametros e paginação
         /// </summary>
         /// <returns>Retorna todos alunos</returns>
+        [HttpPost("ListarPorFiltroTeste")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<AlunoEntity>))]
+        public async Task<IActionResult> ListarPorFiltroTeste(
+            [FromBody] InputPaginado input)
+        {
+            if (input == null)
+            {
+                return BadRequest("O filtro não pode ser nulo.");
+            }
+
+            if(input.IsPaginacao && input.Page == 0)
+            {
+                return BadRequest("O filtro 'Page 'não pode ser 0.");
+            }
+
+            if (input.IsPaginacao && input.PageSize == 0)
+            {
+                return BadRequest("O filtro 'PageSize 'não pode ser 0.");
+            }
+
+            var resultado = await _alunoService.GetByPaginacaoAsync(input);
+            if (OperacaoValida())
+            {
+                return Ok(resultado);
+            }
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
+        /// Retorna todos por parametros e paginação
+        /// </summary>
+        /// <returns>Retorna todos alunos</returns>
         [HttpPost("ListarPorFiltro")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<AlunoEntity>))]
         public async Task<IActionResult> ListarPorFiltro(
@@ -91,6 +123,19 @@ namespace TRILHAR.Services.Api.Controllers
         /// <returns>Retorna aluno</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
+        {
+            var resultado = await _alunoService.GetByCodigoAsync(id);
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
+        /// Retorna o Registro por codigo
+        /// </summary>
+        /// <param name="id">Informe o id.</param>
+        /// <param name="temp">Informe o id.</param>
+        /// <returns>Retorna aluno</returns>
+        [HttpGet("{id:int}/{temp:int}")]
+        public async Task<IActionResult> Get(int id, int temp)
         {
             var resultado = await _alunoService.GetByCodigoAsync(id);
             return CustomResponse(resultado);
