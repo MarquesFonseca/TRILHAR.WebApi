@@ -13,7 +13,6 @@ on:
 
 jobs:
   build-dotnet-app:
-
     runs-on: ubuntu-latest 
         
     steps:
@@ -30,8 +29,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       
-    if: success()
+    - name: Upload artifact
+      if: success() # Corrigido: agora a condição está no nível correto
       uses: actions/upload-artifact@v3
       with:
         name: publish
-        path: bin\Release\net6.0\publish\
+        path: bin/Release/net6.0/publish/ # Corrigido: path com barra `/` para Linux
