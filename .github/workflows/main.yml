@@ -12,7 +12,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-dotnet-app:
+  build:
+  
     runs-on: ubuntu-latest 
         
     steps:
@@ -37,3 +38,26 @@ jobs:
       with:
         name: publish
         path: ./source/TRILHAR.Services.Api/bin/Release/net6.0/publish/
+
+  ftp-deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Download artifacts created at previous job
+      if: success()
+      uses: actions/download-artifact@v3
+      with:
+        name: deploy_webApp
+        path: dist
+    - name: Deploy to FTP
+      uses: SamKirkland/FTP-Deploy-Action@master
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USER }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./source/TRILHAR.Services.Api/bin/Release/net6.0/publish/
+        server-dir: /httpdocs/webapp
+        protocol: ftps
+        dangerous-clean-slate: true # optional
