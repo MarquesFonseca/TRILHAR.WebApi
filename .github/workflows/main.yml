@@ -64,5 +64,7 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./artifact/
         server-dir: httpdocs/webapp/
-        protocol: ftp
+        protocol: ftps
         dangerous-clean-slate: true
+        retries: 5   # Tentativas adicionais
+        retry-delay: 10  # Atraso entre tentativas em segundos
