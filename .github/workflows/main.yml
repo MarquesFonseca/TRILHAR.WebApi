@@ -26,11 +26,11 @@ jobs:
   
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: ./source/TRILHAR.Services.Api # Atualize com base no resultado do `ls`
+      working-directory: ./source/TRILHAR.Services.Api
       
     - name: Build
       run: dotnet build --no-restore
-      working-directory: ./source/TRILHAR.Services.Api # Atualize com base no resultado do `ls`
+      working-directory: ./source/TRILHAR.Services.Api
       
     - name: Publish artifact
       if: success()
@@ -47,8 +47,8 @@ jobs:
     - name: Download artifacts created at previous job
       uses: actions/download-artifact@v3
       with:
-        name: publish # Mesma string usada no passo `upload-artifact`
-        path: ./artifact # O caminho local onde o artefato será extraído
+        name: publish
+        path: ./artifact
 
     - name: Deploy to FTP
       uses: SamKirkland/FTP-Deploy-Action@master
@@ -56,7 +56,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./artifact # Use o mesmo `path` do `download-artifact`
+        local-dir: ./artifact
         server-dir: iques.com.br/httpdocs/webapp/
         protocol: ftps
-        dangerous-clean-slate: true # opcional
+        dangerous-clean-slate: true
