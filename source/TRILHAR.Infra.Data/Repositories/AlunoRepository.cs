@@ -1,15 +1,8 @@
 ﻿using Dapper;
 using System.Data;
 using System.Data.SqlClient;
-using Trilhar.Forms.Repository.Extensions;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Repositories;
-using TRILHAR.Business.IO.Paginacao;
-using TRILHAR.Business.Pagination;
-using TRILHAR.Infra.Data.Extensions;
-using System.Text.Json;
-using System.Reflection.Metadata;
-using Microsoft.VisualBasic;
 
 namespace TRILHAR.Infra.Data.Repositories
 {

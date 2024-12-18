@@ -1,11 +1,8 @@
 ﻿using Dapper;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Repositories;
-using TRILHAR.Infra.Data.EF;
 
 namespace TRILHAR.Infra.Data.Repositories
 {
@@ -21,7 +18,7 @@ namespace TRILHAR.Infra.Data.Repositories
 
         protected override string ObterTabela() => "Turma";
 
-        public async Task<int> InsertOutputInsertedAsync(AlunoEntity entity)
+        public async Task<int> InsertOutputInsertedAsync(TurmaEntity entity)
         {
             const string stringSql = "INSERT INTO Turma OUTPUT INSERTED.Codigo " +
                 "VALUES(@Descricao, @IdadeInicialAluno, @IdadeFinalAluno, @AnoLetivo, @SemestreLetivo, @LimiteMaximo, @Ativo, @CodigoUsuarioLogado, @DataAtualizacao, @DataCadastro)";
