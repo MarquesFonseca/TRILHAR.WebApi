@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
+﻿using System.Data;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.IO;
 using TRILHAR.Business.Pagination;

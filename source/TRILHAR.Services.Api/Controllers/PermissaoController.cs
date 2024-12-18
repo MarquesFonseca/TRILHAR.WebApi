@@ -5,7 +5,7 @@ using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO;
-using TRILHAR.Business.IO.Turma;
+using TRILHAR.Business.IO.Permissao;
 using TRILHAR.Business.Pagination;
 
 namespace TRILHAR.Services.Api.Controllers
@@ -17,49 +17,49 @@ namespace TRILHAR.Services.Api.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [AllowAnonymous]
-    public class TurmaController : BaseApiController
+    public class PermissaoController : BaseApiController
     {
-        private readonly ILogger<TurmaEntity> _logger;
-        private readonly ITurmaService _TurmaService;
-        private readonly ITurmaRepository _TurmaRepository;
+        private readonly ILogger<PermissaoEntity> _logger;
+        private readonly IPermissaoService _PermissaoService;
+        private readonly IPermissaoRepository _PermissaoRepository;
 
         /// <summary>
         /// Construtor
         /// </summary>
         /// <param name="notificador"></param>
         /// <param name="logger"></param>
-        /// <param name="TurmaService"></param>
-        /// <param name="TurmaRepository"></param>
+        /// <param name="PermissaoService"></param>
+        /// <param name="PermissaoRepository"></param>
         /// 
-        public TurmaController(
+        public PermissaoController(
             INotificador notificador,
-            ILogger<TurmaEntity> logger,
-            ITurmaService TurmaService,
-            ITurmaRepository TurmaRepository
+            ILogger<PermissaoEntity> logger,
+            IPermissaoService PermissaoService,
+            IPermissaoRepository PermissaoRepository
             ) : base(notificador)
         {
             _logger = logger;
-            _TurmaService = TurmaService;
-            _TurmaRepository = TurmaRepository;
+            _PermissaoService = PermissaoService;
+            _PermissaoRepository = PermissaoRepository;
         }
 
         /// <summary>
         /// Retorna todos os Registro
         /// </summary>
-        /// <returns>Retorna todos Turmas</returns>
+        /// <returns>Retorna todos Permissaos</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var resultado = await _TurmaRepository.GetAllAsync();
+            var resultado = await _PermissaoRepository.GetAllAsync();
             return CustomResponse(resultado);
         }
 
         /// <summary>
-        /// Retorna todos por parametros e paginação
+        /// Retorna todos por parametros e Permissaoção
         /// </summary>
-        /// <returns>Retorna todos Turmas</returns>
+        /// <returns>Retorna todos Permissaos</returns>
         [HttpPost("ListarPorFiltro")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<TurmaEntity>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<PermissaoEntity>))]
         public async Task<IActionResult> ListarPorFiltro(
             [FromBody] InputPaginado input)
         {
@@ -78,7 +78,7 @@ namespace TRILHAR.Services.Api.Controllers
                 return BadRequest("O filtro 'PageSize 'não pode ser 0.");
             }
 
-            var resultado = await _TurmaRepository.GetByPaginacaoAsync(input);
+            var resultado = await _PermissaoRepository.GetByPaginacaoAsync(input);
             if (OperacaoValida())
             {
                 return Ok(resultado);
@@ -90,11 +90,11 @@ namespace TRILHAR.Services.Api.Controllers
         /// Retorna o Registro por codigo
         /// </summary>
         /// <param name="id">Informe o id.</param>
-        /// <returns>Retorna Turma</returns>
+        /// <returns>Retorna Permissao</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = await _TurmaRepository.GetByCodigoAsync(id);
+            var resultado = await _PermissaoRepository.GetByCodigoAsync(id);
             return CustomResponse(resultado);
         }
 
@@ -104,11 +104,11 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] TurmaInput registro)
+        public async Task<IActionResult> Post([FromBody] PermissaoInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _TurmaRepository.InsertOutputInsertedAsync(registro);
+            var resultado = await _PermissaoRepository.InsertAsync(registro);
             return CustomResponse(resultado);
         }
 
@@ -118,11 +118,11 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] TurmaInput registro)
+        public async Task<IActionResult> Put([FromBody] PermissaoInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var reg = await _TurmaRepository.GetByCodigoAsync(registro.Codigo);
+            var reg = await _PermissaoRepository.GetByCodigoAsync(registro.Codigo);
 
             if (reg == null)
             {
@@ -130,7 +130,7 @@ namespace TRILHAR.Services.Api.Controllers
                 return CustomResponse();
             }
 
-            var resultado = await _TurmaRepository.UpdateAsync(registro);
+            var resultado = await _PermissaoRepository.UpdateAsync(registro);
             return CustomResponse(resultado);
         }
     }

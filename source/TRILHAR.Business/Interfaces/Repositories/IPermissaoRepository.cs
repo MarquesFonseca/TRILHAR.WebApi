@@ -2,8 +2,8 @@
 
 namespace TRILHAR.Business.Interfaces.Repositories
 {
-    public interface IFrequenciaRepository: IRepositoryGenericsBase<FrequenciaEntity>
+    public interface IPermissaoRepository: IRepositoryGenericsBase<PermissaoEntity>
     {
-        
+
     }
 }

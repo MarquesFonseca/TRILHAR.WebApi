@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
-using TRILHAR.Business.Entities;
-using TRILHAR.Business.IO.Paginacao;
-using TRILHAR.Business.Pagination;
+﻿using TRILHAR.Business.Entities;
 
 namespace TRILHAR.Business.Interfaces.Repositories
 {

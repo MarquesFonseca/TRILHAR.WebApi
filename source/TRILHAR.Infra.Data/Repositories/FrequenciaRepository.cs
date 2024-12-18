@@ -1,11 +1,6 @@
-﻿using Dapper;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
+﻿using System.Data.SqlClient;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Repositories;
-using TRILHAR.Infra.Data.EF;
 
 namespace TRILHAR.Infra.Data.Repositories
 {
