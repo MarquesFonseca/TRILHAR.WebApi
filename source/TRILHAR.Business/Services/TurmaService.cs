@@ -1,48 +1,66 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
-using TRILHAR.Business.IO.Aluno;
+using TRILHAR.Business.IO;
+using TRILHAR.Business.IO.Turma;
 
 namespace TRILHAR.Business.Services
 {
-    public class TurmaService : BaseService, ITurmaService
+    public class TurmaService : ServiceGenericsBase<TurmaEntity>, ITurmaService
     {
         private readonly IObjectExtensionGenerics<TurmaEntity> _objectExtensionGenerics;
-        private readonly ITurmaRepository _repository;
+        private readonly IAlunoRepository _alunoRepository;
+        private readonly ITurmaRepository _turmaRepository;
+        private readonly IMatriculaAlunoTurmaRepository _matriculaAlunoTurmaRepository;
+        private readonly IVMatriculaAlunoTurmaRepository _vMatriculaAlunoTurmaRepository;
+        private readonly IFrequenciaRepository _frequenciaRepository;
+        private readonly IVFrequenciaAlunoTurmaRepository _vFrequenciaAlunoTurmaRepository;
         private readonly IMapper _mapper;
 
         public TurmaService(
             INotificador notificador,
-            ITurmaRepository repository,
-            IObjectExtensionGenerics<TurmaEntity> objectExtension,
-            IMapper mapper
-            ) : base(notificador)
+            IObjectExtensionGenerics<TurmaEntity> objectExtensionGenerics,
+            IAlunoRepository alunoRepository,
+            ITurmaRepository turmaRepository,
+            IMatriculaAlunoTurmaRepository matriculaAlunoTurmaRepository,
+            IVMatriculaAlunoTurmaRepository vMatriculaAlunoTurmaRepository,
+            IFrequenciaRepository frequenciaRepository,
+            IVFrequenciaAlunoTurmaRepository vFrequenciaAlunoTurmaRepository,
+            IMapper mapper) : base(notificador, turmaRepository)
         {
-            _objectExtensionGenerics = objectExtension;
-            _repository = repository;
+            _objectExtensionGenerics = objectExtensionGenerics;
+            _alunoRepository = alunoRepository;
+            _turmaRepository = turmaRepository;
+            _matriculaAlunoTurmaRepository = matriculaAlunoTurmaRepository;
+            _vMatriculaAlunoTurmaRepository = vMatriculaAlunoTurmaRepository;
+            _frequenciaRepository = frequenciaRepository;
+            _vFrequenciaAlunoTurmaRepository = vFrequenciaAlunoTurmaRepository;
             _mapper = mapper;
         }
 
-
-        public void Dispose()
+        public async Task<IEnumerable<TurmaOutput>> ListarTurmasAtivas()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+            var parametros = new Dictionary<string, object?>();
+            parametros.Add("Ativo", true);
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
+            var input = new InputCondicaoParametros()
             {
-                _repository.Dispose();
-            }
+                Condicao = "Ativo = @Ativo",
+                Parametros = parametros
+            };
+
+            var retorno = await _turmaRepository.RetornaListaByCondicaoAsync(input);
+            _ = retorno
+                .OrderByDescending(turma => turma.IdadeInicialAluno)
+                .OrderBy(turma => turma.SemestreLetivo)
+                .OrderBy(turma => turma.AnoLetivo);
+
+            var turmaOutput = _mapper.Map<List<TurmaOutput>>(retorno);
+
+            return turmaOutput;
         }
     }
 }

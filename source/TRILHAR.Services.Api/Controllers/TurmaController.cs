@@ -55,6 +55,17 @@ namespace TRILHAR.Services.Api.Controllers
         }
 
         /// <summary>
+        /// Retorna todas as turmas ativas
+        /// </summary>
+        /// <returns>Retorna todos Turmas</returns>
+        [HttpGet("ListarTurmasAtivas")]
+        public async Task<IActionResult> ListarTurmasAtivas()
+        {
+            var resultado = await _TurmaService.ListarTurmasAtivas();
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
         /// Retorna todos por parametros e paginação
         /// </summary>
         /// <returns>Retorna todos Turmas</returns>
@@ -79,6 +90,7 @@ namespace TRILHAR.Services.Api.Controllers
             }
 
             var resultado = await _TurmaRepository.GetByPaginacaoAsync(input);
+            //var resultado = await _TurmaService
             if (OperacaoValida())
             {
                 return Ok(resultado);

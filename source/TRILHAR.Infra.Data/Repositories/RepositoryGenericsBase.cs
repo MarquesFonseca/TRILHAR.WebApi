@@ -51,7 +51,7 @@ namespace TRILHAR.Infra.Data.Repositories
 
             var resultados = await _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
 
-            retorno = resultados.ToList().GetPaged(qtdRegistros, input.Page, input.PageSize);
+            retorno = resultados.ToList().GetPaged(qtdRegistros, input.IsPaginacao ? input.Page : 0, input.IsPaginacao ? input.PageSize : 0);
 
             return retorno;
         }
@@ -155,9 +155,9 @@ namespace TRILHAR.Infra.Data.Repositories
 
             var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
 
-            var retornaAluno = await _sqlConnection.QuerySingleOrDefaultAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
+            var retornaSingle = await _sqlConnection.QuerySingleOrDefaultAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
             
-            return retornaAluno;
+            return retornaSingle;
         }
 
         public virtual async Task<IEnumerable<TEntity>> RetornaListaByCondicaoAsync(InputCondicaoParametros input)
@@ -167,9 +167,9 @@ namespace TRILHAR.Infra.Data.Repositories
 
             var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
 
-            var retornaAluno = await _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
+            var retornaLista = await _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
             
-            return retornaAluno;
+            return retornaLista;
         }               
 
         protected abstract string ObterCampos();
