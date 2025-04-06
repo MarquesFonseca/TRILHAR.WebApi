@@ -11,28 +11,54 @@ namespace TRILHAR.Business.Services
     public class AlunoService : ServiceGenericsBase<AlunoEntity>, IAlunoService
     {
         private readonly IObjectExtensionGenerics<AlunoEntity> _objectExtensionGenerics;
-        private readonly IAlunoRepository _repository;
+        private readonly IAlunoRepository _alunoRepository;
+        private readonly ITurmaRepository _turmaRepository;
+        private readonly IMatriculaAlunoTurmaRepository _matriculaAlunoTurmaRepository;
+        private readonly IVMatriculaAlunoTurmaRepository _vMatriculaAlunoTurmaRepository;
+        private readonly IFrequenciaRepository _frequenciaRepository;
+        private readonly IVFrequenciaAlunoTurmaRepository _vFrequenciaAlunoTurmaRepository;
         private readonly IMapper _mapper;
 
         public AlunoService(
             INotificador notificador,
-            IAlunoRepository repository,
-            IObjectExtensionGenerics<AlunoEntity> objectExtension,
-            IMapper mapper
-            ) : base(notificador, repository)
+            IObjectExtensionGenerics<AlunoEntity> objectExtensionGenerics,
+            IAlunoRepository alunoRepository,
+            ITurmaRepository turmaRepository,
+            IMatriculaAlunoTurmaRepository matriculaAlunoTurmaRepository,
+            IVMatriculaAlunoTurmaRepository vMatriculaAlunoTurmaRepository,
+            IFrequenciaRepository frequenciaRepository,
+            IVFrequenciaAlunoTurmaRepository vFrequenciaAlunoTurmaRepository,
+            IMapper mapper) : base(notificador, alunoRepository)
         {
-            _objectExtensionGenerics = objectExtension;
-            _repository = repository;
+            _objectExtensionGenerics = objectExtensionGenerics;
+            _alunoRepository = alunoRepository;
+            _turmaRepository = turmaRepository;
+            _matriculaAlunoTurmaRepository = matriculaAlunoTurmaRepository;
+            _vMatriculaAlunoTurmaRepository = vMatriculaAlunoTurmaRepository;
+            _frequenciaRepository = frequenciaRepository;
+            _vFrequenciaAlunoTurmaRepository = vFrequenciaAlunoTurmaRepository;
             _mapper = mapper;
         }
-
+        
         public async Task<int> InsertAsync(AlunoInput entity)
         {
             var model = _mapper.Map<AlunoInput, AlunoEntity>(entity);
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
+            
+            if(model.DataNascimento.HasValue)
+            {
+                model.DataNascimento = model.DataNascimento.GetValueOrDefault().Date;
+            }
+            if (model.DataBatizado.HasValue)
+            {
+                model.DataBatizado = model.DataBatizado.GetValueOrDefault().Date;
+            }
+            model.DataCadastro = model.DataAtualizacao = DateTime.Now;
+            var maxCodigoCadastro = await _alunoRepository.RetornaMaxCodigoCadastroAsync();
+            model.CodigoCadastro = Convert.ToString(maxCodigoCadastro + 1);
 
-            return await _repository.InsertAsync(model);
+            return await _alunoRepository.InsertAsync(model);
         }
 
         public async Task<int> InsertAsync(IEnumerable<AlunoInput> list)
@@ -45,7 +71,7 @@ namespace TRILHAR.Business.Services
                 models.Add(model);
             }
 
-            return await _repository.InsertAsync(models);
+            return await _alunoRepository.InsertAsync(models);
         }
 
         public async Task<bool> UpdateAsync(AlunoInput entity)
@@ -54,7 +80,7 @@ namespace TRILHAR.Business.Services
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
 
-            return await _repository.UpdateAsync(model);
+            return await _alunoRepository.UpdateAsync(model);
         }
 
         public async Task<bool> UpdateAsync(IEnumerable<AlunoInput> list)
@@ -67,7 +93,7 @@ namespace TRILHAR.Business.Services
                 models.Add(model);
             }
 
-            return await _repository.UpdateAsync(models);
+            return await _alunoRepository.UpdateAsync(models);
         }
     }
 }

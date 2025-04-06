@@ -155,9 +155,9 @@ namespace TRILHAR.Infra.Data.Repositories
 
             var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
 
-            var retornaAluno = await _sqlConnection.QuerySingleOrDefaultAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
+            var retornaSingle = await _sqlConnection.QuerySingleOrDefaultAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
             
-            return retornaAluno;
+            return retornaSingle;
         }
 
         public virtual async Task<IEnumerable<TEntity>> RetornaListaByCondicaoAsync(InputCondicaoParametros input)
@@ -167,9 +167,9 @@ namespace TRILHAR.Infra.Data.Repositories
 
             var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
 
-            var retornaAluno = await _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
+            var retornaLista = await _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
             
-            return retornaAluno;
+            return retornaLista;
         }               
 
         protected abstract string ObterCampos();

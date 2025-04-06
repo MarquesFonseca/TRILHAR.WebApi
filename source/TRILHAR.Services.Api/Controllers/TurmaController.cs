@@ -55,6 +55,17 @@ namespace TRILHAR.Services.Api.Controllers
         }
 
         /// <summary>
+        /// Retorna todas as turmas ativas
+        /// </summary>
+        /// <returns>Retorna todos Turmas</returns>
+        [HttpGet("ListarTurmasAtivas")]
+        public async Task<IActionResult> ListarTurmasAtivas()
+        {
+            var resultado = await _TurmaService.ListarTurmasAtivas();
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
         /// Retorna todos por parametros e paginação
         /// </summary>
         /// <returns>Retorna todos Turmas</returns>
@@ -79,41 +90,7 @@ namespace TRILHAR.Services.Api.Controllers
             }
 
             var resultado = await _TurmaRepository.GetByPaginacaoAsync(input);
-            if (OperacaoValida())
-            {
-                return Ok(resultado);
-            }
-            return CustomResponse(resultado);
-        }
-
-        /// <summary>
-        /// Retorna todos por parametros e paginação
-        /// </summary>
-        /// <returns>Retorna todos Turmas</returns>
-        [HttpPost("ListarTurmasAtivas")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<TurmaEntity>))]
-        public async Task<IActionResult> ListarTurmasAtivas(
-            [FromBody] InputPaginado input)
-        {
-            if (input == null)
-            {
-                return BadRequest("O filtro não pode ser nulo.");
-            }
-
-            if (input.IsPaginacao && input.Page == 0)
-            {
-                return BadRequest("O filtro 'Page 'não pode ser 0.");
-            }
-
-            if (input.IsPaginacao && input.PageSize == 0)
-            {
-                return BadRequest("O filtro 'PageSize 'não pode ser 0.");
-            }
-
-            //var lklk = new inputpad
-
-
-            var resultado = await _TurmaRepository.GetByPaginacaoAsync(input);
+            //var resultado = await _TurmaService
             if (OperacaoValida())
             {
                 return Ok(resultado);

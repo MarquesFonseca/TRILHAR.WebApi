@@ -18,7 +18,7 @@ namespace TRILHAR.Business.Interfaces.Repositories
         Task<bool> DeleteAsync(IEnumerable<TEntity> list);
         Task<int> DeleteByCodigoAsync(int codigo);
         Task<int> ExecuteAsync(InputConsultaPersonalizada input, CommandType commandType = CommandType.Text);
-        Task<int> RetornaMaxCodigoAsync();
+        Task<int> RetornaMaxCodigoAsync();        
         Task<TEntity?> RetornaSingleBySqlConsultaCondicao(InputConsultaPersonalizada input);
         Task<IEnumerable<TEntity>> RetornaListaBySqlConsultaCondicao(InputConsultaPersonalizada input);
         Task<TEntity?> RetornaByCondicaoAsync(InputCondicaoParametros input);

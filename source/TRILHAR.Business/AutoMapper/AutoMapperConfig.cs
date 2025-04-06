@@ -10,6 +10,7 @@ namespace TRILHAR.Business.AutoMapper
             {
                 cfg.AddProfile(new AutoMapperProfile());
                 cfg.AddProfile(new UsuarioSiggoMapper());
+                cfg.AddProfile(new TurmaMapper());
             });
         }
     }
