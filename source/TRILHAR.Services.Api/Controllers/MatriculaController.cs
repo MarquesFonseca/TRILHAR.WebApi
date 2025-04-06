@@ -5,8 +5,9 @@ using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO;
-using TRILHAR.Business.IO.Frequencia;
+using TRILHAR.Business.IO.Matricula;
 using TRILHAR.Business.Pagination;
+using TRILHAR.Infra.Data.Repositories;
 
 namespace TRILHAR.Services.Api.Controllers
 {
@@ -17,53 +18,53 @@ namespace TRILHAR.Services.Api.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [AllowAnonymous]
-    public class FrequenciaController : BaseApiController
+    public class MatriculaController : BaseApiController
     {
-        private readonly ILogger<FrequenciaEntity> _logger;
-        private readonly IFrequenciaService _FrequenciaService;
-        private readonly IFrequenciaRepository _FrequenciaRepository;
-        private readonly IVFrequenciaAlunoTurmaRepository _VFrequenciaAlunoTurmaRepository;
+        private readonly ILogger<MatriculaAlunoTurmaEntity> _logger;
+        private readonly IMatriculaAlunoTurmaService _MatriculaService;
+        private readonly IMatriculaAlunoTurmaRepository _MatriculaRepository;
+        private readonly IVMatriculaAlunoTurmaRepository _VMatriculaAlunoTurmaRepository;
 
         /// <summary>
         /// Construtor
         /// </summary>
         /// <param name="notificador"></param>
         /// <param name="logger"></param>
-        /// <param name="FrequenciaService"></param>
-        /// <param name="FrequenciaRepository"></param>
-        /// <param name="VFrequenciaAlunoTurmaRepository"></param>
+        /// <param name="MatriculaService"></param>
+        /// <param name="MatriculaRepository"></param>
+        /// <param name="VMatriculaAlunoTurmaRepository"></param>
         /// 
-        public FrequenciaController(
+        public MatriculaController(
             INotificador notificador,
-            ILogger<FrequenciaEntity> logger,
-            IFrequenciaService FrequenciaService,
-            IFrequenciaRepository FrequenciaRepository,
-            IVFrequenciaAlunoTurmaRepository VFrequenciaAlunoTurmaRepository
+            ILogger<MatriculaAlunoTurmaEntity> logger,
+            IMatriculaAlunoTurmaService MatriculaService,
+            IMatriculaAlunoTurmaRepository MatriculaRepository,
+            IVMatriculaAlunoTurmaRepository VMatriculaAlunoTurmaRepository
             ) : base(notificador)
         {
             _logger = logger;
-            _FrequenciaService = FrequenciaService;
-            _FrequenciaRepository = FrequenciaRepository;
-            _VFrequenciaAlunoTurmaRepository = VFrequenciaAlunoTurmaRepository;
+            _MatriculaService = MatriculaService;
+            _MatriculaRepository = MatriculaRepository;
+            _VMatriculaAlunoTurmaRepository = VMatriculaAlunoTurmaRepository;
         }
 
         /// <summary>
         /// Retorna todos os Registro
         /// </summary>
-        /// <returns>Retorna todos Frequencias</returns>
+        /// <returns>Retorna todos Matriculas</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var resultado = await _FrequenciaRepository.GetAllAsync();
+            var resultado = await _MatriculaRepository.GetAllAsync();
             return CustomResponse(resultado);
         }
 
         /// <summary>
         /// Retorna todos por parametros e paginação
         /// </summary>
-        /// <returns>Retorna todos Frequencias</returns>
+        /// <returns>Retorna todos Matriculas</returns>
         [HttpPost("ListarPorFiltro")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<FrequenciaEntity>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<MatriculaAlunoTurmaEntity>))]
         public async Task<IActionResult> ListarPorFiltro(
             [FromBody] InputPaginado input)
         {
@@ -82,8 +83,8 @@ namespace TRILHAR.Services.Api.Controllers
                 return BadRequest("O filtro 'PageSize 'não pode ser 0.");
             }
 
-            //var resultado = await _FrequenciaRepository.GetByPaginacaoAsync(input);
-            var resultado = await _VFrequenciaAlunoTurmaRepository.GetByPaginacaoAsync(input);
+            //var resultado = await _MatriculaRepository.GetByPaginacaoAsync(input);
+            var resultado = await _VMatriculaAlunoTurmaRepository.GetByPaginacaoAsync(input);
             if (OperacaoValida())
             {
                 return Ok(resultado);
@@ -95,11 +96,11 @@ namespace TRILHAR.Services.Api.Controllers
         /// Retorna o Registro por codigo
         /// </summary>
         /// <param name="id">Informe o id.</param>
-        /// <returns>Retorna Frequencia</returns>
+        /// <returns>Retorna Matricula</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = await _FrequenciaRepository.GetByCodigoAsync(id);
+            var resultado = await _MatriculaRepository.GetByCodigoAsync(id);
             return CustomResponse(resultado);
         }
 
@@ -109,12 +110,12 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] FrequenciaInput registro)
+        public async Task<IActionResult> Post([FromBody] MatriculaInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            //var resultado = await _FrequenciaService.NovoRegistroAsync(registro);
-            var resultado = new FrequenciaEntity();
+            //var resultado = await _MatriculaService.NovoRegistroAsync(registro);
+            var resultado = new MatriculaAlunoTurmaEntity();
             return CustomResponse(resultado);
         }
 
@@ -124,11 +125,11 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] FrequenciaInput registro)
+        public async Task<IActionResult> Put([FromBody] MatriculaInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var reg = await _FrequenciaRepository.GetByCodigoAsync(registro.Codigo);
+            var reg = await _MatriculaRepository.GetByCodigoAsync(registro.Codigo);
 
             if (reg == null)
             {
@@ -136,8 +137,8 @@ namespace TRILHAR.Services.Api.Controllers
                 return CustomResponse();
             }
 
-            //var resultado = await _FrequenciaService.AtualizarRegistroAsync(registro);
-            var resultado = new FrequenciaEntity();
+            //var resultado = await _MatriculaService.AtualizarRegistroAsync(registro);
+            var resultado = new MatriculaAlunoTurmaEntity();
             return CustomResponse(resultado);
         }
     }

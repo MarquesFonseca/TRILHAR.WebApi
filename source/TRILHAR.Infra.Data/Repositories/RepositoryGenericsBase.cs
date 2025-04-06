@@ -51,7 +51,7 @@ namespace TRILHAR.Infra.Data.Repositories
 
             var resultados = await _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
 
-            retorno = resultados.ToList().GetPaged(qtdRegistros, input.Page, input.PageSize);
+            retorno = resultados.ToList().GetPaged(qtdRegistros, input.IsPaginacao ? input.Page : 0, input.IsPaginacao ? input.PageSize : 0);
 
             return retorno;
         }

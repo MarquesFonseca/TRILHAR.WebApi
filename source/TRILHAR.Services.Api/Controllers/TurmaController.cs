@@ -87,6 +87,41 @@ namespace TRILHAR.Services.Api.Controllers
         }
 
         /// <summary>
+        /// Retorna todos por parametros e paginação
+        /// </summary>
+        /// <returns>Retorna todos Turmas</returns>
+        [HttpPost("ListarTurmasAtivas")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<TurmaEntity>))]
+        public async Task<IActionResult> ListarTurmasAtivas(
+            [FromBody] InputPaginado input)
+        {
+            if (input == null)
+            {
+                return BadRequest("O filtro não pode ser nulo.");
+            }
+
+            if (input.IsPaginacao && input.Page == 0)
+            {
+                return BadRequest("O filtro 'Page 'não pode ser 0.");
+            }
+
+            if (input.IsPaginacao && input.PageSize == 0)
+            {
+                return BadRequest("O filtro 'PageSize 'não pode ser 0.");
+            }
+
+            //var lklk = new inputpad
+
+
+            var resultado = await _TurmaRepository.GetByPaginacaoAsync(input);
+            if (OperacaoValida())
+            {
+                return Ok(resultado);
+            }
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
         /// Retorna o Registro por codigo
         /// </summary>
         /// <param name="id">Informe o id.</param>
