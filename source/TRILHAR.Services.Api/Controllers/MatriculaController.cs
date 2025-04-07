@@ -114,8 +114,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            //var resultado = await _MatriculaService.NovoRegistroAsync(registro);
-            var resultado = new MatriculaAlunoTurmaEntity();
+            var resultado = await _MatriculaService.InsertAsync(registro);
             return CustomResponse(resultado);
         }
 
@@ -137,8 +136,7 @@ namespace TRILHAR.Services.Api.Controllers
                 return CustomResponse();
             }
 
-            //var resultado = await _MatriculaService.AtualizarRegistroAsync(registro);
-            var resultado = new MatriculaAlunoTurmaEntity();
+            var resultado = await _MatriculaService.UpdateAsync(registro);
             return CustomResponse(resultado);
         }
     }

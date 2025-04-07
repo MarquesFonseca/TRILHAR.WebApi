@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Globalization;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces;
 using TRILHAR.Business.Interfaces.Notificador;
@@ -46,16 +47,12 @@ namespace TRILHAR.Business.Services
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
             
-            if(model.DataNascimento.HasValue)
-            {
-                model.DataNascimento = model.DataNascimento.GetValueOrDefault().Date;
-            }
-            if (model.DataBatizado.HasValue)
-            {
-                model.DataBatizado = model.DataBatizado.GetValueOrDefault().Date;
-            }
+            model = TratamentoCamposComuns(model);
+            
             model.DataCadastro = model.DataAtualizacao = DateTime.Now;
+            
             var maxCodigoCadastro = await _alunoRepository.RetornaMaxCodigoCadastroAsync();
+            
             model.CodigoCadastro = Convert.ToString(maxCodigoCadastro + 1);
 
             return await _alunoRepository.InsertAsync(model);
@@ -67,7 +64,17 @@ namespace TRILHAR.Business.Services
             foreach (var item in list)
             {
                 var model = _mapper.Map<AlunoInput, AlunoEntity>(item);
+                
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
+                
+                model = TratamentoCamposComuns(model);
+                
+                model.DataCadastro = model.DataAtualizacao = DateTime.Now;
+                
+                var maxCodigoCadastro = await _alunoRepository.RetornaMaxCodigoCadastroAsync();
+                
+                model.CodigoCadastro = Convert.ToString(maxCodigoCadastro + 1);
+                
                 models.Add(model);
             }
 
@@ -80,6 +87,10 @@ namespace TRILHAR.Business.Services
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
 
+            model = TratamentoCamposComuns(model);
+
+            model.DataAtualizacao = DateTime.Now;
+
             return await _alunoRepository.UpdateAsync(model);
         }
 
@@ -89,11 +100,51 @@ namespace TRILHAR.Business.Services
             foreach (var item in list)
             {
                 var model = _mapper.Map<AlunoInput, AlunoEntity>(item);
+                
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
+
+                model = TratamentoCamposComuns(model);
+
+                model.DataAtualizacao = DateTime.Now;
+
                 models.Add(model);
             }
 
             return await _alunoRepository.UpdateAsync(models);
+        }
+
+        private AlunoEntity TratamentoCamposComuns(AlunoEntity model)
+        {
+            if (model.NomeCrianca != null)
+            {
+                model.NomeCrianca = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(model.NomeCrianca.ToLowerInvariant());
+            }
+            if (model.DataNascimento.HasValue)
+            {
+                model.DataNascimento = model.DataNascimento.GetValueOrDefault().Date;
+            }
+            if (model.DataBatizado.HasValue)
+            {
+                model.DataBatizado = model.DataBatizado.GetValueOrDefault().Date;
+            }
+            if (model.NomeMae != null)
+            {
+                model.NomeMae = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(model.NomeMae.ToLowerInvariant());
+            }
+            if (model.NomePai != null)
+            {
+                model.NomePai = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(model.NomePai.ToLowerInvariant());
+            }
+            if (model.OutroResponsavel != null)
+            {
+                model.OutroResponsavel = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(model.OutroResponsavel.ToLowerInvariant());
+            }
+            if (model.EnderecoEmail != null)
+            {
+                model.EnderecoEmail = model.EnderecoEmail.ToLowerInvariant();
+            }
+
+            return model;
         }
     }
 }
