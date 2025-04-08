@@ -2,7 +2,8 @@
 
 namespace TRILHAR.Business.IO.Matricula
 {
-    public class VFrequenciaAlunoTurmaOutput : VFrequenciaAlunoTurmaEntity
+    public class VMatriculaInput : VMatriculaEntity
     {
+        
     }
 }

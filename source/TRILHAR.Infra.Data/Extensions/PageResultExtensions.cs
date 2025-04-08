@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using TRILHAR.Business.IO.Paginacao;
 using TRILHAR.Business.Pagination;
 
 namespace TRILHAR.Infra.Data.Extensions
@@ -13,7 +14,7 @@ namespace TRILHAR.Infra.Data.Extensions
     {
         private const int MAX_PAGE_SIZE = 1000;
 
-        public static PagedResult<T> GetPaged<T>(this IList<T> query, int totalRegistros, int page, int pageSize) where T : class
+        public static PagedResult<T> GetPaged<T>(this IList<T> query, int totalRegistros, int page, int pageSize, bool isPaginacao) where T : class
         {
             pageSize = GetMaxPageSize(pageSize);
 
@@ -22,7 +23,14 @@ namespace TRILHAR.Infra.Data.Extensions
             result.TotalPaginas = GetTotalPaginas(result, pageSize);
 
             var skip = GetSkipValue(page, pageSize);
-            result.Dados = query.ToList();
+            if(isPaginacao)
+            {
+                result.Dados = query.Skip(skip).Take(pageSize).ToList();
+            }
+            if (!isPaginacao)
+            {
+                result.Dados = query.ToList();
+            }
 
             return result;
         }

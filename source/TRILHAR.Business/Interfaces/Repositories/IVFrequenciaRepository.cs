@@ -2,7 +2,7 @@
 
 namespace TRILHAR.Business.Interfaces.Repositories
 {
-    public interface IVMatriculaAlunoTurmaRepository : IRepositoryGenericsBase<VMatriculaAlunoTurmaEntity>
+    public interface IVFrequenciaRepository : IRepositoryGenericsBase<VFrequenciaEntity>
     {
         
     }

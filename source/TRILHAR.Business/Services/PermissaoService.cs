@@ -16,18 +16,16 @@ namespace TRILHAR.Business.Services
     {
         private readonly IObjectExtensionGenerics<PermissaoEntity> _objectExtensionGenerics;
         private readonly IPermissaoRepository _repository;
-        private readonly IMapper _mapper;
 
         public PermissaoService(
             INotificador notificador,
             IPermissaoRepository repository,
             IObjectExtensionGenerics<PermissaoEntity> objectExtension,
             IMapper mapper
-            ) : base(notificador)
+            ) : base(notificador, mapper)
         {
             _objectExtensionGenerics = objectExtension;
             _repository = repository;
-            _mapper = mapper;
         }
 
 

@@ -17,7 +17,7 @@ namespace TRILHAR.Infra.Data.Repositories
             db = sqlConnection;
         }
 
-        public async Task<AlunoEntity?> RetornaByCodigoCadastroAsync(string codigoCadastro)
+        public async Task<AlunoEntity?> GetByCodigoCadastroAsync(string codigoCadastro)
         {
             var parametros = new { CodigoCadastro = codigoCadastro };
 
@@ -29,7 +29,7 @@ namespace TRILHAR.Infra.Data.Repositories
             return retornaAluno;
         }
 
-        public async Task<int> RetornaMaxCodigoCadastroAsync()
+        public async Task<int> GetMaxCodigoCadastroAsync()
         {
             string stringSql = $"SELECT MAX(CodigoCadastro) FROM Aluno a ";
             var retornaMax = await db.QueryFirstOrDefaultAsync<int>(sql: stringSql, commandType: CommandType.Text);
@@ -45,7 +45,7 @@ namespace TRILHAR.Infra.Data.Repositories
             return retorno;
         }
         
-        public async Task<int> AtualizarRegistroAsync(AlunoEntity entity)
+        public async Task<int> UpdateRegistroAsync(AlunoEntity entity)
         {
             const string stringSql = "UPDATE Aluno SET " +
                                      "CodigoCadastro                = @CodigoCadastro,                  " +

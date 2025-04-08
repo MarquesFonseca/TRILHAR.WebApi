@@ -4,10 +4,10 @@ using TRILHAR.Business.Interfaces.Repositories;
 
 namespace TRILHAR.Infra.Data.Repositories
 {
-    public class MatriculaAlunoTurmaRepository : RepositoryGenericsBase<SqlConnection, MatriculaAlunoTurmaEntity>, IMatriculaAlunoTurmaRepository
+    public class MatriculaRepository : RepositoryGenericsBase<SqlConnection, MatriculaEntity>, IMatriculaRepository
     {
         private readonly SqlConnection db;
-        public MatriculaAlunoTurmaRepository(SqlConnection sqlConnection) : base(sqlConnection)
+        public MatriculaRepository(SqlConnection sqlConnection) : base(sqlConnection)
         {
             db = sqlConnection;
         }

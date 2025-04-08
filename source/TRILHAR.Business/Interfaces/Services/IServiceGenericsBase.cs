@@ -7,7 +7,7 @@ namespace TRILHAR.Business.Interfaces.Services
     public interface IServiceGenericsBase<TEntity> : IDisposable where TEntity : EntityBase
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<TEntity> GetByCodigoAsync(int codigo);
+        Task<TEntity> GetByCodigoAsync(int? codigo);
         Task<PagedResult<TEntity>> GetByPaginacaoAsync(InputPaginado input);
         Task<int> InsertAsync(TEntity entity);
         Task<int> InsertAsync(IEnumerable<TEntity> list);

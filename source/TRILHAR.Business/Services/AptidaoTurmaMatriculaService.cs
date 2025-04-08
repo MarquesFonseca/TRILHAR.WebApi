@@ -15,18 +15,16 @@ namespace TRILHAR.Business.Services
     {
         private readonly IObjectExtensionGenerics<AptidaoTurmaMatriculaEntity> _objectExtensionGenerics;
         private readonly IAptidaoTurmaMatriculaRepository _repository;
-        private readonly IMapper _mapper;
 
         public AptidaoTurmaMatriculaService(
             INotificador notificador,
             IAptidaoTurmaMatriculaRepository repository,
             IObjectExtensionGenerics<AptidaoTurmaMatriculaEntity> objectExtension,
             IMapper mapper
-            ) : base(notificador)
+            ) : base(notificador, mapper)
         {
             _objectExtensionGenerics = objectExtension;
             _repository = repository;
-            _mapper = mapper;
         }
 
         public void Dispose()

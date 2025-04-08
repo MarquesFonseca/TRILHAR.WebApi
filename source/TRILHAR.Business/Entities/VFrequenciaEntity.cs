@@ -4,14 +4,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TRILHAR.Business.Entities
 {
-    [Table("VMatriculaAlunoTurma")]
-    public class VMatriculaAlunoTurmaEntity : EntityBase
+    [Table("VFrequenciaAlunoTurma")]
+    public class VFrequenciaEntity : EntityBase
     {
         // Atributos
         private int _Codigo;
+        private DateTime? _DataFrequencia;
         private int _CodigoAluno;
         private int _CodigoTurma;
-        private bool _Ativo;
+        private bool _Presenca;
         private int _CodigoUsuarioLogado;
         private DateTime? _DataAtualizacao;
         private DateTime? _DataCadastro;
@@ -44,8 +45,13 @@ namespace TRILHAR.Business.Entities
         #region Codigo
         [Required(ErrorMessage = "Informe o campo Codigo")]
         [Display(Name = "Codigo")]
-        [ExplicitKey]
         public int Codigo { get { return _Codigo; } set { _Codigo = value; } }
+        #endregion
+
+        #region DataFrequencia
+        //[Required(ErrorMessage = "Informe o campo DataFrequencia")]
+        [Display(Name = "DataFrequencia")]
+        public DateTime? DataFrequencia { get { return _DataFrequencia; } set { _DataFrequencia = value; } }
         #endregion
 
         #region CodigoAluno
@@ -60,10 +66,10 @@ namespace TRILHAR.Business.Entities
         public int CodigoTurma { get { return _CodigoTurma; } set { _CodigoTurma = value; } }
         #endregion
 
-        #region Ativo
-        //[Required(ErrorMessage = "Informe o campo Ativo")]
-        [Display(Name = "Ativo")]
-        public bool Ativo { get { return _Ativo; } set { _Ativo = value; } }
+        #region Presenca
+        //[Required(ErrorMessage = "Informe o campo Presenca")]
+        [Display(Name = "Presenca")]
+        public bool Presenca { get { return _Presenca; } set { _Presenca = value; } }
         #endregion
 
         #region CodigoUsuarioLogado

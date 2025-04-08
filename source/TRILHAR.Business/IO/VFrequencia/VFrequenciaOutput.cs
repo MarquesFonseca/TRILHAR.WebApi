@@ -2,7 +2,7 @@
 
 namespace TRILHAR.Business.IO.Matricula
 {
-    public class MatriculaOutput : MatriculaEntity
+    public class VFrequenciaOutput : VFrequenciaEntity
     {
     }
 }

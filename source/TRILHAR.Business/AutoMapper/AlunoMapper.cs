@@ -2,26 +2,26 @@
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Entities.Trilhar;
 using TRILHAR.Business.Entities.Trilhar.ViewModel;
+using TRILHAR.Business.IO.Aluno;
 using TRILHAR.Business.IO.Turma;
 
 namespace TRILHAR.Business.AutoMapper
 {
-    public class TurmaMapper : Profile
+    public class AlunoMapper : Profile
     {
-        public TurmaMapper()
+        public AlunoMapper()
         {
-            CreateMap<TurmaEntity, TurmaInput>()
+            CreateMap<AlunoEntity, AlunoInput>()
                 .ReverseMap();
 
-            CreateMap<TurmaEntity, TurmaOutput>()
+            CreateMap<AlunoEntity, AlunoOutput>()
                 .ReverseMap();
 
-            CreateMap<TurmaInput, TurmaEntity>()
+            CreateMap<AlunoInput, AlunoEntity>()
                 .ReverseMap();
 
-            CreateMap<TurmaOutput, TurmaEntity>()
+            CreateMap<AlunoOutput, AlunoEntity>()
                 .ReverseMap();
-
         }
     }
 }

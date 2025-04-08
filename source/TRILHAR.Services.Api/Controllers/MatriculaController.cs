@@ -20,10 +20,10 @@ namespace TRILHAR.Services.Api.Controllers
     [AllowAnonymous]
     public class MatriculaController : BaseApiController
     {
-        private readonly ILogger<MatriculaAlunoTurmaEntity> _logger;
-        private readonly IMatriculaAlunoTurmaService _MatriculaService;
-        private readonly IMatriculaAlunoTurmaRepository _MatriculaRepository;
-        private readonly IVMatriculaAlunoTurmaRepository _VMatriculaAlunoTurmaRepository;
+        private readonly ILogger<MatriculaEntity> _logger;
+        private readonly IMatriculaService _MatriculaService;
+        private readonly IMatriculaRepository _MatriculaRepository;
+        private readonly IVMatriculaRepository _VMatriculaAlunoTurmaRepository;
 
         /// <summary>
         /// Construtor
@@ -36,10 +36,10 @@ namespace TRILHAR.Services.Api.Controllers
         /// 
         public MatriculaController(
             INotificador notificador,
-            ILogger<MatriculaAlunoTurmaEntity> logger,
-            IMatriculaAlunoTurmaService MatriculaService,
-            IMatriculaAlunoTurmaRepository MatriculaRepository,
-            IVMatriculaAlunoTurmaRepository VMatriculaAlunoTurmaRepository
+            ILogger<MatriculaEntity> logger,
+            IMatriculaService MatriculaService,
+            IMatriculaRepository MatriculaRepository,
+            IVMatriculaRepository VMatriculaAlunoTurmaRepository
             ) : base(notificador)
         {
             _logger = logger;
@@ -64,7 +64,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <returns>Retorna todos Matriculas</returns>
         [HttpPost("ListarPorFiltro")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<MatriculaAlunoTurmaEntity>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<MatriculaEntity>))]
         public async Task<IActionResult> ListarPorFiltro(
             [FromBody] InputPaginado input)
         {

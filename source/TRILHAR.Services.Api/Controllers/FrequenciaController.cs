@@ -22,7 +22,7 @@ namespace TRILHAR.Services.Api.Controllers
         private readonly ILogger<FrequenciaEntity> _logger;
         private readonly IFrequenciaService _FrequenciaService;
         private readonly IFrequenciaRepository _FrequenciaRepository;
-        private readonly IVFrequenciaAlunoTurmaRepository _VFrequenciaAlunoTurmaRepository;
+        private readonly IVFrequenciaRepository _VFrequenciaAlunoTurmaRepository;
 
         /// <summary>
         /// Construtor
@@ -38,7 +38,7 @@ namespace TRILHAR.Services.Api.Controllers
             ILogger<FrequenciaEntity> logger,
             IFrequenciaService FrequenciaService,
             IFrequenciaRepository FrequenciaRepository,
-            IVFrequenciaAlunoTurmaRepository VFrequenciaAlunoTurmaRepository
+            IVFrequenciaRepository VFrequenciaAlunoTurmaRepository
             ) : base(notificador)
         {
             _logger = logger;

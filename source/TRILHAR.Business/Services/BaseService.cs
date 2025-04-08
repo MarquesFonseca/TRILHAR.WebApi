@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using FluentValidation.Results;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Notificacoes;
@@ -7,11 +8,13 @@ namespace TRILHAR.Business.Services
 {
     public abstract class BaseService
     {
-        private readonly INotificador _notificador;
+        protected readonly INotificador _notificador;
+        protected readonly IMapper _mapper;
 
-        protected BaseService(INotificador notificador)
+        protected BaseService(INotificador notificador, IMapper mapper)
         {
             _notificador = notificador;
+            _mapper = mapper;
         }
 
         protected void Notificar(ValidationResult validationResult)

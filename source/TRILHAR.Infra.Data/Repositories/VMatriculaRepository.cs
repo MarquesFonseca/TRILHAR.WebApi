@@ -4,10 +4,10 @@ using TRILHAR.Business.Interfaces.Repositories;
 
 namespace TRILHAR.Infra.Data.Repositories
 {
-    public class VMatriculaAlunoTurmaRepository : RepositoryGenericsBase<SqlConnection, VMatriculaAlunoTurmaEntity>, IVMatriculaAlunoTurmaRepository
+    public class VMatriculaRepository : RepositoryGenericsBase<SqlConnection, VMatriculaEntity>, IVMatriculaRepository
     {
         private readonly SqlConnection _conn;
-        public VMatriculaAlunoTurmaRepository(SqlConnection sqlConnection) : base(sqlConnection)
+        public VMatriculaRepository(SqlConnection sqlConnection) : base(sqlConnection)
         {
             _conn = sqlConnection;
         }

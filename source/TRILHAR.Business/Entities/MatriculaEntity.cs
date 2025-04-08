@@ -6,7 +6,7 @@ using Dapper.Contrib.Extensions;
 namespace TRILHAR.Business.Entities
 {
     [Table("MatriculaAlunoTurma")]
-    public class MatriculaAlunoTurmaEntity : EntityBase
+    public class MatriculaEntity : EntityBase
     {
         [Key]
         public int Codigo { get; set; }

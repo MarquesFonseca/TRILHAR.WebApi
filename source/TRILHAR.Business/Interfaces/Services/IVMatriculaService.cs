@@ -1,6 +1,6 @@
 ﻿namespace TRILHAR.Business.Interfaces.Services
 {
-    public interface IVFrequenciaAlunoTurmaService : IDisposable
+    public interface IVMatriculaService : IDisposable
     {
         
     }

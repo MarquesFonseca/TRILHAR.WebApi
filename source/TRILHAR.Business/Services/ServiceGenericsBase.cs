@@ -1,4 +1,5 @@
-﻿using TRILHAR.Business.Entities;
+﻿using AutoMapper;
+using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
@@ -11,15 +12,15 @@ namespace TRILHAR.Business.Services
     {
         private readonly IRepositoryGenericsBase<TEntity> _repository;
 
-        public ServiceGenericsBase(INotificador notificador, IRepositoryGenericsBase<TEntity> repository)
-        : base(notificador)
+        public ServiceGenericsBase(INotificador notificador, IMapper mapper, IRepositoryGenericsBase<TEntity> repository)
+        : base(notificador, mapper)
         {
             _repository = repository;
         }
 
         public virtual Task<IEnumerable<TEntity>> GetAllAsync() => _repository.GetAllAsync();
 
-        public virtual Task<TEntity> GetByCodigoAsync(int codigo) => _repository.GetByCodigoAsync(codigo);
+        public virtual Task<TEntity> GetByCodigoAsync(int? codigo) => _repository.GetByCodigoAsync(codigo);
 
         public virtual Task<PagedResult<TEntity>> GetByPaginacaoAsync(InputPaginado input) => _repository.GetByPaginacaoAsync(input);
 

@@ -10,27 +10,26 @@ using TRILHAR.Business.IO.Matricula;
 
 namespace TRILHAR.Business.Services
 {
-    public class MatriculaAlunoTurmaService : ServiceGenericsBase<MatriculaAlunoTurmaEntity>, IMatriculaAlunoTurmaService
+    public class MatriculaService : ServiceGenericsBase<MatriculaEntity>, IMatriculaService
     {
-        private readonly IObjectExtensionGenerics<MatriculaAlunoTurmaEntity> _objectExtensionGenerics;
+        private readonly IObjectExtensionGenerics<MatriculaEntity> _objectExtensionGenerics;
         private readonly IAlunoRepository _alunoRepository;
         private readonly ITurmaRepository _turmaRepository;
-        private readonly IMatriculaAlunoTurmaRepository _matriculaAlunoTurmaRepository;
-        private readonly IVMatriculaAlunoTurmaRepository _vMatriculaAlunoTurmaRepository;
+        private readonly IMatriculaRepository _matriculaAlunoTurmaRepository;
+        private readonly IVMatriculaRepository _vMatriculaAlunoTurmaRepository;
         private readonly IFrequenciaRepository _frequenciaRepository;
-        private readonly IVFrequenciaAlunoTurmaRepository _vFrequenciaAlunoTurmaRepository;
-        private readonly IMapper _mapper;
+        private readonly IVFrequenciaRepository _vFrequenciaAlunoTurmaRepository;
 
-        public MatriculaAlunoTurmaService(
+        public MatriculaService(
             INotificador notificador,
-            IObjectExtensionGenerics<MatriculaAlunoTurmaEntity> objectExtensionGenerics,
+            IObjectExtensionGenerics<MatriculaEntity> objectExtensionGenerics,
             IAlunoRepository alunoRepository,
             ITurmaRepository turmaRepository,
-            IMatriculaAlunoTurmaRepository matriculaAlunoTurmaRepository,
-            IVMatriculaAlunoTurmaRepository vMatriculaAlunoTurmaRepository,
+            IMatriculaRepository matriculaAlunoTurmaRepository,
+            IVMatriculaRepository vMatriculaAlunoTurmaRepository,
             IFrequenciaRepository frequenciaRepository,
-            IVFrequenciaAlunoTurmaRepository vFrequenciaAlunoTurmaRepository,
-            IMapper mapper) : base(notificador, matriculaAlunoTurmaRepository)
+            IVFrequenciaRepository vFrequenciaAlunoTurmaRepository,
+            IMapper mapper) : base(notificador, mapper, matriculaAlunoTurmaRepository)
         {
             _objectExtensionGenerics = objectExtensionGenerics;
             _alunoRepository = alunoRepository;
@@ -39,12 +38,11 @@ namespace TRILHAR.Business.Services
             _vMatriculaAlunoTurmaRepository = vMatriculaAlunoTurmaRepository;
             _frequenciaRepository = frequenciaRepository;
             _vFrequenciaAlunoTurmaRepository = vFrequenciaAlunoTurmaRepository;
-            _mapper = mapper;
         }
 
         public async Task<int> InsertAsync(MatriculaInput entity)
         {
-            var model = _mapper.Map<MatriculaInput, MatriculaAlunoTurmaEntity>(entity);
+            var model = _mapper.Map<MatriculaInput, MatriculaEntity>(entity);
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
             model.CodigoUsuarioLogado = null;
@@ -55,10 +53,10 @@ namespace TRILHAR.Business.Services
 
         public async Task<int> InsertAsync(IEnumerable<MatriculaInput> list)
         {
-            var models = new List<MatriculaAlunoTurmaEntity>();
+            var models = new List<MatriculaEntity>();
             foreach (var item in list)
             {
-                var model = _mapper.Map<MatriculaInput, MatriculaAlunoTurmaEntity>(item);
+                var model = _mapper.Map<MatriculaInput, MatriculaEntity>(item);
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
                 model.CodigoUsuarioLogado = null;
                 model.DataCadastro = model.DataAtualizacao = DateTime.Now;
@@ -70,7 +68,7 @@ namespace TRILHAR.Business.Services
 
         public async Task<bool> UpdateAsync(MatriculaInput entity)
         {
-            var model = _mapper.Map<MatriculaInput, MatriculaAlunoTurmaEntity>(entity);
+            var model = _mapper.Map<MatriculaInput, MatriculaEntity>(entity);
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
             model.DataAtualizacao = DateTime.Now;
@@ -79,10 +77,10 @@ namespace TRILHAR.Business.Services
 
         public async Task<bool> UpdateAsync(IEnumerable<MatriculaInput> list)
         {
-            var models = new List<MatriculaAlunoTurmaEntity>();
+            var models = new List<MatriculaEntity>();
             foreach (var item in list)
             {
-                var model = _mapper.Map<MatriculaInput, MatriculaAlunoTurmaEntity>(item);
+                var model = _mapper.Map<MatriculaInput, MatriculaEntity>(item);
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
                 model.DataAtualizacao = DateTime.Now;
                 models.Add(model);

@@ -2,7 +2,7 @@
 
 namespace TRILHAR.Business.Interfaces.Services
 {
-    public interface IMatriculaAlunoTurmaService : IDisposable
+    public interface IMatriculaService : IDisposable
     {
         Task<int> InsertAsync(MatriculaInput entity);
         Task<int> InsertAsync(IEnumerable<MatriculaInput> list);

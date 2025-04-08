@@ -16,18 +16,16 @@ namespace TRILHAR.Business.Services
     {
         private readonly IObjectExtensionGenerics<PaginaEntity> _objectExtensionGenerics;
         private readonly IPaginaRepository _repository;
-        private readonly IMapper _mapper;
 
         public PaginaService(
             INotificador notificador,
             IPaginaRepository repository,
             IObjectExtensionGenerics<PaginaEntity> objectExtension,
             IMapper mapper
-            ) : base(notificador)
+            ) : base(notificador, mapper)
         {
             _objectExtensionGenerics = objectExtension;
             _repository = repository;
-            _mapper = mapper;
         }
 
 

@@ -13,22 +13,21 @@ namespace TRILHAR.Business.Services
         private readonly IObjectExtensionGenerics<FrequenciaEntity> _objectExtensionGenerics;
         private readonly IAlunoRepository _alunoRepository;
         private readonly ITurmaRepository _turmaRepository;
-        private readonly IMatriculaAlunoTurmaRepository _matriculaAlunoTurmaRepository;
-        private readonly IVMatriculaAlunoTurmaRepository _vMatriculaAlunoTurmaRepository;
+        private readonly IMatriculaRepository _matriculaAlunoTurmaRepository;
+        private readonly IVMatriculaRepository _vMatriculaAlunoTurmaRepository;
         private readonly IFrequenciaRepository _frequenciaRepository;
-        private readonly IVFrequenciaAlunoTurmaRepository _vFrequenciaAlunoTurmaRepository;
-        private readonly IMapper _mapper;
+        private readonly IVFrequenciaRepository _vFrequenciaAlunoTurmaRepository;
 
         public FrequenciaService(
             INotificador notificador,
             IObjectExtensionGenerics<FrequenciaEntity> objectExtensionGenerics,
             IAlunoRepository alunoRepository,
             ITurmaRepository turmaRepository,
-            IMatriculaAlunoTurmaRepository matriculaAlunoTurmaRepository,
-            IVMatriculaAlunoTurmaRepository vMatriculaAlunoTurmaRepository,
+            IMatriculaRepository matriculaAlunoTurmaRepository,
+            IVMatriculaRepository vMatriculaAlunoTurmaRepository,
             IFrequenciaRepository frequenciaRepository,
-            IVFrequenciaAlunoTurmaRepository vFrequenciaAlunoTurmaRepository,
-            IMapper mapper) : base(notificador, frequenciaRepository)
+            IVFrequenciaRepository vFrequenciaAlunoTurmaRepository,
+            IMapper mapper) : base(notificador, mapper, frequenciaRepository)
         {
             _objectExtensionGenerics = objectExtensionGenerics;
             _alunoRepository = alunoRepository;
@@ -37,7 +36,6 @@ namespace TRILHAR.Business.Services
             _vMatriculaAlunoTurmaRepository = vMatriculaAlunoTurmaRepository;
             _frequenciaRepository = frequenciaRepository;
             _vFrequenciaAlunoTurmaRepository = vFrequenciaAlunoTurmaRepository;
-            _mapper = mapper;
         }
     }
 }

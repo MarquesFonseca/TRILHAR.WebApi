@@ -25,7 +25,7 @@ namespace TRILHAR.Infra.Data.Repositories
             return await _sqlConnection.GetAllAsync<TEntity>();
         }
 
-        public virtual async Task<TEntity> GetByCodigoAsync(int codigo)
+        public virtual async Task<TEntity> GetByCodigoAsync(int? codigo)
         {
             return await _sqlConnection.GetAsync<TEntity>(codigo);
         }
@@ -51,7 +51,7 @@ namespace TRILHAR.Infra.Data.Repositories
 
             var resultados = await _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros, commandType: CommandType.Text);
 
-            retorno = resultados.ToList().GetPaged(qtdRegistros, input.IsPaginacao ? input.Page : 0, input.IsPaginacao ? input.PageSize : 0);
+            retorno = resultados.ToList().GetPaged(qtdRegistros, input.Page, input.PageSize, input.IsPaginacao);
 
             return retorno;
         }
@@ -171,6 +171,18 @@ namespace TRILHAR.Infra.Data.Repositories
             
             return retornaLista;
         }               
+
+        public virtual PagedResult<TEntity> RetornaPagedResultAsync(IEnumerable<TEntity> resultados, int page, int pageSize, bool isPaginacao)
+        {
+            var qtdRegistros = resultados.Count();
+            page = page == 0 ? 1 : page;
+            pageSize = pageSize == 0 ? 10 : pageSize;
+
+            var retorno = new PagedResult<TEntity>();
+            retorno = resultados.ToList().GetPaged(qtdRegistros, page, pageSize, isPaginacao);
+
+            return retorno;
+        }
 
         protected abstract string ObterCampos();
         

@@ -1,6 +1,8 @@
-﻿namespace TRILHAR.Business.IO.Aluno
+﻿using TRILHAR.Business.Entities;
+
+namespace TRILHAR.Business.IO.Aluno
 {
-    public class AlunoOutput
+    public class AlunoOutput : AlunoEntity
     {
     }
 }

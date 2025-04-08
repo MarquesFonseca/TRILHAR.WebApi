@@ -8,7 +8,7 @@ namespace TRILHAR.Business.Interfaces.Repositories
     public interface IRepositoryGenericsBase<TEntity> : IDisposable where TEntity : EntityBase
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<TEntity> GetByCodigoAsync(int codigo);
+        Task<TEntity> GetByCodigoAsync(int? codigo);
         Task<PagedResult<TEntity>> GetByPaginacaoAsync(InputPaginado input);
         Task<int> InsertAsync(TEntity entity);
         Task<int> InsertAsync(IEnumerable<TEntity> list);
@@ -23,5 +23,6 @@ namespace TRILHAR.Business.Interfaces.Repositories
         Task<IEnumerable<TEntity>> RetornaListaBySqlConsultaCondicao(InputConsultaPersonalizada input);
         Task<TEntity?> RetornaByCondicaoAsync(InputCondicaoParametros input);
         Task<IEnumerable<TEntity>> RetornaListaByCondicaoAsync(InputCondicaoParametros input);
+        PagedResult<TEntity> RetornaPagedResultAsync(IEnumerable<TEntity> resultados, int page, int pageSize, bool isPaginacao);
     }
 }

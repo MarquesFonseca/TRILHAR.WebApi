@@ -2,7 +2,7 @@
 
 namespace TRILHAR.Business.Interfaces.Repositories
 {
-    public interface IMatriculaAlunoTurmaRepository : IRepositoryGenericsBase<MatriculaAlunoTurmaEntity>
+    public interface IMatriculaRepository : IRepositoryGenericsBase<MatriculaEntity>
     {
         
     }

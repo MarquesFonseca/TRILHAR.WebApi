@@ -5,7 +5,7 @@ using TRILHAR.Business.Entities;
 
 namespace TRILHAR.Business.IO.Matricula
 {
-    public class VFrequenciaAlunoTurmaInput : VFrequenciaAlunoTurmaEntity
+    public class VFrequenciaInput : VFrequenciaEntity
     {
         
     }

@@ -38,21 +38,21 @@ namespace TRILHAR.CrossCutting.IoC.Config
             services.AddScoped<IFrequenciaService, FrequenciaService>();
             services.AddScoped<IFrequenciaRepository, FrequenciaRepository>();
 
-            services.AddScoped<IObjectExtensionGenerics<MatriculaAlunoTurmaEntity>, ObjectExtensionGenerics<MatriculaAlunoTurmaEntity>>();
-            services.AddScoped<IMatriculaAlunoTurmaService, MatriculaAlunoTurmaService>();
-            services.AddScoped<IMatriculaAlunoTurmaRepository, MatriculaAlunoTurmaRepository>();
+            services.AddScoped<IObjectExtensionGenerics<MatriculaEntity>, ObjectExtensionGenerics<MatriculaEntity>>();
+            services.AddScoped<IMatriculaService, MatriculaService>();
+            services.AddScoped<IMatriculaRepository, MatriculaRepository>();
 
             services.AddScoped<IObjectExtensionGenerics<TurmaEntity>, ObjectExtensionGenerics<TurmaEntity>>();
             services.AddScoped<ITurmaService, TurmaService>();
             services.AddScoped<ITurmaRepository, TurmaRepository>();
 
-            services.AddScoped<IObjectExtensionGenerics<VFrequenciaAlunoTurmaEntity>, ObjectExtensionGenerics<VFrequenciaAlunoTurmaEntity>>();
-            services.AddScoped<IVFrequenciaAlunoTurmaService, VFrequenciaAlunoTurmaService>();
-            services.AddScoped<IVFrequenciaAlunoTurmaRepository, VFrequenciaAlunoTurmaRepository>();
+            services.AddScoped<IObjectExtensionGenerics<VFrequenciaEntity>, ObjectExtensionGenerics<VFrequenciaEntity>>();
+            services.AddScoped<IVFrequenciaService, VFrequenciaService>();
+            services.AddScoped<IVFrequenciaRepository, VFrequenciaRepository>();
             
-            services.AddScoped<IObjectExtensionGenerics<VMatriculaAlunoTurmaEntity>, ObjectExtensionGenerics<VMatriculaAlunoTurmaEntity>>();
-            services.AddScoped<IVMatriculaAlunoTurmaService,    VMatriculaAlunoTurmaService>();
-            services.AddScoped<IVMatriculaAlunoTurmaRepository, VMatriculaAlunoTurmaRepository>();
+            services.AddScoped<IObjectExtensionGenerics<VMatriculaEntity>, ObjectExtensionGenerics<VMatriculaEntity>>();
+            services.AddScoped<IVMatriculaService,    VMatriculaService>();
+            services.AddScoped<IVMatriculaRepository, VMatriculaRepository>();
         
             services.AddScoped<IObjectExtensionGenerics<UsuarioEntity>, ObjectExtensionGenerics<UsuarioEntity>>();
             services.AddScoped<IUsuarioService, UsuarioService>();

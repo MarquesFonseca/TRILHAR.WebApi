@@ -1,6 +1,8 @@
-﻿namespace TRILHAR.Business.IO.Frequencia
+﻿using TRILHAR.Business.Entities;
+
+namespace TRILHAR.Business.IO.Frequencia
 {
-    public class FrequenciaOutput
+    public class FrequenciaOutput : FrequenciaEntity
     {
     }
 }
