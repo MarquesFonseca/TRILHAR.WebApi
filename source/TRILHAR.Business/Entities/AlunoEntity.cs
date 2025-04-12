@@ -7,7 +7,7 @@ namespace TRILHAR.Business.Entities
     public class AlunoEntity : EntityBase
     {
         [Key]
-        public int? Codigo { get; set; }
+        public int Codigo { get; set; }
         public string? CodigoCadastro { get; set; }
         public string? NomeCrianca { get; set; }
         public DateTime? DataNascimento { get; set; }

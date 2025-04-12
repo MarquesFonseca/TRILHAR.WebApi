@@ -56,7 +56,7 @@ namespace TRILHAR.Business.Services
         }
 
 
-        public async Task<PagedResult<AlunoOutput>> GetByListarPorFiltroPaginacaoAsync(AlunoInput input, int page = 1, int pageSize = 10, bool isPaginacao = false)
+        public async Task<PagedResult<AlunoOutput>> GetByListarPorFiltroPaginacaoAsync(AlunoInput input)
         {
             var query = await _alunoRepository.GetAllAsync();
             if (input.Ativo.HasValue)
@@ -79,9 +79,13 @@ namespace TRILHAR.Business.Services
             {
                 query = query.Where(x => x.Batizado == input.Batizado.Value);                
             }
-            if (input.Codigo.HasValue)
+            if (input.Codigo > 0)
             {
-                query = query.Where(x => x.Codigo == input.Codigo.Value);
+                query = query.Where(x => x.Codigo == input.Codigo);
+            }
+            if (!string.IsNullOrEmpty(input.CodigoCadastro))
+            {
+                query = query.Where(x => x.CodigoCadastro == input.CodigoCadastro);
             }
             if (!string.IsNullOrEmpty(input.NomeCrianca))
             {
@@ -179,7 +183,7 @@ namespace TRILHAR.Business.Services
                 .OrderBy(x => x.NomeCrianca)
                 .ToList();
 
-            var retorno = _alunoRepository.RetornaPagedResultAsync(listaSemDuplicidade, page, pageSize, isPaginacao);
+            var retorno = _alunoRepository.RetornaPagedResultAsync(listaSemDuplicidade, input.page, input.pageSize, input.isPaginacao);
             var retornoAlunoOutput = new PagedResult<AlunoOutput>()
             {
                 Dados = _mapper.Map<List<AlunoOutput>>(retorno.Dados),

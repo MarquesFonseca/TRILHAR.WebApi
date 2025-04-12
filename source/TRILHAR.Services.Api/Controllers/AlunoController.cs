@@ -77,7 +77,7 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ListarPorFiltro(
             [FromQuery] int? Codigo,
-            //[FromQuery] string? CodigoCadastro,
+            [FromQuery] string? CodigoCadastro,
             [FromQuery] string? NomeCrianca,
             [FromQuery] DateTime? DataNascimento,
             [FromQuery] DateTime? DataNascimentoInicial,
@@ -103,7 +103,8 @@ namespace TRILHAR.Services.Api.Controllers
 
             AlunoInput input = new AlunoInput() 
             {
-                Codigo = Codigo,
+                Codigo = Codigo ?? 0,
+                CodigoCadastro = CodigoCadastro,
                 NomeCrianca = NomeCrianca,
                 DataNascimento = DataNascimento,
                 DataNascimentoInicial = DataNascimentoInicial,
@@ -121,9 +122,12 @@ namespace TRILHAR.Services.Api.Controllers
                 DataAtualizacaoFinal = DataAtualizacaoFinal,
                 DataCadastroInicial = DataCadastroInicial,
                 DataCadastroFinal = DataCadastroFinal,
-                Ativo = Ativo
+                Ativo = Ativo,
+                page = page,
+                pageSize = pageSize,
+                isPaginacao = isPaginacao
             };
-            var resultado = await _alunoService.GetByListarPorFiltroPaginacaoAsync(input, page, pageSize, isPaginacao);
+            var resultado = await _alunoService.GetByListarPorFiltroPaginacaoAsync(input);
 
             if (OperacaoValida())
             {
