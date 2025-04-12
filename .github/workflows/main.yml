@@ -3,10 +3,10 @@ name: dotnet-workflow
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - main      
+  # pull_request:
+  #  branches:
+  #    - main
     
   # Permite que você execute este fluxo de trabalho manualmente na guia Ações
   workflow_dispatch:
