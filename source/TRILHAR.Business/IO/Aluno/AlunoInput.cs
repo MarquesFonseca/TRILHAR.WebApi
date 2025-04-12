@@ -1,4 +1,5 @@
-﻿using TRILHAR.Business.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using TRILHAR.Business.Entities;
 
 namespace TRILHAR.Business.IO.Aluno
 {
@@ -12,6 +13,9 @@ namespace TRILHAR.Business.IO.Aluno
         public DateTime? DataAtualizacaoFinal { get; set; }
         public DateTime? DataCadastroInicial { get; set; }
         public DateTime? DataCadastroFinal { get; set; }
+        public int page { get; set; } = 1;
+        public int pageSize { get; set; } = 10;
+        public bool isPaginacao { get; set; } = true;
 
     }
 }
