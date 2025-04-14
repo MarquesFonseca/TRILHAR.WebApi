@@ -180,7 +180,7 @@ namespace TRILHAR.Business.Services
             ).ToList();
 
             var listaOrdenada = listaSemDuplicidade
-                .OrderBy(x => x.NomeCrianca)
+                .OrderByDescending(x => x.DataCadastro)
                 .ToList();
 
             var retorno = _alunoRepository.RetornaPagedResultAsync(listaSemDuplicidade, input.page, input.pageSize, input.isPaginacao);
