@@ -7,6 +7,7 @@ using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO;
 using TRILHAR.Business.IO.Aluno;
 using TRILHAR.Business.IO.Matricula;
+using TRILHAR.Business.IO.Turma;
 
 namespace TRILHAR.Business.Services
 {
@@ -15,29 +16,88 @@ namespace TRILHAR.Business.Services
         private readonly IObjectExtensionGenerics<MatriculaEntity> _objectExtensionGenerics;
         private readonly IAlunoRepository _alunoRepository;
         private readonly ITurmaRepository _turmaRepository;
-        private readonly IMatriculaRepository _matriculaAlunoTurmaRepository;
-        private readonly IVMatriculaRepository _vMatriculaAlunoTurmaRepository;
+        private readonly IMatriculaRepository _matriculaRepository;
+        private readonly IVMatriculaRepository _vMatriculaRepository;
         private readonly IFrequenciaRepository _frequenciaRepository;
-        private readonly IVFrequenciaRepository _vFrequenciaAlunoTurmaRepository;
+        private readonly IVFrequenciaRepository _vFrequenciaRepository;
 
         public MatriculaService(
             INotificador notificador,
             IObjectExtensionGenerics<MatriculaEntity> objectExtensionGenerics,
             IAlunoRepository alunoRepository,
             ITurmaRepository turmaRepository,
-            IMatriculaRepository matriculaAlunoTurmaRepository,
-            IVMatriculaRepository vMatriculaAlunoTurmaRepository,
+            IMatriculaRepository matriculaRepository,
+            IVMatriculaRepository vMatriculaRepository,
             IFrequenciaRepository frequenciaRepository,
-            IVFrequenciaRepository vFrequenciaAlunoTurmaRepository,
-            IMapper mapper) : base(notificador, mapper, matriculaAlunoTurmaRepository)
+            IVFrequenciaRepository vFrequenciaRepository,
+            IMapper mapper) : base(notificador, mapper, matriculaRepository)
         {
             _objectExtensionGenerics = objectExtensionGenerics;
             _alunoRepository = alunoRepository;
             _turmaRepository = turmaRepository;
-            _matriculaAlunoTurmaRepository = matriculaAlunoTurmaRepository;
-            _vMatriculaAlunoTurmaRepository = vMatriculaAlunoTurmaRepository;
+            _matriculaRepository = matriculaRepository;
+            _vMatriculaRepository = vMatriculaRepository;
             _frequenciaRepository = frequenciaRepository;
-            _vFrequenciaAlunoTurmaRepository = vFrequenciaAlunoTurmaRepository;
+            _vFrequenciaRepository = vFrequenciaRepository;
+        }
+
+        public async Task<IEnumerable<MatriculaOutput>> ListarPorCodigoAlunoCodigoTurma(int codigoAluno, int codigoTurma)
+        {
+            var parametros = new Dictionary<string, object?>();
+            parametros.Add("@CodigoAluno", codigoAluno);
+            parametros.Add("@CodigoTurma", codigoTurma);
+            var inputCondicaoParametros = new InputCondicaoParametros
+            {
+                Condicao = "CodigoAluno = @CodigoAluno AND CodigoTurma = @CodigoTurma",
+                Parametros = parametros
+            };
+
+            var temp = await _matriculaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+
+            var resultado = _mapper.Map<IEnumerable<MatriculaOutput>>(temp);
+            return resultado;
+        }
+
+        public async Task<IEnumerable<MatriculaOutput>> ListarPorCodigoAluno(int codigoAluno)
+        {
+            var parametros = new Dictionary<string, object?>();
+            parametros.Add("@CodigoAluno", codigoAluno);
+            var inputCondicaoParametros = new InputCondicaoParametros
+            {
+                Condicao = "CodigoAluno = @CodigoAluno",
+                Parametros = parametros
+            };
+
+            var temp = await _matriculaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+
+            if (temp.Any())
+            {
+                var resultado = _mapper.Map<IEnumerable<MatriculaOutput>>(temp);
+                return resultado;
+            }
+
+            return (IEnumerable<MatriculaOutput>)(temp);
+        }
+
+        public async Task<IEnumerable<MatriculaOutput>> ListarPorCodigoTurma(int codigoTurma)
+        {
+            var parametros = new Dictionary<string, object?>();
+            parametros.Add("@CodigoTurma", codigoTurma);
+            var inputCondicaoParametros = new InputCondicaoParametros
+            {
+                Condicao = "CodigoTurma = @CodigoTurma",
+                Parametros = parametros
+            };
+
+            var temp = await _matriculaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+
+            if (temp.Any())
+            {
+                var resultado = _mapper.Map<IEnumerable<MatriculaOutput>>(temp);
+                return resultado;
+            }
+
+            return (IEnumerable<MatriculaOutput>)(temp);
         }
 
         public async Task<int> InsertAsync(MatriculaInput entity)
@@ -48,7 +108,7 @@ namespace TRILHAR.Business.Services
             model.CodigoUsuarioLogado = null;
             model.DataCadastro = model.DataAtualizacao = DateTime.Now;
 
-            return await _matriculaAlunoTurmaRepository.InsertAsync(model);
+            return await _matriculaRepository.InsertAsync(model);
         }
 
         public async Task<int> InsertAsync(IEnumerable<MatriculaInput> list)
@@ -63,16 +123,16 @@ namespace TRILHAR.Business.Services
                 models.Add(model);
             }
 
-            return await _matriculaAlunoTurmaRepository.InsertAsync(models);
+            return await _matriculaRepository.InsertAsync(models);
         }
 
-        public async Task<bool> UpdateAsync(MatriculaInput entity)
+        public async Task<bool> UpdateAsync(MatriculaInput input)
         {
-            var model = _mapper.Map<MatriculaInput, MatriculaEntity>(entity);
+            var model = _mapper.Map<MatriculaInput, MatriculaEntity>(input);
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
             model.DataAtualizacao = DateTime.Now;
-            return await _matriculaAlunoTurmaRepository.UpdateAsync(model);
+            return await _matriculaRepository.UpdateAsync(model);
         }
 
         public async Task<bool> UpdateAsync(IEnumerable<MatriculaInput> list)
@@ -86,7 +146,7 @@ namespace TRILHAR.Business.Services
                 models.Add(model);
             }
 
-            return await _matriculaAlunoTurmaRepository.UpdateAsync(models);
+            return await _matriculaRepository.UpdateAsync(models);
         }
     }
 }

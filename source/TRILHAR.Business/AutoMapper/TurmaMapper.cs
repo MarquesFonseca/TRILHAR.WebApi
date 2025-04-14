@@ -10,18 +10,9 @@ namespace TRILHAR.Business.AutoMapper
     {
         public TurmaMapper()
         {
-            CreateMap<TurmaEntity, TurmaInput>()
-                .ReverseMap();
-
-            CreateMap<TurmaEntity, TurmaOutput>()
-                .ReverseMap();
-
-            CreateMap<TurmaInput, TurmaEntity>()
-                .ReverseMap();
-
-            CreateMap<TurmaOutput, TurmaEntity>()
-                .ReverseMap();
-
+            CreateMap<TurmaEntity, TurmaInput>().ReverseMap();
+            CreateMap<TurmaEntity, TurmaOutput>().ReverseMap();
+            CreateMap<TurmaInput, TurmaOutput>().ReverseMap();
         }
     }
 }

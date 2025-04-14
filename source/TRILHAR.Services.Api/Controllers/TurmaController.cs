@@ -5,6 +5,7 @@ using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO;
+using TRILHAR.Business.IO.Aluno;
 using TRILHAR.Business.IO.Turma;
 using TRILHAR.Business.Pagination;
 
@@ -59,6 +60,8 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <returns>Retorna todos Turmas</returns>
         [HttpGet("ListarTurmasAtivas")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<TurmaOutput>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ListarTurmasAtivas()
         {
             var resultado = await _TurmaService.ListarTurmasAtivas();
@@ -71,6 +74,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <returns>Retorna todos Turmas</returns>
         [HttpPost("ListarPorFiltro")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<TurmaEntity>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ListarPorFiltro(
             [FromBody] InputPaginado input)
         {

@@ -11,17 +11,9 @@ namespace TRILHAR.Business.AutoMapper
     {
         public AlunoMapper()
         {
-            CreateMap<AlunoEntity, AlunoInput>()
-                .ReverseMap();
-
-            CreateMap<AlunoEntity, AlunoOutput>()
-                .ReverseMap();
-
-            CreateMap<AlunoInput, AlunoEntity>()
-                .ReverseMap();
-
-            CreateMap<AlunoOutput, AlunoEntity>()
-                .ReverseMap();
+            CreateMap<AlunoEntity, AlunoInput>().ReverseMap();
+            CreateMap<AlunoEntity, AlunoOutput>().ReverseMap();
+            CreateMap<AlunoInput, AlunoOutput>().ReverseMap();
         }
     }
 }
