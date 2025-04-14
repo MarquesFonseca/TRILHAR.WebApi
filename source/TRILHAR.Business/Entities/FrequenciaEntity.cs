@@ -15,7 +15,7 @@ namespace TRILHAR.Business.Entities
         public int CodigoTurma { get; set; }
         public bool Presenca { get; set; }
 
-        public string TurmaDescricao { get; set; }
+        public string TurmaDescricao { get; set; } = string.Empty;
         public DateTime? TurmaIdadeInicialAluno { get; set; }
         public DateTime? TurmaIdadeFinalAluno { get; set; }
         public int? TurmaAnoLetivo { get; set; }

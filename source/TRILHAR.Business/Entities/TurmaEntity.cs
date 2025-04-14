@@ -10,7 +10,7 @@ namespace TRILHAR.Business.Entities
     {
         [Key]
         public int Codigo { get; set; }
-        public string Descricao { get; set; }
+        public string Descricao { get; set; } = string.Empty;
         public DateTime? IdadeInicialAluno { get; set; }
         public DateTime? IdadeFinalAluno { get; set; }
         public int AnoLetivo { get; set; }

@@ -12,17 +12,9 @@ namespace TRILHAR.Business.AutoMapper
     {
         public MatriculaMapper()
         {
-            CreateMap<MatriculaEntity, MatriculaInput>()
-                .ReverseMap();
-
-            CreateMap<MatriculaEntity, MatriculaOutput>()
-                .ReverseMap();
-
-            CreateMap<MatriculaInput, MatriculaEntity>()
-                .ReverseMap();
-
-            CreateMap<MatriculaOutput, MatriculaEntity>()
-                .ReverseMap();
+            CreateMap<MatriculaEntity, MatriculaInput>().ReverseMap();
+            CreateMap<MatriculaEntity, MatriculaOutput>().ReverseMap();
+            CreateMap<MatriculaInput, MatriculaOutput>().ReverseMap();
         }
     }
 }

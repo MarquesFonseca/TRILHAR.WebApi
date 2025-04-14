@@ -12,17 +12,9 @@ namespace TRILHAR.Business.AutoMapper
     {
         public FrequenciaMapper()
         {
-            CreateMap<FrequenciaEntity, FrequenciaInput>()
-                .ReverseMap();
-            
-            CreateMap<FrequenciaEntity, FrequenciaOutput>()
-                .ReverseMap();
-
-            CreateMap<FrequenciaInput, FrequenciaEntity>()
-                .ReverseMap();
-
-            CreateMap<FrequenciaOutput, FrequenciaEntity>()
-                .ReverseMap();
+            CreateMap<FrequenciaEntity, FrequenciaInput>().ReverseMap();
+            CreateMap<FrequenciaEntity, FrequenciaOutput>().ReverseMap();
+            CreateMap<FrequenciaInput, FrequenciaOutput>().ReverseMap();
         }
     }
 }

@@ -459,6 +459,8 @@ namespace TRILHAR.Business.Services
             
             model.CodigoCadastro = Convert.ToString(maxCodigoCadastro + 1);
 
+            model.CodigoUsuarioLogado = null;
+
             return await _alunoRepository.InsertAsync(model);
         }
 
@@ -478,7 +480,9 @@ namespace TRILHAR.Business.Services
                 var maxCodigoCadastro = await _alunoRepository.GetMaxCodigoCadastroAsync();
                 
                 model.CodigoCadastro = Convert.ToString(maxCodigoCadastro + 1);
-                
+
+                model.CodigoUsuarioLogado = null;
+
                 models.Add(model);
             }
 

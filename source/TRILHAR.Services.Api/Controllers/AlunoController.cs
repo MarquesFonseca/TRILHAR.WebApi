@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using TRILHAR.Business.Entities;
@@ -21,6 +22,7 @@ namespace TRILHAR.Services.Api.Controllers
     [AllowAnonymous]
     public class AlunoController : BaseApiController
     {
+        private readonly IMapper _mapper;
         private readonly ILogger<AlunoEntity> _logger;
         private readonly IAlunoService _alunoService;
         private readonly IAlunoRepository _alunoRepository;
@@ -29,13 +31,15 @@ namespace TRILHAR.Services.Api.Controllers
         /// Construtor
         /// </summary>
         /// <param name="notificador"></param>
+        /// <param name="mapper"></param>
         /// <param name="logger"></param>
         /// <param name="alunoService"></param>
         /// <param name="alunoRepository"></param>
         /// 
-        public AlunoController(INotificador notificador,ILogger<AlunoEntity> logger, IAlunoService alunoService, IAlunoRepository alunoRepository
+        public AlunoController(INotificador notificador, IMapper mapper, ILogger<AlunoEntity> logger, IAlunoService alunoService, IAlunoRepository alunoRepository
             ) : base(notificador)
         {
+            _mapper = mapper;
             _logger = logger;
             _alunoService = alunoService;
             _alunoRepository = alunoRepository;
@@ -65,7 +69,9 @@ namespace TRILHAR.Services.Api.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var resultado = await _alunoService.GetByCodigoAsync(id);
-            return CustomResponse(resultado);
+            if(resultado == null) return CustomResponse(resultado);
+            AlunoOutput alunoOutput = _mapper.Map<AlunoOutput>(resultado);            
+            return CustomResponse(alunoOutput);
         }
 
         /// <summary>
