@@ -59,6 +59,8 @@ namespace TRILHAR.Business.Services
         public async Task<PagedResult<AlunoOutput>> GetByListarPorFiltroPaginacaoAsync(AlunoInput input)
         {
             var query = await _alunoRepository.GetAllAsync();
+            query = query.OrderByDescending(x => x.DataCadastro);
+
             if (input.Ativo.HasValue)
             {
                 query = query.Where(x => x.Ativo == input.Ativo.Value);
@@ -179,9 +181,9 @@ namespace TRILHAR.Business.Services
                 )
             ).ToList();
 
-            var listaOrdenada = listaSemDuplicidade
-                .OrderByDescending(x => x.DataCadastro)
-                .ToList();
+            //var listaOrdenada = listaSemDuplicidade
+            //    .OrderByDescending(x => x.DataCadastro)
+            //    .ToList();
 
             var retorno = _alunoRepository.RetornaPagedResultAsync(listaSemDuplicidade, input.page, input.pageSize, input.isPaginacao);
             var retornoAlunoOutput = new PagedResult<AlunoOutput>()
