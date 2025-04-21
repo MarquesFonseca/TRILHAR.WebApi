@@ -7,7 +7,7 @@ namespace TRILHAR.Business.Interfaces.Services
 {
     public interface IAlunoService : IServiceGenericsBase<AlunoEntity>
     {
-        Task<AlunoOutput> GetByCodigoCadastroAsync(string codigoCadastro);
+        Task<AlunoOutput?> GetByCodigoCadastroAsync(string codigoCadastro);
         Task<PagedResult<AlunoOutput>> GetByListarPorFiltroPaginacaoAsync(AlunoInput input);
         Task<int> InsertAsync(AlunoInput entity);
         Task<int> InsertAsync(IEnumerable<AlunoInput> list);

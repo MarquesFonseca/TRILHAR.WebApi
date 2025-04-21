@@ -18,48 +18,55 @@ namespace TRILHAR.Business.Services
         private readonly IObjectExtensionGenerics<AlunoEntity> _objectExtensionGenerics;
         private readonly IAlunoRepository _alunoRepository;
         private readonly ITurmaRepository _turmaRepository;
-        private readonly IMatriculaRepository _matriculaAlunoTurmaRepository;
-        private readonly IVMatriculaRepository _vMatriculaAlunoTurmaRepository;
+        private readonly IMatriculaRepository _matriculaRepository;
+        private readonly IMatriculaService _matriculaService;
+        private readonly IVMatriculaRepository _vMatriculaRepository;
         private readonly IFrequenciaRepository _frequenciaRepository;
-        private readonly IVFrequenciaRepository _vFrequenciaAlunoTurmaRepository;
+        private readonly IVFrequenciaRepository _vFrequenciaRepository;
 
         public AlunoService(
             INotificador notificador,
             IObjectExtensionGenerics<AlunoEntity> objectExtensionGenerics,
             IAlunoRepository alunoRepository,
             ITurmaRepository turmaRepository,
-            IMatriculaRepository matriculaAlunoTurmaRepository,
-            IVMatriculaRepository vMatriculaAlunoTurmaRepository,
+            IMatriculaRepository matriculaRepository,
+            IMatriculaService matriculaService,
+            IVMatriculaRepository vMatriculaRepository,
             IFrequenciaRepository frequenciaRepository,
-            IVFrequenciaRepository vFrequenciaAlunoTurmaRepository,
+            IVFrequenciaRepository vFrequenciaRepository,
             IMapper mapper) : base(notificador, mapper, alunoRepository)
         {
             _objectExtensionGenerics = objectExtensionGenerics;
             _alunoRepository = alunoRepository;
             _turmaRepository = turmaRepository;
-            _matriculaAlunoTurmaRepository = matriculaAlunoTurmaRepository;
-            _vMatriculaAlunoTurmaRepository = vMatriculaAlunoTurmaRepository;
+            _matriculaRepository = matriculaRepository;
+            _matriculaService = matriculaService;
+            _vMatriculaRepository = vMatriculaRepository;
             _frequenciaRepository = frequenciaRepository;
-            _vFrequenciaAlunoTurmaRepository = vFrequenciaAlunoTurmaRepository;
+            _vFrequenciaRepository = vFrequenciaRepository;
         }
 
-        public async Task<AlunoOutput> GetByCodigoCadastroAsync(string codigoCadastro)
+        public async Task<AlunoOutput?> GetByCodigoCadastroAsync(string codigoCadastro)
         {
             var model = await _alunoRepository.GetByCodigoCadastroAsync(codigoCadastro);
-            
-            if (model != null)
+            if (model == null)
             {
-                var retorno = _mapper.Map<AlunoEntity, AlunoOutput>(model);
-                return retorno;
-            }            
-            return null;
-        }
+                return null;
+            }
 
+            var retorno = _mapper.Map<AlunoOutput>(model);
+
+            // Obter matrículas e selecionar a ativa
+            var matriculas = await _matriculaService.ListarPorCodigoAluno(model.Codigo);
+            retorno.Matricula = matriculas?.FirstOrDefault(x => x.Ativo);
+
+            return retorno;
+        }
 
         public async Task<PagedResult<AlunoOutput>> GetByListarPorFiltroPaginacaoAsync(AlunoInput input)
         {
             var query = await _alunoRepository.GetAllAsync();
-            query = query.OrderByDescending(x => x.DataCadastro);
+            query = query.OrderByDescending(x => x.CodigoCadastro);
 
             if (input.Ativo.HasValue)
             {
@@ -180,10 +187,6 @@ namespace TRILHAR.Business.Services
                     obj => HashCode.Combine(obj.Codigo, obj.CodigoCadastro)
                 )
             ).ToList();
-
-            //var listaOrdenada = listaSemDuplicidade
-            //    .OrderByDescending(x => x.DataCadastro)
-            //    .ToList();
 
             var retorno = _alunoRepository.RetornaPagedResultAsync(listaSemDuplicidade, input.page, input.pageSize, input.isPaginacao);
             var retornoAlunoOutput = new PagedResult<AlunoOutput>()
@@ -444,8 +447,6 @@ namespace TRILHAR.Business.Services
 
             //return retornoAlunoOutput;
         }
-
-
 
         public async Task<int> InsertAsync(AlunoInput entity)
         {

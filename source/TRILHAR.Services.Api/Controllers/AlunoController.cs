@@ -26,6 +26,7 @@ namespace TRILHAR.Services.Api.Controllers
         private readonly ILogger<AlunoEntity> _logger;
         private readonly IAlunoService _alunoService;
         private readonly IAlunoRepository _alunoRepository;
+        private readonly IMatriculaService _matriculaService;
 
         /// <summary>
         /// Construtor
@@ -35,14 +36,21 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="logger"></param>
         /// <param name="alunoService"></param>
         /// <param name="alunoRepository"></param>
+        /// <param name="matriculaService"></param>
         /// 
-        public AlunoController(INotificador notificador, IMapper mapper, ILogger<AlunoEntity> logger, IAlunoService alunoService, IAlunoRepository alunoRepository
-            ) : base(notificador)
+        public AlunoController(
+            INotificador notificador, 
+            IMapper mapper, 
+            ILogger<AlunoEntity> logger, 
+            IAlunoService alunoService, 
+            IAlunoRepository alunoRepository, 
+            IMatriculaService matriculaService) : base(notificador)
         {
             _mapper = mapper;
             _logger = logger;
             _alunoService = alunoService;
             _alunoRepository = alunoRepository;
+            _matriculaService = matriculaService;
         }
 
         /// <summary>
@@ -55,7 +63,8 @@ namespace TRILHAR.Services.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var resultado = await _alunoService.GetAllAsync();
-            return CustomResponse(resultado);
+            var alunoOutput = _mapper.Map<IEnumerable<AlunoOutput>>(resultado);
+            return CustomResponse(alunoOutput);
         }
 
         /// <summary>
@@ -69,8 +78,13 @@ namespace TRILHAR.Services.Api.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var resultado = await _alunoService.GetByCodigoAsync(id);
-            if(resultado == null) return CustomResponse(resultado);
-            AlunoOutput alunoOutput = _mapper.Map<AlunoOutput>(resultado);            
+            //if(resultado == null) return CustomResponse(resultado);
+            AlunoOutput alunoOutput = _mapper.Map<AlunoOutput>(resultado);
+            if (alunoOutput != null)
+            {
+                var listaMatriculas = await _matriculaService.ListarPorCodigoAluno(alunoOutput.Codigo);
+                alunoOutput.Matricula = listaMatriculas?.FirstOrDefault(x => x.Ativo);
+            }
             return CustomResponse(alunoOutput);
         }
 
@@ -107,7 +121,7 @@ namespace TRILHAR.Services.Api.Controllers
             [FromQuery] bool isPaginacao = true)
         {
 
-            AlunoInput input = new AlunoInput() 
+            AlunoInput input = new AlunoInput()
             {
                 Codigo = Codigo ?? 0,
                 CodigoCadastro = CodigoCadastro,
@@ -153,9 +167,9 @@ namespace TRILHAR.Services.Api.Controllers
         public async Task<IActionResult> GetCodigoCadastro(string id)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
-            
+
             var resultado = await _alunoService.GetByCodigoCadastroAsync(id);
-            
+
             return CustomResponse(resultado);
         }
 
@@ -172,7 +186,7 @@ namespace TRILHAR.Services.Api.Controllers
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var resultado = await _alunoService.InsertAsync(registro);
-            
+
             return CustomResponse(resultado);
         }
 
