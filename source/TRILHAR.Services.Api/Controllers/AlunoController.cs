@@ -196,6 +196,7 @@ namespace TRILHAR.Services.Api.Controllers
                 return CustomResponse();
             }
 
+            registro.DataCadastro = reg.DataCadastro;
             var resultado = await _alunoService.UpdateAsync(registro);
             return CustomResponse(resultado);
         }
