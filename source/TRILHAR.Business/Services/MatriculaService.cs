@@ -41,63 +41,59 @@ namespace TRILHAR.Business.Services
             _vFrequenciaRepository = vFrequenciaRepository;
         }
 
-        public async Task<IEnumerable<MatriculaOutput>> ListarPorCodigoAlunoCodigoTurma(int codigoAluno, int codigoTurma)
+        public async Task<IEnumerable<MatriculaOutput>?> ListarPorCodigoAlunoCodigoTurma(int codigoAluno, int codigoTurma)
         {
-            var parametros = new Dictionary<string, object?>();
-            parametros.Add("@CodigoAluno", codigoAluno);
-            parametros.Add("@CodigoTurma", codigoTurma);
             var inputCondicaoParametros = new InputCondicaoParametros
             {
                 Condicao = "CodigoAluno = @CodigoAluno AND CodigoTurma = @CodigoTurma",
-                Parametros = parametros
+                Parametros = new Dictionary<string, object?>
+                {
+                    { "@CodigoAluno", codigoAluno },
+                    { "@CodigoTurma", codigoTurma }
+                }
             };
 
-            var temp = await _matriculaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+            var listaMatriculas = await _matriculaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
 
-            var resultado = _mapper.Map<IEnumerable<MatriculaOutput>>(temp);
-            return resultado;
+            var resultado = _mapper.Map<IEnumerable<MatriculaOutput>>(listaMatriculas);
+
+            return resultado.Any() ? resultado : null;
         }
 
-        public async Task<IEnumerable<MatriculaOutput>> ListarPorCodigoAluno(int codigoAluno)
+        public async Task<IEnumerable<MatriculaOutput>?> ListarPorCodigoAluno(int codigoAluno)
         {
-            var parametros = new Dictionary<string, object?>();
-            parametros.Add("@CodigoAluno", codigoAluno);
             var inputCondicaoParametros = new InputCondicaoParametros
             {
                 Condicao = "CodigoAluno = @CodigoAluno",
-                Parametros = parametros
+                Parametros = new Dictionary<string, object?>
+                {
+                    { "@CodigoAluno", codigoAluno }
+                }
             };
 
-            var temp = await _matriculaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+            var listaMatriculas = await _matriculaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
 
-            if (temp.Any())
-            {
-                var resultado = _mapper.Map<IEnumerable<MatriculaOutput>>(temp);
-                return resultado;
-            }
+            var resultado = _mapper.Map<IEnumerable<MatriculaOutput>>(listaMatriculas);
 
-            return (IEnumerable<MatriculaOutput>)(temp);
+            return resultado.Any() ? resultado : null;
         }
 
-        public async Task<IEnumerable<MatriculaOutput>> ListarPorCodigoTurma(int codigoTurma)
+        public async Task<IEnumerable<MatriculaOutput>?> ListarPorCodigoTurma(int codigoTurma)
         {
-            var parametros = new Dictionary<string, object?>();
-            parametros.Add("@CodigoTurma", codigoTurma);
             var inputCondicaoParametros = new InputCondicaoParametros
             {
                 Condicao = "CodigoTurma = @CodigoTurma",
-                Parametros = parametros
+                Parametros = new Dictionary<string, object?>
+                {
+                    { "@CodigoTurma", codigoTurma }
+                }
             };
 
-            var temp = await _matriculaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+            var listaMatriculas = await _matriculaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
 
-            if (temp.Any())
-            {
-                var resultado = _mapper.Map<IEnumerable<MatriculaOutput>>(temp);
-                return resultado;
-            }
+            var resultado = _mapper.Map<IEnumerable<MatriculaOutput>>(listaMatriculas);
 
-            return (IEnumerable<MatriculaOutput>)(temp);
+            return resultado.Any() ? resultado : null;
         }
 
         public async Task<int> InsertAsync(MatriculaInput entity)
