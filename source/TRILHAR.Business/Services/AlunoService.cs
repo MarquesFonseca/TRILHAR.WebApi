@@ -453,7 +453,7 @@ namespace TRILHAR.Business.Services
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
             
-            model = TratamentoCamposComunsInsertUpdat(model);
+            model = TratamentoCamposComunsInsertUpdate(model);
             
             model.DataCadastro = model.DataAtualizacao = DateTime.Now;
             
@@ -475,7 +475,7 @@ namespace TRILHAR.Business.Services
                 
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
                 
-                model = TratamentoCamposComunsInsertUpdat(model);
+                model = TratamentoCamposComunsInsertUpdate(model);
                 
                 model.DataCadastro = model.DataAtualizacao = DateTime.Now;
                 
@@ -497,9 +497,11 @@ namespace TRILHAR.Business.Services
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
 
-            model = TratamentoCamposComunsInsertUpdat(model);
+            model = TratamentoCamposComunsInsertUpdate(model);
 
             model.DataAtualizacao = DateTime.Now;
+            
+            model.CodigoUsuarioLogado = null;
 
             return await _alunoRepository.UpdateAsync(model);
         }
@@ -513,9 +515,11 @@ namespace TRILHAR.Business.Services
                 
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
 
-                model = TratamentoCamposComunsInsertUpdat(model);
+                model = TratamentoCamposComunsInsertUpdate(model);
 
                 model.DataAtualizacao = DateTime.Now;
+
+                model.CodigoUsuarioLogado = null;
 
                 models.Add(model);
             }
@@ -523,7 +527,7 @@ namespace TRILHAR.Business.Services
             return await _alunoRepository.UpdateAsync(models);
         }
 
-        private AlunoEntity TratamentoCamposComunsInsertUpdat(AlunoEntity model)
+        private AlunoEntity TratamentoCamposComunsInsertUpdate(AlunoEntity model)
         {
             if (model.NomeCrianca != null)
             {
