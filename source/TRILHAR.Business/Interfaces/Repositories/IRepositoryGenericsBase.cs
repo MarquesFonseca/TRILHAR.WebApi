@@ -17,12 +17,13 @@ namespace TRILHAR.Business.Interfaces.Repositories
         Task<bool> DeleteAsync(TEntity entity);
         Task<bool> DeleteAsync(IEnumerable<TEntity> list);
         Task<int> DeleteByCodigoAsync(int codigo);
-        Task<int> ExecuteAsync(InputConsultaPersonalizada input, CommandType commandType = CommandType.Text);
+        Task<int> ExecuteAsync(InputConsultaPersonalizada input);
         Task<int> RetornaMaxCodigoAsync();        
         Task<TEntity?> RetornaSingleBySqlConsultaCondicao(InputConsultaPersonalizada input);
         Task<IEnumerable<TEntity>> RetornaListaBySqlConsultaCondicao(InputConsultaPersonalizada input);
         Task<TEntity?> RetornaByCondicaoAsync(InputCondicaoParametros input);
         Task<IEnumerable<TEntity>> RetornaListaByCondicaoAsync(InputCondicaoParametros input);
         PagedResult<TEntity> RetornaPagedResultAsync(IEnumerable<TEntity> resultados, int page, int pageSize, bool isPaginacao);
+        Task<IEnumerable<TEntity>> QueryDynamicSql(InputConsultaPersonalizada input);
     }
 }

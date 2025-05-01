@@ -1,4 +1,6 @@
 ﻿
+using System.Data;
+
 namespace TRILHAR.Business.IO
 {
     public class InputConsultaPersonalizada
@@ -6,6 +8,8 @@ namespace TRILHAR.Business.IO
         public string? ConsultaPersonalizada { get; set; } // Ex.: "SELECT CAMPO FROM TABELA"
         public string? Condicao { get; set; } // Ex.: "Ativo = @Ativo AND CodigoCadastro = @CodigoCadastro"
         public Dictionary<string, object?>? Parametros { get; set; } // Ex.: { "Ativo": true, "CodigoCadastro": "1484" }
+
+        public CommandType CommandType { get; set; } = CommandType.Text;
 
         public InputConsultaPersonalizada()
         {

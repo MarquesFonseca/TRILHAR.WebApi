@@ -66,6 +66,7 @@ namespace TRILHAR.CrossCutting.IoC.Config
             services.AddScoped<IPermissaoService, PermissaoService>();
             services.AddScoped<IPermissaoRepository, PermissaoRepository>();
 
+            services.AddScoped<IFrequenciasTurmasAgrupadasRepository, FrequenciasTurmasAgrupadasRepository>();
         }
     }
 }
