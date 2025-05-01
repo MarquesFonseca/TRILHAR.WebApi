@@ -28,6 +28,7 @@ namespace TRILHAR.Services.Api.Controllers
         private readonly ILogger<MatriculaEntity> _logger;
         private readonly IMatriculaService _matriculaService;
         private readonly IMatriculaRepository _matriculaRepository;
+        private readonly IVMatriculaService _vMatriculaService;
         private readonly IVMatriculaRepository _vMatriculaRepository;
         private readonly IFrequenciaService _frequenciaService;
         private readonly IFrequenciaRepository _frequenciaRepository;
@@ -40,6 +41,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="logger"></param>
         /// <param name="matriculaService"></param>
         /// <param name="matriculaRepository"></param>
+        /// <param name="vMatriculaService"></param>
         /// <param name="vMatriculaRepository"></param>
         /// <param name="frequenciaService"></param>
         /// <param name="frequenciaRepository"></param>
@@ -49,6 +51,7 @@ namespace TRILHAR.Services.Api.Controllers
             ILogger<MatriculaEntity> logger,
             IMatriculaService matriculaService,
             IMatriculaRepository matriculaRepository,
+            IVMatriculaService vMatriculaService,
             IVMatriculaRepository vMatriculaRepository,
             IFrequenciaService frequenciaService,
             IFrequenciaRepository frequenciaRepository) : base(notificador)
@@ -57,6 +60,7 @@ namespace TRILHAR.Services.Api.Controllers
             _logger = logger;
             _matriculaService = matriculaService;
             _matriculaRepository = matriculaRepository;
+            _vMatriculaService = vMatriculaService;
             _vMatriculaRepository = vMatriculaRepository;
             _frequenciaService = frequenciaService;
             _frequenciaRepository = frequenciaRepository;
@@ -67,57 +71,59 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <returns>Retorna todos Matriculas</returns>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MatriculaOutput>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VMatriculaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get()
         {
-            var resultado = await _matriculaRepository.GetAllAsync();
+            var resultado = await _vMatriculaRepository.GetAllAsync();
             if (resultado == null || !resultado.Any())
             {
-                NotificarErro("Registro não encontrado!");
+                _logger.LogWarning("Registro não encontrado.");
+                NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
-            var matriculaOutput = _mapper.Map<IEnumerable<MatriculaOutput>>(resultado);
+            var matriculaOutput = _mapper.Map<IEnumerable<VMatriculaOutput>>(resultado);
             return CustomResponse(matriculaOutput);
         }
 
-        /// <summary>
-        /// Retorna todos por parametros e paginação
-        /// </summary>
-        /// <returns>Retorna todos Matriculas</returns>
-        [HttpPost("ListarPorFiltro")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MatriculaEntity))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> ListarPorFiltro(
-            [FromBody] InputPaginado input)
-        {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
+        ///// <summary>
+        ///// Retorna todos por parametros e paginação
+        ///// </summary>
+        ///// <returns>Retorna todos Matriculas</returns>
+        //[HttpPost("filtro")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MatriculaEntity))]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        //public async Task<IActionResult> ListarPorFiltro([FromBody] InputPaginado input)
+        //{
+        //    if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            if (input == null)
-            {
-                return BadRequest("O filtro não pode ser nulo.");
-            }
+        //    if (input == null)
+        //    {
+        //        return BadRequest("O filtro não pode ser nulo.");
+        //    }
 
-            if (input.IsPaginacao && input.Page == 0)
-            {
-                return BadRequest("O filtro 'Page 'não pode ser 0.");
-            }
+        //    if (input.IsPaginacao && input.Page == 0)
+        //    {
+        //        return BadRequest("O filtro 'Page 'não pode ser 0.");
+        //    }
 
-            if (input.IsPaginacao && input.PageSize == 0)
-            {
-                return BadRequest("O filtro 'PageSize 'não pode ser 0.");
-            }
+        //    if (input.IsPaginacao && input.PageSize == 0)
+        //    {
+        //        return BadRequest("O filtro 'PageSize 'não pode ser 0.");
+        //    }
 
 
-            var resultado = await _vMatriculaRepository.GetByPaginacaoAsync(input);
-            if (OperacaoValida())
-            {
-                return Ok(resultado);
-            }
-            return CustomResponse(resultado);
-        }
+        //    var resultado = await _vMatriculaRepository.GetByPaginacaoAsync(input);
+        //    if (OperacaoValida())
+        //    {
+        //        return Ok(resultado);
+        //    }
+        //    return CustomResponse(resultado);
+        //}
 
         /// <summary>
         /// Retorna o Registro por codigo
@@ -125,65 +131,40 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="id">Informe o id.</param>
         /// <returns>Retorna Matricula</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MatriculaOutput))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VMatriculaOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = await _matriculaRepository.GetByCodigoAsync(id);
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var resultado = await _vMatriculaRepository.GetByCodigoAsync(id);
             if (resultado == null)
             {
+                _logger.LogWarning("Matricula com ID {Id} não encontrado.", id);
                 NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
-            var matriculaOutput = _mapper.Map<MatriculaOutput>(resultado);
+            var matriculaOutput = _mapper.Map<VMatriculaOutput>(resultado);
             return CustomResponse(matriculaOutput);
-        }
-
-        /// <summary>
-        /// Retorna o Registro por CodigoAluno e CodigoTurma
-        /// </summary>
-        /// <param name="CodigoAluno"></param>
-        /// <param name="CodigoTurma"></param>
-        /// <returns>Retorna Matricula</returns>
-        [HttpGet("ListarPorCodigoAlunoCodigoTurma/{CodigoAluno}/{CodigoTurma}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MatriculaOutput>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> ListarPorCodigoAlunoCodigoTurma(int CodigoAluno, int CodigoTurma)
-        {
-            if (CodigoAluno == 0 && CodigoTurma == 0)
-            {
-                return CustomResponse(ModelState);
-            }
-
-            var resultado = await _matriculaService.ListarPorCodigoAlunoCodigoTurma(CodigoAluno, CodigoTurma);
-            if (resultado == null)
-            {
-                NotificarErro("Registro não encontrado.");
-                return CustomResponse(isNotFound: true);
-            }
-
-            return CustomResponse(resultado);
         }
 
         /// <summary>
         /// Retorna o Registro por CodigoAluno
         /// </summary>
-        /// <param name="CodigoAluno"></param>
+        /// <param name="codigoAluno"></param>
         /// <returns>Retorna Matricula</returns>
-        [HttpGet("ListarPorCodigoAluno/{CodigoAluno}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MatriculaOutput>))]
+        [HttpGet("aluno/{codigoAluno}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VMatriculaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> ListarPorCodigoAluno(int CodigoAluno)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> ListarPorCodigoAluno(int codigoAluno)
         {
-            if (CodigoAluno == 0)
-            {
-                return CustomResponse(ModelState);
-            }
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _matriculaService.ListarPorCodigoAluno(CodigoAluno);
+            var resultado = await _vMatriculaService.ListarPorCodigoAluno(codigoAluno);
 
             return CustomResponse(resultado);
         }
@@ -191,21 +172,44 @@ namespace TRILHAR.Services.Api.Controllers
         /// <summary>
         /// Retorna o Registro por CodigoTurma
         /// </summary>
-        /// <param name="CodigoTurma"></param>
+        /// <param name="codigoTurma"></param>
         /// <returns>Retorna Matricula</returns>
-        [HttpGet("ListarPorCodigoTurma/{CodigoTurma}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MatriculaOutput>))]
+        [HttpGet("turma/{codigoTurma}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VMatriculaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> ListarPorCodigoTurma(int CodigoTurma)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> ListarPorCodigoTurma(int codigoTurma)
         {
-            if (CodigoTurma == 0)
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var resultado = await _vMatriculaService.ListarPorCodigoTurma(codigoTurma);
+            if (resultado == null || !resultado.Any())
             {
-                return CustomResponse(ModelState);
+                NotificarErro("Registro não encontrado.");
+                return CustomResponse(isNotFound: true);
             }
 
-            var resultado = await _matriculaService.ListarPorCodigoTurma(CodigoTurma);
-            if (resultado == null || !resultado.Any())
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
+        /// Retorna o Registro por CodigoAluno e CodigoTurma
+        /// </summary>
+        /// <param name="codigoAluno"></param>
+        /// <param name="codigoTurma"></param>
+        /// <returns>Retorna Matricula</returns>
+        [HttpGet("aluno/{codigoAluno}/turma/{codigoTurma}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VMatriculaOutput>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> ListarPorCodigoAlunoCodigoTurma([FromRoute] int codigoAluno, [FromRoute] int codigoTurma)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var resultado = await _vMatriculaService.ListarPorCodigoAlunoCodigoTurma(codigoAluno, codigoTurma);
+            if (resultado == null)
             {
                 NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
@@ -222,10 +226,12 @@ namespace TRILHAR.Services.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Post([FromBody] MatriculaInput registro)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> CreateMatriculaAsync([FromBody] MatriculaInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
+            _logger.LogInformation("Criando nova matrícula: {@Matricula}", registro);
             var resultado = await _matriculaService.InsertAsync(registro);
             return CustomResponse(resultado);
         }
@@ -240,7 +246,8 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Put(int id, [FromBody] MatriculaInput input)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> UpdateMatriculaAsync(int id, [FromBody] MatriculaInput input)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 

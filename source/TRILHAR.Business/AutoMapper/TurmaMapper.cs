@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using TRILHAR.Business.Entities;
-using TRILHAR.Business.Entities.Trilhar;
-using TRILHAR.Business.Entities.Trilhar.ViewModel;
 using TRILHAR.Business.IO.Turma;
+using TRILHAR.Business.Pagination;
 
 namespace TRILHAR.Business.AutoMapper
 {
@@ -13,6 +12,7 @@ namespace TRILHAR.Business.AutoMapper
             CreateMap<TurmaEntity, TurmaInput>().ReverseMap();
             CreateMap<TurmaEntity, TurmaOutput>().ReverseMap();
             CreateMap<TurmaInput, TurmaOutput>().ReverseMap();
+            CreateMap<PagedResult<TurmaEntity>, PagedResult<TurmaOutput>>().ReverseMap();
         }
     }
 }

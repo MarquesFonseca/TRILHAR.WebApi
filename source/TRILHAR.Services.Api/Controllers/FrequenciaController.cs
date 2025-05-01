@@ -66,12 +66,14 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FrequenciaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get()
         {
             var resultado = await _frequenciaRepository.GetAllAsync();
             if (resultado == null || !resultado.Any())
             {
-                NotificarErro("Registro não encontrado!");
+                _logger.LogWarning("Registro não encontrado.");
+                NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
             var frequenciaOutput = _mapper.Map<IEnumerable<FrequenciaOutput>>(resultado);
@@ -87,11 +89,13 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FrequenciaOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get(int id)
         {
             var resultado = await _frequenciaRepository.GetByCodigoAsync(id);
             if(resultado == null)
             {
+                _logger.LogWarning("Frequência com ID {Id} não encontrado.", id);
                 NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
@@ -99,26 +103,27 @@ namespace TRILHAR.Services.Api.Controllers
             return CustomResponse(frequenciaOutput);
         }
 
-        /// <summary>
-        /// Retorna todos por parametros e paginação
-        /// </summary>
-        /// <returns>Retorna todos Frequencias</returns>
-        [HttpGet("filtro")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<VFrequenciaOutput>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> ListarPorFiltro([FromQuery] InputPaginado input)
-        {
-            if (input == null || (input.IsPaginacao && (input.Page <= 0 || input.PageSize <= 0)))
-            {
-                NotificarErro("Filtro inválido: verifique paginação e parâmetros.");
-                return CustomResponse();
-            }
+        ///// <summary>
+        ///// Retorna todos por parametros e paginação
+        ///// </summary>
+        ///// <returns>Retorna todos Frequencias</returns>
+        //[HttpGet("filtro")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<VFrequenciaOutput>))]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        //public async Task<IActionResult> ListarPorFiltro([FromQuery] InputPaginado input)
+        //{
+        //    if (input == null || (input.IsPaginacao && (input.Page <= 0 || input.PageSize <= 0)))
+        //    {
+        //        NotificarErro("Filtro inválido: verifique paginação e parâmetros.");
+        //        return CustomResponse();
+        //    }
 
-            var resultado = await _vFrequenciaRepository.GetByPaginacaoAsync(input);
-            var frequenciaOutput = _mapper.Map<PagedResult<VFrequenciaOutput>>(resultado);
-            return CustomResponse(frequenciaOutput);
-        }
+        //    var resultado = await _vFrequenciaRepository.GetByPaginacaoAsync(input);
+        //    var frequenciaOutput = _mapper.Map<PagedResult<VFrequenciaOutput>>(resultado);
+        //    return CustomResponse(frequenciaOutput);
+        //}
 
         /// <summary>
         /// Retorna todas as frequências dos alunos para o dia informado
@@ -129,6 +134,7 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<dynamic>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> GetAlunosByDateAsync([FromQuery] DateTime data)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -151,6 +157,7 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FrequenciasTurmasAgrupadasOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> GetTurmasAgrupadasByDateAsync([FromQuery] DateTime data)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -172,10 +179,12 @@ namespace TRILHAR.Services.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> CreateFrequenciaAsync([FromBody] FrequenciaInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
+            _logger.LogInformation("Criando nova frequência: {@Frequencia}", registro);
             var resultado = await _frequenciaService.AddAsync(registro);
             return CustomResponse(resultado);
         }
@@ -190,6 +199,7 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> UpdateFrequenciaAsync(int id, [FromBody] FrequenciaInput input)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -197,11 +207,14 @@ namespace TRILHAR.Services.Api.Controllers
             var reg = await _frequenciaRepository.GetByCodigoAsync(id);
             if (reg == null)
             {
+                _logger.LogWarning("Tentativa de atualização para frequência ID {Id}, mas não encontrado.", id);
                 NotificarErro("Registro não existe!");
                 return CustomResponse();
             }
 
             input.DataCadastro = reg.DataCadastro;
+
+            _logger.LogInformation("Atualizando frequência ID {Id}: {@Input}", id, input);
             var resultado = await _frequenciaService.UpdateAsync(input);
             return CustomResponse(resultado);
         }
