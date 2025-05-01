@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
@@ -19,6 +20,7 @@ namespace TRILHAR.Services.Api.Controllers
     [AllowAnonymous]
     public class PermissaoController : BaseApiController
     {
+        private readonly IMapper _mapper;
         private readonly ILogger<PermissaoEntity> _logger;
         private readonly IPermissaoService _PermissaoService;
         private readonly IPermissaoRepository _PermissaoRepository;
@@ -27,17 +29,20 @@ namespace TRILHAR.Services.Api.Controllers
         /// Construtor
         /// </summary>
         /// <param name="notificador"></param>
+        /// <param name="mapper"></param>
         /// <param name="logger"></param>
         /// <param name="PermissaoService"></param>
         /// <param name="PermissaoRepository"></param>
         /// 
         public PermissaoController(
             INotificador notificador,
+            IMapper mapper,
             ILogger<PermissaoEntity> logger,
             IPermissaoService PermissaoService,
             IPermissaoRepository PermissaoRepository
             ) : base(notificador)
         {
+            _mapper = mapper;
             _logger = logger;
             _PermissaoService = PermissaoService;
             _PermissaoRepository = PermissaoRepository;

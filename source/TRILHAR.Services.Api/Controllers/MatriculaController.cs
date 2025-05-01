@@ -209,7 +209,7 @@ namespace TRILHAR.Services.Api.Controllers
                 }
 
                 //antes de desativar, ver se possue frequencia... se não houver nenhuma apagar a matricula ao inves de alterar para inativo
-                var freqAlunoTurma = await _frequenciaService.ListarPorCodigoAlunoCodigoTurma(input.CodigoAluno, item.CodigoTurma);
+                var freqAlunoTurma = await _frequenciaService.GetByAlunoAndTurmaAsync(input.CodigoAluno, item.CodigoTurma);
                 if (!freqAlunoTurma.Any())
                 {
                     //se não existir nenhuma frequencia remove a matricula

@@ -44,23 +44,23 @@ namespace TRILHAR.Services.Api.Controllers
                 return Ok(new { Dados = result });
             }
 
-            string msgsString = string.Empty;
+            var mensagens = _notificador.ObterNotificacoes().Select(n => n.Mensagem).ToList();
+            var msgsString = string.Join("\n", mensagens);
 
-            foreach (var item in _notificador.ObterNotificacoes())
+            var problemDetails = new ProblemDetails
             {
-                msgsString += string.Concat(item.Mensagem, "\n");
-            }
-
-            string[] listMSGs = new string[] { msgsString };
-
-            var erros = new { erros = listMSGs };
-
-            var objectResult = new ObjectResult(erros)
-            {
-                StatusCode = isNotFound ? 404 : 400
+                Title = isNotFound ? "Registro não encontrado" : "Erro de validação",
+                Status = isNotFound ? StatusCodes.Status404NotFound : StatusCodes.Status400BadRequest,
+                Detail = msgsString,
+                Instance = HttpContext?.Request?.Path
             };
 
-            return objectResult;
+            problemDetails.Extensions["erros"] = mensagens;
+
+            return new ObjectResult(problemDetails)
+            {
+                StatusCode = problemDetails.Status
+            };
         }
 
         /// <summary>

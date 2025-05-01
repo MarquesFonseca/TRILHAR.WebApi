@@ -5,14 +5,17 @@ namespace TRILHAR.Business.Interfaces.Services
 {
     public interface IFrequenciaService : IServiceGenericsBase<FrequenciaEntity>
     {
-        Task<IEnumerable<FrequenciaOutput>?> ListarPorCodigoAlunoCodigoTurma(int codigoAluno, int codigoTurma);
-        Task<IEnumerable<FrequenciaOutput>?> ListarPorCodigoAluno(int codigoAluno);
-        Task<IEnumerable<FrequenciaOutput>?> ListarPorCodigoTurma(int codigoTurma);
-        Task<IEnumerable<dynamic>?> GetFrequenciasAlunosPorDataFrequencia(DateTime dataFrequencia);
-        Task<IEnumerable<dynamic>?> GetFrequenciasTurmasAgrupadasPorDataFrequencia(DateTime dataFrequencia);
-        Task<int> InsertAsync(FrequenciaInput entity);
-        Task<int> InsertAsync(IEnumerable<FrequenciaInput> list);
-        Task<bool> UpdateAsync(FrequenciaInput entity);
-        Task<bool> UpdateAsync(IEnumerable<FrequenciaInput> list);
+        Task<int> AddAsync(FrequenciaInput input);
+        Task<int> AddManyAsync(IEnumerable<FrequenciaInput> inputs);
+
+        Task<bool> UpdateAsync(FrequenciaInput input);
+        Task<bool> UpdateManyAsync(IEnumerable<FrequenciaInput> inputs);
+
+        Task<IEnumerable<FrequenciaOutput>?> GetByAlunoAsync(int codigoAluno);
+        Task<IEnumerable<FrequenciaOutput>?> GetByTurmaAsync(int codigoTurma);
+        Task<IEnumerable<FrequenciaOutput>?> GetByAlunoAndTurmaAsync(int codigoAluno, int codigoTurma);
+
+        Task<IEnumerable<dynamic>?> GetAlunosByDateAsync(DateTime dataFrequencia);
+        Task<IEnumerable<FrequenciasTurmasAgrupadasOutput>?> GetTurmasAgrupadasByDateAsync(DateTime dataFrequencia);
     }
 }

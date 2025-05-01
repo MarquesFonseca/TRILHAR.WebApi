@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
@@ -19,6 +20,7 @@ namespace TRILHAR.Services.Api.Controllers
     [AllowAnonymous]
     public class PaginaController : BaseApiController
     {
+        private readonly IMapper _mapper;
         private readonly ILogger<PaginaEntity> _logger;
         private readonly IPaginaService _PaginaService;
         private readonly IPaginaRepository _PaginaRepository;
@@ -27,17 +29,20 @@ namespace TRILHAR.Services.Api.Controllers
         /// Construtor
         /// </summary>
         /// <param name="notificador"></param>
+        /// <param name="mapper"></param>
         /// <param name="logger"></param>
         /// <param name="PaginaService"></param>
         /// <param name="PaginaRepository"></param>
         /// 
         public PaginaController(
             INotificador notificador,
+            IMapper mapper,
             ILogger<PaginaEntity> logger,
             IPaginaService PaginaService,
             IPaginaRepository PaginaRepository
             ) : base(notificador)
         {
+            _mapper = mapper;
             _logger = logger;
             _PaginaService = PaginaService;
             _PaginaRepository = PaginaRepository;
