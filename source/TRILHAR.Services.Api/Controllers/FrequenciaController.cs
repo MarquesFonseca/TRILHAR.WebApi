@@ -104,6 +104,40 @@ namespace TRILHAR.Services.Api.Controllers
         }
 
         /// <summary>
+        /// Retorna todas as frequências dos alunos para o dia informado
+        /// </summary>
+        /// <param name="dataFrequencia">Informe a Data da Frequência</param>
+        /// <returns></returns>
+        [HttpGet("FrequenciasAlunosPorDataFrequencia/{dataFrequencia}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(object))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetFrequenciasAlunosPorDataFrequencia(DateTime dataFrequencia)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var resultado = await _FrequenciaService.GetFrequenciasAlunosPorDataFrequencia(dataFrequencia);
+
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
+        /// Retorna Agrupamento de Turmas e suas quantidades para o dia informado
+        /// </summary>
+        /// <param name="dataFrequencia">Informe a Data da Frequência</param>
+        /// <returns></returns>
+        [HttpGet("FrequenciasTurmasAgrupadasPorDataFrequencia/{dataFrequencia}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(object))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetFrequenciasTurmasAgrupadasPorDataFrequencia(DateTime dataFrequencia)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var resultado = await _FrequenciaService.GetFrequenciasTurmasAgrupadasPorDataFrequencia(dataFrequencia);
+
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
         /// Incluir novo Registro
         /// </summary>
         /// <param name="registro">Informe o registro</param>

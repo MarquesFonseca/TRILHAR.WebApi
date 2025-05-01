@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Data;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces;
 using TRILHAR.Business.Interfaces.Notificador;
@@ -19,6 +20,7 @@ namespace TRILHAR.Business.Services
         private readonly IVMatriculaRepository _vMatriculaRepository;
         private readonly IFrequenciaRepository _frequenciaRepository;
         private readonly IVFrequenciaRepository _vFrequenciaRepository;
+        private readonly IFrequenciasTurmasAgrupadasRepository _frequenciasTurmasAgrupadasRepository;
 
         public FrequenciaService(
             INotificador notificador,
@@ -29,6 +31,7 @@ namespace TRILHAR.Business.Services
             IVMatriculaRepository vMatriculaRepository,
             IFrequenciaRepository frequenciaRepository,
             IVFrequenciaRepository vFrequenciaRepository,
+            IFrequenciasTurmasAgrupadasRepository frequenciasTurmasAgrupadasRepository,
             IMapper mapper) : base(notificador, mapper, frequenciaRepository)
         {
             _objectExtensionGenerics = objectExtensionGenerics;
@@ -38,9 +41,10 @@ namespace TRILHAR.Business.Services
             _vMatriculaRepository = vMatriculaRepository;
             _frequenciaRepository = frequenciaRepository;
             _vFrequenciaRepository = vFrequenciaRepository;
+            _frequenciasTurmasAgrupadasRepository = frequenciasTurmasAgrupadasRepository;
         }
 
-        public async Task<IEnumerable<FrequenciaOutput>> ListarPorCodigoAlunoCodigoTurma(int codigoAluno, int codigoTurma)
+        public async Task<IEnumerable<FrequenciaOutput>?> ListarPorCodigoAlunoCodigoTurma(int codigoAluno, int codigoTurma)
         {
             var inputCondicaoParametros = new InputCondicaoParametros
             {
@@ -52,13 +56,14 @@ namespace TRILHAR.Business.Services
                 }
             };
 
-            var temp = await _frequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+            var listaFrequecias = await _frequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
 
-            var resultado = _mapper.Map<IEnumerable<FrequenciaOutput>>(temp);
-            return resultado;
+            var resultado = _mapper.Map<IEnumerable<FrequenciaOutput>>(listaFrequecias);
+
+            return resultado.Any() ? resultado : null;
         }
 
-        public async Task<IEnumerable<FrequenciaOutput>> ListarPorCodigoAluno(int codigoAluno)
+        public async Task<IEnumerable<FrequenciaOutput>?> ListarPorCodigoAluno(int codigoAluno)
         {
             var inputCondicaoParametros = new InputCondicaoParametros
             {
@@ -69,18 +74,14 @@ namespace TRILHAR.Business.Services
                 }
             };
 
-            var temp = await _frequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+            var listaFrequecias = await _frequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
 
-            if (temp.Any())
-            {
-                var resultado = _mapper.Map<IEnumerable<FrequenciaOutput>>(temp);
-                return resultado;
-            }
+            var resultado = _mapper.Map<IEnumerable<FrequenciaOutput>>(listaFrequecias);
 
-            return (IEnumerable<FrequenciaOutput>)(temp);
+            return resultado.Any() ? resultado : null;
         }
 
-        public async Task<IEnumerable<FrequenciaOutput>> ListarPorCodigoTurma(int codigoTurma)
+        public async Task<IEnumerable<FrequenciaOutput>?> ListarPorCodigoTurma(int codigoTurma)
         {
             var inputCondicaoParametros = new InputCondicaoParametros
             {
@@ -91,15 +92,69 @@ namespace TRILHAR.Business.Services
                 }
             };
 
-            var temp = await _frequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+            var listaFrequecias = await _frequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
 
-            if (temp.Any())
+            var resultado = _mapper.Map<IEnumerable<FrequenciaOutput>>(listaFrequecias);
+
+            return resultado.Any() ? resultado : null;
+        }
+
+        public async Task<IEnumerable<dynamic>?> GetFrequenciasAlunosPorDataFrequencia(DateTime dataFrequencia)
+        {
+            var inputCondicaoParametros = new InputConsultaPersonalizada
             {
-                var resultado = _mapper.Map<IEnumerable<FrequenciaOutput>>(temp);
-                return resultado;
-            }
+                ConsultaPersonalizada = "SPFrequenciasPorData @DataFrequencia",
+                Condicao = null,
+                Parametros = new Dictionary<string, object?>
+                {
+                    { "@DataFrequencia", dataFrequencia.Date }
+                },
+                CommandType = CommandType.StoredProcedure
+            };
 
-            return (IEnumerable<FrequenciaOutput>)(temp);
+            var listaFrequecias = await _vFrequenciaRepository.QueryDynamicSql(inputCondicaoParametros);
+            return listaFrequecias;
+        }
+
+        public async Task<IEnumerable<dynamic>?> GetFrequenciasTurmasAgrupadasPorDataFrequencia(DateTime dataFrequencia)
+        {
+            var inputCondicaoParametros = new InputConsultaPersonalizada
+            {
+                ConsultaPersonalizada = "SPFrequenciasTodasTurmasAgrupadasDia @DataFrequencia",
+                Condicao = null,
+                Parametros = new Dictionary<string, object?>
+                {
+                    { "@DataFrequencia", dataFrequencia.Date }
+                },
+                CommandType = CommandType.StoredProcedure
+            };
+
+            var listaFrequecias = await _frequenciasTurmasAgrupadasRepository.QueryDynamicSql(inputCondicaoParametros);
+
+            var retorno = listaFrequecias.Select(x => new FrequenciasTurmasAgrupadasOutput
+            {
+                //FrequenciasTurmasAgrupadasEntity
+                DataFrequencia = x.DataFrequencia,
+                CodigoTurma = x.CodigoTurma,
+                TurmaDescricao = x.TurmaDescricao,
+                TurmaAnoLetivo = x.TurmaAnoLetivo,
+                TurmaSemestreLetivo = x.TurmaSemestreLetivo,
+                TurmaIdadeInicialAluno = x.TurmaIdadeInicialAluno,
+                TurmaIdadeFinalAluno = x.TurmaIdadeFinalAluno,
+                TurmaAtivo = x.TurmaAtivo,
+                TurmaLimiteMaximo = x.TurmaLimiteMaximo,
+                Qtd = x.Qtd,
+
+                //FrequenciasTurmasAgrupadasOutput
+                DataFrequenciaFormatada = x.DataFrequencia.ToShortDateString(),
+                TurmaDescricaoFormatada = $"{x.TurmaDescricao} - {x.TurmaAnoLetivo}/{x.TurmaSemestreLetivo}",
+                TurmaIdadeInicialAlunoFormatada = x.TurmaIdadeInicialAluno.ToShortDateString(),
+                TurmaIdadeFinalAlunoFormatada = x.TurmaIdadeFinalAluno.ToShortDateString(),
+                QtdRestante = RetornaQtdRestante(x.Qtd, x.TurmaLimiteMaximo),//x.TurmaLimiteMaximo - x.Qtd,
+                QtdRestanteFormatada = RetornaQtdRestanteFormatada(x.Qtd, x.TurmaLimiteMaximo),
+            });
+
+            return retorno;
         }
 
         public async Task<int> InsertAsync(FrequenciaInput entity)
@@ -150,5 +205,38 @@ namespace TRILHAR.Business.Services
 
             return await _frequenciaRepository.UpdateAsync(models);
         }
+
+        private int RetornaQtdRestante(int qtd, int turmaLimiteMaximo)
+        {
+            //x.TurmaLimiteMaximo - x.Qtd
+            return qtd - turmaLimiteMaximo;
+            //if (qtd > turmaLimiteMaximo)
+            //{
+            //    int qtdExcedente = qtd - turmaLimiteMaximo;
+            //    return qtdExcedente;
+            //}
+            //if (qtd < turmaLimiteMaximo)
+            //{
+            //    int qtdRestante = turmaLimiteMaximo - qtd;
+            //    return qtdRestante;
+            //}
+            //return 0;
+        }
+
+        private string RetornaQtdRestanteFormatada(int qtd, int turmaLimiteMaximo)
+        {
+            if (qtd > turmaLimiteMaximo)
+            {
+                int qtdExcedente = qtd - turmaLimiteMaximo;
+                return $"+{qtdExcedente}";
+            }
+            if (qtd < turmaLimiteMaximo)
+            {
+                int qtdRestante = turmaLimiteMaximo - qtd;
+                return $"-{qtdRestante}";
+            }
+            return "=";
+        }
+
     }
 }

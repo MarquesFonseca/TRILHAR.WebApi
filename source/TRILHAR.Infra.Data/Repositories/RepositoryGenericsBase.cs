@@ -98,19 +98,19 @@ namespace TRILHAR.Infra.Data.Repositories
             return retorno;
         }
 
-        public virtual Task<int> ExecuteAsync(InputConsultaPersonalizada input, CommandType commandType = CommandType.Text)
+        public virtual Task<int> ExecuteAsync(InputConsultaPersonalizada input)
         {
             string stringSql = $"{input.ConsultaPersonalizada} ";
             if (input.Condicao != null) stringSql += $"WHERE { input.Condicao} ";
 
             var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
 
-            if (commandType == CommandType.Text)
+            if (input.CommandType == CommandType.Text)
             {
-                var retornoLinhasAfetadas = _sqlConnection.ExecuteAsync(sql: stringSql, param: parametros, commandType: commandType);
+                var retornoLinhasAfetadas = _sqlConnection.ExecuteAsync(sql: stringSql, param: parametros, commandType: input.CommandType);
                 return retornoLinhasAfetadas;
             }
-            if (commandType == CommandType.StoredProcedure)
+            if (input.CommandType == CommandType.StoredProcedure)
             {
                 var retorno = _sqlConnection.ExecuteAsync(sql: stringSql, param: parametros);
                 return retorno;
@@ -182,6 +182,28 @@ namespace TRILHAR.Infra.Data.Repositories
             retorno = resultados.ToList().GetPaged(qtdRegistros, page, pageSize, isPaginacao);
 
             return retorno;
+        }
+
+        public virtual async Task<IEnumerable<TEntity>> QueryDynamicSql(InputConsultaPersonalizada input)
+        {
+            string stringSql = $"{input.ConsultaPersonalizada} ";
+            if (input.Condicao != null) stringSql += $"WHERE {input.Condicao} ";
+
+            var parametros = RepositoryExtension.ConverterParaParametrosDapper(input.Parametros);
+
+            //var retorno = new List<T>();
+
+            if (input.CommandType == CommandType.Text)
+            {
+                var retorno = await _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros, commandType: input.CommandType);
+                return retorno;
+            }
+            if (input.CommandType == CommandType.StoredProcedure)
+            {
+                var retorno = await _sqlConnection.QueryAsync<TEntity>(sql: stringSql, param: parametros);
+                return retorno;
+            }
+            return new List<TEntity>();
         }
 
         protected abstract string ObterCampos();
