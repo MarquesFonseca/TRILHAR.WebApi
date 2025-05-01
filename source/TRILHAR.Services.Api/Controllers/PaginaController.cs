@@ -58,51 +58,55 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PaginaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get()
         {
             var resultado = await _PaginaRepository.GetAllAsync();
             if (resultado == null || !resultado.Any())
             {
-                NotificarErro("Registro não encontrado!");
+                _logger.LogWarning("Registro não encontrado.");
+                NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
             var paginaOutput = _mapper.Map<IEnumerable<PaginaOutput>>(resultado);
             return CustomResponse(paginaOutput);
         }
 
-        /// <summary>
-        /// Retorna todos por parametros e paginação
-        /// </summary>
-        /// <returns>Retorna todos Paginas</returns>
-        [HttpPost("ListarPorFiltro")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<PaginaEntity>))]
-        public async Task<IActionResult> ListarPorFiltro(
-            [FromBody] InputPaginado input)
-        {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
+        ///// <summary>
+        ///// Retorna todos por parametros e paginação
+        ///// </summary>
+        ///// <returns>Retorna todos Paginas</returns>
+        //[HttpPost("ListarPorFiltro")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<PaginaEntity>))]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        //public async Task<IActionResult> ListarPorFiltro([FromBody] InputPaginado input)
+        //{
+        //    if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            if (input == null)
-            {
-                return BadRequest("O filtro não pode ser nulo.");
-            }
+        //    if (input == null)
+        //    {
+        //        return BadRequest("O filtro não pode ser nulo.");
+        //    }
 
-            if(input.IsPaginacao && input.Page == 0)
-            {
-                return BadRequest("O filtro 'Page 'não pode ser 0.");
-            }
+        //    if(input.IsPaginacao && input.Page == 0)
+        //    {
+        //        return BadRequest("O filtro 'Page 'não pode ser 0.");
+        //    }
 
-            if (input.IsPaginacao && input.PageSize == 0)
-            {
-                return BadRequest("O filtro 'PageSize 'não pode ser 0.");
-            }
+        //    if (input.IsPaginacao && input.PageSize == 0)
+        //    {
+        //        return BadRequest("O filtro 'PageSize 'não pode ser 0.");
+        //    }
 
-            var resultado = await _PaginaRepository.GetByPaginacaoAsync(input);
-            if (OperacaoValida())
-            {
-                return Ok(resultado);
-            }
-            return CustomResponse(resultado);
-        }
+        //    var resultado = await _PaginaRepository.GetByPaginacaoAsync(input);
+        //    if (OperacaoValida())
+        //    {
+        //        return Ok(resultado);
+        //    }
+        //    return CustomResponse(resultado);
+        //}
 
         /// <summary>
         /// Retorna o Registro por codigo
@@ -113,11 +117,13 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginaOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get(int id)
         {
             var resultado = await _PaginaRepository.GetByCodigoAsync(id);
             if (resultado == null)
             {
+                _logger.LogWarning("Página com ID {Id} não encontrado.", id);
                 NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
@@ -133,7 +139,7 @@ namespace TRILHAR.Services.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Post([FromBody] PaginaInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -152,18 +158,22 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Put(int id, [FromBody] PaginaInput input)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> UpdatePaginaAsync(int id, [FromBody] PaginaInput input)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var reg = await _PaginaRepository.GetByCodigoAsync(id);
             if (reg == null)
             {
+                _logger.LogWarning("Tentativa de atualização para página ID {Id}, mas não encontrado.", id);
                 NotificarErro("Registro não existe!");
                 return CustomResponse();
             }
 
             input.DataCadastro = reg.DataCadastro;
+
+            _logger.LogInformation("Atualizando página ID {Id}: {@Input}", id, input);
             var resultado = await _PaginaRepository.UpdateAsync(input);
             return CustomResponse(resultado);
         }

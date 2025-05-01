@@ -8,12 +8,17 @@ namespace TRILHAR.Business.AutoMapper
         {
             return new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new AutoMapperProfile());
-                cfg.AddProfile(new UsuarioSiggoMapper());
                 cfg.AddProfile(new AlunoMapper());
-                cfg.AddProfile(new TurmaMapper());
+                cfg.AddProfile(new AutoMapperProfile());
                 cfg.AddProfile(new FrequenciaMapper());
                 cfg.AddProfile(new MatriculaMapper());
+                cfg.AddProfile(new PaginaMapper());
+                cfg.AddProfile(new PermissaoMapper());
+                cfg.AddProfile(new TurmaMapper());
+                cfg.AddProfile(new UsuarioMapper());
+                cfg.AddProfile(new UsuarioSiggoMapper());
+                cfg.AddProfile(new VFrequenciaMapper());
+                cfg.AddProfile(new VMatriculaMapper());
             });
         }
     }

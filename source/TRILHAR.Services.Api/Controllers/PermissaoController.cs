@@ -58,51 +58,55 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PermissaoOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get()
         {
             var resultado = await _PermissaoRepository.GetAllAsync();
             if (resultado == null || !resultado.Any())
             {
-                NotificarErro("Registro não encontrado!");
+                _logger.LogWarning("Registro não encontrado.");
+                NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
             var permissaoOutput = _mapper.Map<IEnumerable<PermissaoOutput>>(resultado);
             return CustomResponse(permissaoOutput);
         }
 
-        /// <summary>
-        /// Retorna todos por parametros e Permissaoção
-        /// </summary>
-        /// <returns>Retorna todos Permissaos</returns>
-        [HttpPost("ListarPorFiltro")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<PermissaoEntity>))]
-        public async Task<IActionResult> ListarPorFiltro(
-            [FromBody] InputPaginado input)
-        {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
+        ///// <summary>
+        ///// Retorna todos por parametros e Permissaoção
+        ///// </summary>
+        ///// <returns>Retorna todos Permissaos</returns>
+        //[HttpPost("ListarPorFiltro")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<PermissaoEntity>))]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        //public async Task<IActionResult> ListarPorFiltro([FromBody] InputPaginado input)
+        //{
+        //    if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            if (input == null)
-            {
-                return BadRequest("O filtro não pode ser nulo.");
-            }
+        //    if (input == null)
+        //    {
+        //        return BadRequest("O filtro não pode ser nulo.");
+        //    }
 
-            if(input.IsPaginacao && input.Page == 0)
-            {
-                return BadRequest("O filtro 'Page 'não pode ser 0.");
-            }
+        //    if(input.IsPaginacao && input.Page == 0)
+        //    {
+        //        return BadRequest("O filtro 'Page 'não pode ser 0.");
+        //    }
 
-            if (input.IsPaginacao && input.PageSize == 0)
-            {
-                return BadRequest("O filtro 'PageSize 'não pode ser 0.");
-            }
+        //    if (input.IsPaginacao && input.PageSize == 0)
+        //    {
+        //        return BadRequest("O filtro 'PageSize 'não pode ser 0.");
+        //    }
 
-            var resultado = await _PermissaoRepository.GetByPaginacaoAsync(input);
-            if (OperacaoValida())
-            {
-                return Ok(resultado);
-            }
-            return CustomResponse(resultado);
-        }
+        //    var resultado = await _PermissaoRepository.GetByPaginacaoAsync(input);
+        //    if (OperacaoValida())
+        //    {
+        //        return Ok(resultado);
+        //    }
+        //    return CustomResponse(resultado);
+        //}
 
         /// <summary>
         /// Retorna o Registro por codigo
@@ -113,11 +117,13 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PermissaoOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get(int id)
         {
             var resultado = await _PermissaoRepository.GetByCodigoAsync(id);
             if (resultado == null)
             {
+                _logger.LogWarning("Permissão com ID {Id} não encontrado.", id);
                 NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
@@ -133,11 +139,12 @@ namespace TRILHAR.Services.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Post([FromBody] PermissaoInput registro)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> CreatePermissaoAsync([FromBody] PermissaoInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
+            _logger.LogInformation("Criando nova permissão: {@Permissao}", registro);
             var resultado = await _PermissaoRepository.InsertAsync(registro);
             return CustomResponse(resultado);
         }
@@ -152,18 +159,22 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Put(int id, [FromBody] PermissaoInput input)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> UpdatePermissaoAsync(int id, [FromBody] PermissaoInput input)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var reg = await _PermissaoRepository.GetByCodigoAsync(id);
             if (reg == null)
             {
+                _logger.LogWarning("Tentativa de atualização para permissão ID {Id}, mas não encontrado.", id);
                 NotificarErro("Registro não existe!");
                 return CustomResponse();
             }
 
             input.DataCadastro = reg.DataCadastro;
+
+            _logger.LogInformation("Atualizando permissão ID {Id}: {@Input}", id, input);
             var resultado = await _PermissaoRepository.UpdateAsync(input);
             return CustomResponse(resultado);
         }

@@ -59,12 +59,14 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<TurmaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get()
         {
             var resultado = await _TurmaRepository.GetAllAsync();
             if (resultado == null || !resultado.Any())
             {
-                NotificarErro("Registro não encontrado!");
+                _logger.LogWarning("Registro não encontrado.");
+                NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
             var turmaOutput = _mapper.Map<IEnumerable<TurmaOutput>>(resultado);
@@ -79,6 +81,7 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<TurmaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> ListarTurmasAtivas()
         {
             var resultado = await _TurmaService.ListarTurmasAtivas();
@@ -91,9 +94,10 @@ namespace TRILHAR.Services.Api.Controllers
         /// <returns>Retorna todos Turmas</returns>
         [HttpPost("ListarPorFiltro")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<TurmaEntity>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ListarPorFiltro(
-            [FromBody] InputPaginado input)
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> ListarPorFiltro([FromBody] InputPaginado input)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -130,11 +134,13 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TurmaOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get(int id)
         {
             var resultado = await _TurmaRepository.GetByCodigoAsync(id);
             if (resultado == null)
             {
+                _logger.LogWarning("Turma com ID {Id} não encontrado.", id);
                 NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
@@ -150,11 +156,12 @@ namespace TRILHAR.Services.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Post([FromBody] TurmaInput registro)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> CreateTurmaAsync([FromBody] TurmaInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
+            _logger.LogInformation("Criando nova turma: {@Turma}", registro);
             var resultado = await _TurmaRepository.InsertOutputInsertedAsync(registro);
             return CustomResponse(resultado);
         }
@@ -169,18 +176,22 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Put(int id, [FromBody] TurmaInput input)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> UpdateTurmaAsync(int id, [FromBody] TurmaInput input)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var reg = await _TurmaRepository.GetByCodigoAsync(id);
             if (reg == null)
             {
+                _logger.LogWarning("Tentativa de atualização para turma ID {Id}, mas não encontrado.", id);
                 NotificarErro("Registro não existe!");
                 return CustomResponse();
             }
 
             input.DataCadastro = reg.DataCadastro;
+
+            _logger.LogInformation("Atualizando turma ID {Id}: {@Input}", id, input);
             var resultado = await _TurmaRepository.UpdateAsync(input);
             return CustomResponse(resultado);
         }
