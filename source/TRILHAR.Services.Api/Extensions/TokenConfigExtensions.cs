@@ -8,15 +8,23 @@ using System.Threading.Tasks;
 
 namespace TRILHAR.Services.Api.Extensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class TokenConfigExtensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
         public static void AddToken(this IServiceCollection services, IConfiguration configuration)
         {
             var aplicacao = configuration.GetSection("Aplicacao").Get<Aplicacao>();
 
             var KEY = "siggo-authentication-valid";
-            var ISSUER = aplicacao.IdentityServer;
-            var AUDIENCE = $"{aplicacao.IdentityServer}/resources";
+            var ISSUER = aplicacao?.IdentityServer;
+            var AUDIENCE = $"{aplicacao?.IdentityServer}/resources";
             var SYMMETRIC_KEY = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(KEY));
 
             services.AddAuthentication(options =>
@@ -25,7 +33,7 @@ namespace TRILHAR.Services.Api.Extensions
                 options.DefaultChallengeScheme = "JwtBearer";
             }).AddJwtBearer("JwtBearer", options =>
             {
-                options.Authority = aplicacao.IdentityServer;
+                options.Authority = aplicacao?.IdentityServer;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,

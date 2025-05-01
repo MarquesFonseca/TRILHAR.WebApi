@@ -184,13 +184,13 @@ namespace TRILHAR.Services.Api.Controllers
         /// Alterar Registro
         /// </summary>
         /// <param name="id">Informe o id do registro</param>
-        /// <param name="registro">Informe o registro</param>
+        /// <param name="input">Informe o registro</param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> UpdateFrequenciaAsync(int id, [FromBody] FrequenciaInput registro)
+        public async Task<IActionResult> UpdateFrequenciaAsync(int id, [FromBody] FrequenciaInput input)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -201,7 +201,8 @@ namespace TRILHAR.Services.Api.Controllers
                 return CustomResponse();
             }
 
-            var resultado = await _frequenciaService.UpdateAsync(registro);
+            input.DataCadastro = reg.DataCadastro;
+            var resultado = await _frequenciaService.UpdateAsync(input);
             return CustomResponse(resultado);
         }
     }

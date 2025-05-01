@@ -6,15 +6,27 @@ using System.Threading.Tasks;
 
 namespace TRILHAR.Services.Api.Middlewares
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class RequestSerilLogContextMiddleware
     {
         private readonly RequestDelegate _next;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="next"></param>
         public RequestSerilLogContextMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public Task Invoke(HttpContext context)
         {
             using (LogContext.PushProperty("UserName", context?.User?.Identity?.Name ?? "anônimo"))

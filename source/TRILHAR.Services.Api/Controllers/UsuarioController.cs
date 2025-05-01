@@ -6,6 +6,7 @@ using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO;
+using TRILHAR.Business.IO.Turma;
 using TRILHAR.Business.IO.Usuario;
 using TRILHAR.Business.Pagination;
 
@@ -16,7 +17,8 @@ namespace TRILHAR.Services.Api.Controllers
     /// Contém todos os métodos dessa funcionalidade.
     /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/usuarios")]
+    [Produces("application/json")]
     [AllowAnonymous]
     public class UsuarioController : BaseApiController
     {
@@ -52,10 +54,19 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <returns>Retorna todos Usuarios</returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UsuarioOutput>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get()
         {
             var resultado = await _UsuarioRepository.GetAllAsync();
-            return CustomResponse(resultado);
+            if (resultado == null || !resultado.Any())
+            {
+                NotificarErro("Registro não encontrado!");
+                return CustomResponse(isNotFound: true);
+            }
+            var usuarioOutput = _mapper.Map<IEnumerable<UsuarioOutput>>(resultado);
+            return CustomResponse(usuarioOutput);
         }
 
         /// <summary>
@@ -67,6 +78,8 @@ namespace TRILHAR.Services.Api.Controllers
         public async Task<IActionResult> ListarPorFiltro(
             [FromBody] InputPaginado input)
         {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
             if (input == null)
             {
                 return BadRequest("O filtro não pode ser nulo.");
@@ -96,10 +109,19 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="id">Informe o id.</param>
         /// <returns>Retorna Usuario</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UsuarioOutput))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get(int id)
         {
             var resultado = await _UsuarioRepository.GetByCodigoAsync(id);
-            return CustomResponse(resultado);
+            if (resultado == null)
+            {
+                NotificarErro("Registro não encontrado.");
+                return CustomResponse(isNotFound: true);
+            }
+            var usuarioOutput = _mapper.Map<UsuarioOutput>(resultado);
+            return CustomResponse(usuarioOutput);
         }
 
         /// <summary>
@@ -108,6 +130,9 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Post([FromBody] UsuarioInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -119,22 +144,26 @@ namespace TRILHAR.Services.Api.Controllers
         /// <summary>
         /// Alterar Registro
         /// </summary>
-        /// <param name="registro">Informe o registro</param>
+        /// <param name="id">Informe o id do registro</param>
+        /// <param name="input">Informe o registro</param>
         /// <returns></returns>
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] UsuarioInput registro)
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> Put(int id, [FromBody] UsuarioInput input)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var reg = await _UsuarioRepository.GetByCodigoAsync(registro.Codigo);
-
+            var reg = await _UsuarioRepository.GetByCodigoAsync(id);
             if (reg == null)
             {
                 NotificarErro("Registro não existe!");
                 return CustomResponse();
             }
 
-            var resultado = await _UsuarioRepository.UpdateAsync(registro);
+            input.DataCadastro = reg.DataCadastro;
+            var resultado = await _UsuarioRepository.UpdateAsync(input);
             return CustomResponse(resultado);
         }
     }

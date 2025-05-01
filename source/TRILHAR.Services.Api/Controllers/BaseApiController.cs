@@ -25,19 +25,26 @@ namespace TRILHAR.Services.Api.Controllers
             _notificador = notificador;
         }
 
+        /// <summary>
+        /// CreatedResponse
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         protected ActionResult CreatedResponse(object result, object id)
         {
             var url = $"{Request.Scheme}://{Request.Host}{Request.Path}/{id}";
 
             return Created(url, result);
-        }        
+        }
 
         /// <summary>
         /// CustomResponse
         /// </summary>
         /// <param name="result"></param>
+        /// <param name="isNotFound"></param>
         /// <returns></returns>
-        protected ActionResult CustomResponse(object result = null, bool isNotFound = false)
+        protected ActionResult CustomResponse(object? result = null, bool isNotFound = false)
         {
             if (OperacaoValida())
             {

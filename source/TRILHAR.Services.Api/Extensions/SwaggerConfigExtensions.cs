@@ -21,6 +21,7 @@ namespace TRILHAR.Services.Api.Extensions
         /// AddSwagger
         /// </summary>
         /// <param name="services"></param>
+        /// <param name="configuration"></param>
         public static void AddSwagger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHttpContextAccessor();
