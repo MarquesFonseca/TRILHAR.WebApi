@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
@@ -19,6 +20,7 @@ namespace TRILHAR.Services.Api.Controllers
     [AllowAnonymous]
     public class UsuarioController : BaseApiController
     {
+        private readonly IMapper _mapper;
         private readonly ILogger<UsuarioEntity> _logger;
         private readonly IUsuarioService _UsuarioService;
         private readonly IUsuarioRepository _UsuarioRepository;
@@ -27,17 +29,19 @@ namespace TRILHAR.Services.Api.Controllers
         /// Construtor
         /// </summary>
         /// <param name="notificador"></param>
+        /// <param name="mapper"></param>
         /// <param name="logger"></param>
         /// <param name="UsuarioService"></param>
         /// <param name="UsuarioRepository"></param>
-        /// 
         public UsuarioController(
             INotificador notificador,
+            IMapper mapper,
             ILogger<UsuarioEntity> logger,
             IUsuarioService UsuarioService,
             IUsuarioRepository UsuarioRepository
             ) : base(notificador)
         {
+            _mapper = mapper;
             _logger = logger;
             _UsuarioService = UsuarioService;
             _UsuarioRepository = UsuarioRepository;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
@@ -20,6 +21,7 @@ namespace TRILHAR.Services.Api.Controllers
     [AllowAnonymous]
     public class TurmaController : BaseApiController
     {
+        private readonly IMapper _mapper;
         private readonly ILogger<TurmaEntity> _logger;
         private readonly ITurmaService _TurmaService;
         private readonly ITurmaRepository _TurmaRepository;
@@ -28,17 +30,20 @@ namespace TRILHAR.Services.Api.Controllers
         /// Construtor
         /// </summary>
         /// <param name="notificador"></param>
+        /// <param name="mapper"></param>
         /// <param name="logger"></param>
         /// <param name="TurmaService"></param>
         /// <param name="TurmaRepository"></param>
         /// 
         public TurmaController(
             INotificador notificador,
+            IMapper mapper,
             ILogger<TurmaEntity> logger,
             ITurmaService TurmaService,
             ITurmaRepository TurmaRepository
             ) : base(notificador)
         {
+            _mapper = mapper;
             _logger = logger;
             _TurmaService = TurmaService;
             _TurmaRepository = TurmaRepository;
