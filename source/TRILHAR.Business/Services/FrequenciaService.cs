@@ -75,7 +75,9 @@ namespace TRILHAR.Business.Services
             var model = _mapper.Map<FrequenciaInput, FrequenciaEntity>(input);
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
+            
             model.DataAtualizacao = DateTime.Now;
+            
             return await _frequenciaRepository.UpdateAsync(model);
         }
 
@@ -85,8 +87,11 @@ namespace TRILHAR.Business.Services
             foreach (var item in inputs)
             {
                 var model = _mapper.Map<FrequenciaInput, FrequenciaEntity>(item);
+                
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
+                
                 model.DataAtualizacao = DateTime.Now;
+                
                 models.Add(model);
             }
 

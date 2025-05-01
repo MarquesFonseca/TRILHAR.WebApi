@@ -11,13 +11,26 @@ using System.Linq;
 namespace TRILHAR.Services.Api.Attributes
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    
+
     public class TRILHARAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public bool PermitirAcessoExterno { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public TRILHARAuthorizeAttribute()
         {
         }
 
+        /// <summary>
+        /// OnAuthorization
+        /// </summary>
+        /// <param name="context"></param>
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var allowAnonymous = context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();

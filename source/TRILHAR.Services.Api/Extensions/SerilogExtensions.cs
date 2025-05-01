@@ -6,8 +6,15 @@ using System.Linq;
 
 namespace TRILHAR.Services.Api.Extensions
 {
+    /// <summary>
+    /// SerilogExtensions
+    /// </summary>
     public static class SerilogExtensions
     {
+        /// <summary>
+        /// AddSerilog
+        /// </summary>
+        /// <param name="configuration"></param>
         public static void AddSerilog(IConfiguration configuration)
         {
             Log.Logger = new LoggerConfiguration()
