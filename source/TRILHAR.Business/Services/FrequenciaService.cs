@@ -228,7 +228,12 @@ namespace TRILHAR.Business.Services
             };
 
             var listaFrequecias = await _vFrequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
-
+            listaFrequecias
+                .OrderByDescending(freq => freq.DataFrequencia)
+                .OrderByDescending(turma => turma.TurmaIdadeInicialAluno)
+                .ThenBy(turma => turma.TurmaSemestreLetivo)
+                .ThenBy(turma => turma.TurmaAnoLetivo)
+                .ThenBy(aluno => aluno.AlunoNomeCrianca);
             var resultado = _mapper.Map<IEnumerable<VFrequenciaOutput>>(listaFrequecias);
 
             return resultado.Any() ? resultado : null;
