@@ -12,7 +12,7 @@ namespace TRILHAR.Business.Services
     public class TurmaService : ServiceGenericsBase<TurmaEntity>, ITurmaService
     {
         private readonly IObjectExtensionGenerics<TurmaEntity> _objectExtensionGenerics;
-        private readonly IAlunoRepository _alunoRepository;
+        private readonly ICriancaRepository _alunoRepository;
         private readonly ITurmaRepository _turmaRepository;
         private readonly IMatriculaRepository _matriculaAlunoTurmaRepository;
         private readonly IVMatriculaRepository _vMatriculaAlunoTurmaRepository;
@@ -22,7 +22,7 @@ namespace TRILHAR.Business.Services
         public TurmaService(
             INotificador notificador,
             IObjectExtensionGenerics<TurmaEntity> objectExtensionGenerics,
-            IAlunoRepository alunoRepository,
+            ICriancaRepository alunoRepository,
             ITurmaRepository turmaRepository,
             IMatriculaRepository matriculaAlunoTurmaRepository,
             IVMatriculaRepository vMatriculaAlunoTurmaRepository,

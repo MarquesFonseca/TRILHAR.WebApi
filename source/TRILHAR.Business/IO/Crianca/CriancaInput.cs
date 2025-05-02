@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TRILHAR.Business.Entities;
+﻿using TRILHAR.Business.Entities;
 
-namespace TRILHAR.Business.IO.Aluno
+namespace TRILHAR.Business.IO.Crianca
 {
-    public class AlunoInput : AlunoEntity
+    public class CriancaInput : CriancaEntity
     {
         public DateTime? DataNascimentoInicial { get; set; }
         public DateTime? DataNascimentoFinal { get; set; }

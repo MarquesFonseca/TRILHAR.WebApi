@@ -26,9 +26,9 @@ namespace TRILHAR.CrossCutting.IoC.Config
             services.AddScoped<IUsuarioAtual, UsuarioAtual>();
             services.AddScoped<INotificador, Notificador>();
             
-            services.AddScoped<IObjectExtensionGenerics<AlunoEntity>, ObjectExtensionGenerics<AlunoEntity>>();
-            services.AddScoped<IAlunoService, AlunoService>();
-            services.AddScoped<IAlunoRepository, AlunoRepository>();
+            services.AddScoped<IObjectExtensionGenerics<CriancaEntity>, ObjectExtensionGenerics<CriancaEntity>>();
+            services.AddScoped<ICriancaService, CriancaService>();
+            services.AddScoped<ICriancaRepository, CriancaRepository>();
 
             services.AddScoped<IObjectExtensionGenerics<AptidaoTurmaMatriculaEntity>, ObjectExtensionGenerics<AptidaoTurmaMatriculaEntity>>();
             services.AddScoped<IAptidaoTurmaMatriculaService, AptidaoTurmaMatriculaService>();

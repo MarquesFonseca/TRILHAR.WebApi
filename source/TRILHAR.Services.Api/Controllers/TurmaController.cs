@@ -6,8 +6,6 @@ using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO;
-using TRILHAR.Business.IO.Aluno;
-using TRILHAR.Business.IO.Permissao;
 using TRILHAR.Business.IO.Turma;
 using TRILHAR.Business.Pagination;
 

@@ -1,18 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TRILHAR.Business.Entities;
 using TRILHAR.Infra.Data.EF;
 
 namespace TRILHAR.Infra.Data.Mappings
 {
     [DbContext(typeof(TrilharContext))]
-    public class AlunoMap : IEntityTypeConfiguration<AlunoEntity>
+    public class CriancaMap : IEntityTypeConfiguration<CriancaEntity>
     {
-        public void Configure(EntityTypeBuilder<AlunoEntity> builder)
+        public void Configure(EntityTypeBuilder<CriancaEntity> builder)
         {
             var aplicacao = new Aplicacao();
 

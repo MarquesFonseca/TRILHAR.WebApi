@@ -5,16 +5,14 @@ using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO;
-using TRILHAR.Business.IO.Aluno;
 using TRILHAR.Business.IO.Matricula;
-using TRILHAR.Business.IO.Turma;
 
 namespace TRILHAR.Business.Services
 {
     public class MatriculaService : ServiceGenericsBase<MatriculaEntity>, IMatriculaService
     {
         private readonly IObjectExtensionGenerics<MatriculaEntity> _objectExtensionGenerics;
-        private readonly IAlunoRepository _alunoRepository;
+        private readonly ICriancaRepository _alunoRepository;
         private readonly ITurmaRepository _turmaRepository;
         private readonly IMatriculaRepository _matriculaRepository;
         private readonly IVMatriculaRepository _vMatriculaRepository;
@@ -24,7 +22,7 @@ namespace TRILHAR.Business.Services
         public MatriculaService(
             INotificador notificador,
             IObjectExtensionGenerics<MatriculaEntity> objectExtensionGenerics,
-            IAlunoRepository alunoRepository,
+            ICriancaRepository alunoRepository,
             ITurmaRepository turmaRepository,
             IMatriculaRepository matriculaRepository,
             IVMatriculaRepository vMatriculaRepository,

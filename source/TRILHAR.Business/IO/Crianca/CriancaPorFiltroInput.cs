@@ -1,6 +1,6 @@
-﻿namespace TRILHAR.Business.IO.Aluno
+﻿namespace TRILHAR.Business.IO.Crianca
 {
-    public class AlunoPorFiltroInput
+    public class CriancaPorFiltroInput
     {
         public int? Codigo { get; set; } = 0;
         public string? CodigoCadastro { get; set; }

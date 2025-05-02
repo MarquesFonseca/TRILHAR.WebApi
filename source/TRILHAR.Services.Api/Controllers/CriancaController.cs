@@ -5,7 +5,7 @@ using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
-using TRILHAR.Business.IO.Aluno;
+using TRILHAR.Business.IO.Crianca;
 using TRILHAR.Business.Pagination;
 
 namespace TRILHAR.Services.Api.Controllers
@@ -15,15 +15,15 @@ namespace TRILHAR.Services.Api.Controllers
     /// Contém todos os métodos dessa funcionalidade.
     /// </summary>
     [ApiController]
-    [Route("api/alunos")]
+    [Route("api/criancas")]
     [Produces("application/json")]
     [AllowAnonymous]
-    public class AlunoController : BaseApiController
+    public class CriancaController : BaseApiController
     {
         private readonly IMapper _mapper;
-        private readonly ILogger<AlunoEntity> _logger;
-        private readonly IAlunoService _alunoService;
-        private readonly IAlunoRepository _alunoRepository;
+        private readonly ILogger<CriancaEntity> _logger;
+        private readonly ICriancaService _alunoService;
+        private readonly ICriancaRepository _alunoRepository;
         private readonly IMatriculaService _matriculaService;
 
         /// <summary>
@@ -36,12 +36,12 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="alunoRepository"></param>
         /// <param name="matriculaService"></param>
         /// 
-        public AlunoController(
+        public CriancaController(
             INotificador notificador, 
             IMapper mapper, 
-            ILogger<AlunoEntity> logger, 
-            IAlunoService alunoService, 
-            IAlunoRepository alunoRepository, 
+            ILogger<CriancaEntity> logger, 
+            ICriancaService alunoService, 
+            ICriancaRepository alunoRepository, 
             IMatriculaService matriculaService) : base(notificador)
         {
             _mapper = mapper;
@@ -56,7 +56,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <returns>Retorna todos alunos</returns>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<AlunoOutput>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CriancaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
@@ -69,7 +69,7 @@ namespace TRILHAR.Services.Api.Controllers
                 NotificarErro("Registro não encontrado.");
                 return CustomResponse(isNotFound: true);
             }
-            var alunoOutput = _mapper.Map<IEnumerable<AlunoOutput>>(resultado);
+            var alunoOutput = _mapper.Map<IEnumerable<CriancaOutput>>(resultado);
             return CustomResponse(alunoOutput);
         }
 
@@ -79,7 +79,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="id">Informe o id.</param>
         /// <returns>Retorna aluno</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AlunoOutput))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriancaOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
@@ -94,7 +94,7 @@ namespace TRILHAR.Services.Api.Controllers
             }
 
             var listaMatriculas = await _matriculaService.ListarPorCodigoAluno(resultado.Codigo);
-            var alunoOutput = _mapper.Map<AlunoOutput>(resultado);
+            var alunoOutput = _mapper.Map<CriancaOutput>(resultado);
             alunoOutput.Matricula = listaMatriculas?.FirstOrDefault(x => x.Ativo);
             return CustomResponse(alunoOutput);
         }
@@ -104,13 +104,13 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <returns>Retorna todos alunos</returns>
         [HttpGet("filtro")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<AlunoOutput>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<CriancaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> ListarPorFiltro([FromQuery] AlunoPorFiltroInput input)
+        public async Task<IActionResult> ListarPorFiltro([FromQuery] CriancaPorFiltroInput input)
         {
-            var alunoInput = _mapper.Map<AlunoInput>(input);
+            var alunoInput = _mapper.Map<CriancaInput>(input);
             var resultado = await _alunoService.GetByListarPorFiltroPaginacaoAsync(alunoInput);
 
             if (resultado == null || !resultado.Dados.Any())
@@ -129,7 +129,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="codigo">Informe o código cadastro.</param>
         /// <returns></returns>
         [HttpGet("codigo-cadastro/{codigo}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AlunoOutput))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriancaOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
@@ -157,7 +157,7 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> CreateAlunoAsync([FromBody] AlunoInput registro)
+        public async Task<IActionResult> CreateAlunoAsync([FromBody] CriancaInput registro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -178,7 +178,7 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> UpdateAlunoAsync(int id, [FromBody] AlunoInput input)
+        public async Task<IActionResult> UpdateAlunoAsync(int id, [FromBody] CriancaInput input)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 

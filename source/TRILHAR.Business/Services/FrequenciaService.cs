@@ -14,7 +14,7 @@ namespace TRILHAR.Business.Services
     public class FrequenciaService : ServiceGenericsBase<FrequenciaEntity>, IFrequenciaService
     {
         private readonly IObjectExtensionGenerics<FrequenciaEntity> _objectExtensionGenerics;
-        private readonly IAlunoRepository _alunoRepository;
+        private readonly ICriancaRepository _alunoRepository;
         private readonly ITurmaRepository _turmaRepository;
         private readonly IMatriculaService _matriculaService;
         private readonly IMatriculaRepository _matriculaRepository;
@@ -27,7 +27,7 @@ namespace TRILHAR.Business.Services
         public FrequenciaService(
             INotificador notificador,
             IObjectExtensionGenerics<FrequenciaEntity> objectExtensionGenerics,
-            IAlunoRepository alunoRepository,
+            ICriancaRepository alunoRepository,
             ITurmaRepository turmaRepository,
             IMatriculaService matriculaService,
             IMatriculaRepository matriculaRepository,
