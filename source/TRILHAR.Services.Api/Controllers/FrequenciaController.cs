@@ -1,17 +1,12 @@
 ﻿using AutoMapper;
-using ElmahCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
-using TRILHAR.Business.IO;
-using TRILHAR.Business.IO.Aluno;
 using TRILHAR.Business.IO.Frequencia;
 using TRILHAR.Business.IO.Matricula;
-using TRILHAR.Business.Notificacoes;
-using TRILHAR.Business.Pagination;
 
 namespace TRILHAR.Services.Api.Controllers
 {
@@ -30,6 +25,7 @@ namespace TRILHAR.Services.Api.Controllers
         private readonly ILogger<FrequenciaEntity> _logger;
         private readonly IFrequenciaService _frequenciaService;
         private readonly IFrequenciaRepository _frequenciaRepository;
+        private readonly IVFrequenciaService _vFrequenciaService;
         private readonly IVFrequenciaRepository _vFrequenciaRepository;
 
         /// <summary>
@@ -40,6 +36,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="logger"></param>
         /// <param name="frequenciaService"></param>
         /// <param name="frequenciaRepository"></param>
+        /// <param name="vFrequenciaService"></param>
         /// <param name="vFrequenciaRepository"></param>
         public FrequenciaController(
             INotificador notificador,
@@ -47,6 +44,7 @@ namespace TRILHAR.Services.Api.Controllers
             ILogger<FrequenciaEntity> logger,
             IFrequenciaService frequenciaService,
             IFrequenciaRepository frequenciaRepository,
+            IVFrequenciaService vFrequenciaService,
             IVFrequenciaRepository vFrequenciaRepository
             ) : base(notificador)
         {
@@ -55,6 +53,7 @@ namespace TRILHAR.Services.Api.Controllers
             _logger = logger;
             _frequenciaService = frequenciaService;
             _frequenciaRepository = frequenciaRepository;
+            _vFrequenciaService = vFrequenciaService;
             _vFrequenciaRepository = vFrequenciaRepository;
         }
 
@@ -62,7 +61,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// Retorna todos os Registro
         /// </summary>
         /// <returns>Retorna todos Frequencias</returns>
-        [HttpGet]
+        [HttpGet]//1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FrequenciaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -85,15 +84,17 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <param name="id">Informe o id.</param>
         /// <returns>Retorna Frequencia</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]//2
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FrequenciaOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
             var resultado = await _frequenciaRepository.GetByCodigoAsync(id);
-            if(resultado == null)
+            if (resultado == null)
             {
                 _logger.LogWarning("Frequência com ID {Id} não encontrado.", id);
                 NotificarErro("Registro não encontrado.");
@@ -126,20 +127,20 @@ namespace TRILHAR.Services.Api.Controllers
         //}
 
         /// <summary>
-        /// Retorna todas as frequências dos alunos para o dia informado
+        /// Retorna todas as frequências [Presentes + Ausentes] para o dia informado
         /// </summary>
         /// <param name="data">Informe a Data da Frequência</param>
-        /// <returns></returns>
-        [HttpGet("alunos")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<dynamic>))]
+        /// <returns>Frequencias Presentes + Frequencias Ausentes</returns>
+        [HttpGet("data/{data}")]//3
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VFrequenciaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> GetAlunosByDateAsync([FromQuery] DateTime data)
+        public async Task<IActionResult> GetByDateAsync([FromRoute] DateTime data)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _frequenciaService.GetAlunosByDateAsync(data);
+            var resultado = await _frequenciaService.GetByDateAsync(data);//SPFrequenciasPorData @DataFrequencia
             if (resultado == null || !resultado.Any())
             {
                 NotificarErro("Registro não encontrado!");
@@ -153,16 +154,16 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <param name="data">Informe a Data da Frequência</param>
         /// <returns></returns>
-        [HttpGet("turmas/agrupadas")]
+        [HttpGet("turmas/agrupadas/data/{data}")]//4
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FrequenciasTurmasAgrupadasOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> GetTurmasAgrupadasByDateAsync([FromQuery] DateTime data)
+        public async Task<IActionResult> GetTurmasAgrupadasByDateAsync([FromRoute] DateTime data)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _frequenciaService.GetTurmasAgrupadasByDateAsync(data);
+            var resultado = await _frequenciaService.GetTurmasAgrupadasByDateAsync(data);//SPFrequenciasTodasTurmasAgrupadasDia @DataFrequencia
             if (resultado == null || !resultado.Any())
             {
                 NotificarErro("Registro não encontrado!");
@@ -171,6 +172,100 @@ namespace TRILHAR.Services.Api.Controllers
             return CustomResponse(resultado);
         }
 
+        /// <summary>
+        /// Retorna todas as frequências [Presentes + Ausentes] das turma para o dia informado
+        /// </summary>
+        /// <param name="codigoTurma"></param>
+        /// <param name="data"></param>
+        /// <returns>Frequencias Presentes + Frequencias Ausentes</returns>
+        [HttpGet("turmas/{codigoTurma}/data/{data}")]//5
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VFrequenciaOutput>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> GetByTurmasAndDateAsync([FromRoute] int codigoTurma, [FromRoute] DateTime data)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var resultado = await _frequenciaService.GetByTurmasAndDateAsync(codigoTurma, data);
+            if (resultado == null || !resultado.Any())
+            {
+                NotificarErro("Registro não encontrado!");
+                return CustomResponse(isNotFound: true);
+            }
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
+        /// Retorna todas as frequências do aluno.
+        /// </summary>
+        /// <param name="codigoAluno"></param>
+        /// <returns></returns>
+        [HttpGet("aluno/{codigoAluno}")]//6
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VFrequenciaOutput>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> GetByAlunoAsync([FromRoute] int codigoAluno)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var resultado = await _frequenciaService.GetByAlunoAsync(codigoAluno);
+            if (resultado == null || !resultado.Any())
+            {
+                NotificarErro("Registro não encontrado!");
+                return CustomResponse(isNotFound: true);
+            }
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
+        /// Retorna todas as frequências da turma.
+        /// </summary>
+        /// <param name="codigoTurma"></param>
+        /// <returns></returns>
+        [HttpGet("turmas/{codigoTurma}")]//7
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VFrequenciaOutput>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> GetByTurmaAsync([FromRoute] int codigoTurma)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var resultado = await _frequenciaService.GetByTurmaAsync(codigoTurma);
+            if (resultado == null || !resultado.Any())
+            {
+                NotificarErro("Registro não encontrado!");
+                return CustomResponse(isNotFound: true);
+            }
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
+        /// Retorna todas as frequências do aluno e da turma.
+        /// </summary>
+        /// <param name="codigoAluno"></param>
+        /// <param name="codigoTurma"></param>
+        /// <returns></returns>
+        [HttpGet("alunos/{codigoAluno}/turmas/{codigoTurma}")]//8
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VFrequenciaOutput>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> GetByAlunoAndTurmaAsync([FromRoute] int codigoAluno, [FromRoute] int codigoTurma)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var resultado = await _frequenciaService.GetByAlunoAndTurmaAsync(codigoAluno, codigoTurma);
+            if (resultado == null || !resultado.Any())
+            {
+                NotificarErro("Registro não encontrado!");
+                return CustomResponse(isNotFound: true);
+            }
+            return CustomResponse(resultado);
+        }
+        
         /// <summary>
         /// Incluir novo Registro
         /// </summary>
