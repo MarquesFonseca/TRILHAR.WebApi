@@ -5,6 +5,7 @@ namespace TRILHAR.Business.Entities
     [Table("VFrequenciaAlunoTurma")]
     public class VFrequenciaEntity : EntityBase
     {
+        [Key]
         public int Codigo { get; set; }
         public DateTime? DataFrequencia { get; set; }
         public int CodigoAluno { get; set; }

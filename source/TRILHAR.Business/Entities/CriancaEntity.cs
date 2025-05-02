@@ -1,10 +1,9 @@
-﻿using System;
-using Dapper.Contrib.Extensions;
+﻿using Dapper.Contrib.Extensions;
 
 namespace TRILHAR.Business.Entities
 {
     [Table("Aluno")]
-    public class AlunoEntity : EntityBase
+    public class CriancaEntity : EntityBase
     {
         [Key]
         public int Codigo { get; set; }

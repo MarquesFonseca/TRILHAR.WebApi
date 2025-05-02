@@ -8,7 +8,7 @@ namespace TRILHAR.Business.AutoMapper
         {
             return new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new AlunoMapper());
+                cfg.AddProfile(new CriancaMapper());
                 cfg.AddProfile(new AutoMapperProfile());
                 cfg.AddProfile(new FrequenciaMapper());
                 cfg.AddProfile(new MatriculaMapper());

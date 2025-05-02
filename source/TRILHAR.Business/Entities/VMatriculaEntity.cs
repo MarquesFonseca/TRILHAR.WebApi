@@ -5,6 +5,7 @@ namespace TRILHAR.Business.Entities
     [Table("VMatriculaAlunoTurma")]
     public class VMatriculaEntity : EntityBase
     {
+        [Key]
         public int Codigo { get; set; }
         public int CodigoAluno { get; set; }
         public int CodigoTurma { get; set; }

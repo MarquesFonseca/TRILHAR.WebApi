@@ -12,7 +12,7 @@ namespace TRILHAR.Business.Services
     public class VMatriculaService : ServiceGenericsBase<VMatriculaEntity>, IVMatriculaService
     {
         private readonly IObjectExtensionGenerics<VMatriculaEntity> _objectExtensionGenerics;
-        private readonly IAlunoRepository _alunoRepository;
+        private readonly ICriancaRepository _alunoRepository;
         private readonly ITurmaRepository _turmaRepository;
         private readonly IMatriculaRepository _matriculaRepository;
         private readonly IVMatriculaRepository _vMatriculaRepository;
@@ -22,7 +22,7 @@ namespace TRILHAR.Business.Services
         public VMatriculaService(
             INotificador notificador,
             IObjectExtensionGenerics<VMatriculaEntity> objectExtensionGenerics,
-            IAlunoRepository alunoRepository,
+            ICriancaRepository alunoRepository,
             ITurmaRepository turmaRepository,
             IMatriculaRepository matriculaRepository,
             IVMatriculaRepository vMatriculaRepository,

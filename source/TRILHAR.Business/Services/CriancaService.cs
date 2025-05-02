@@ -6,16 +6,15 @@ using TRILHAR.Business.Interfaces;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
-using TRILHAR.Business.IO.Aluno;
+using TRILHAR.Business.IO.Crianca;
 using TRILHAR.Business.Pagination;
-
 
 namespace TRILHAR.Business.Services
 {
-    public class AlunoService : ServiceGenericsBase<AlunoEntity>, IAlunoService
+    public class CriancaService : ServiceGenericsBase<CriancaEntity>, ICriancaService
     {
-        private readonly IObjectExtensionGenerics<AlunoEntity> _objectExtensionGenerics;
-        private readonly IAlunoRepository _alunoRepository;
+        private readonly IObjectExtensionGenerics<CriancaEntity> _objectExtensionGenerics;
+        private readonly ICriancaRepository _alunoRepository;
         private readonly ITurmaRepository _turmaRepository;
         private readonly IMatriculaRepository _matriculaRepository;
         private readonly IMatriculaService _matriculaService;
@@ -23,10 +22,10 @@ namespace TRILHAR.Business.Services
         private readonly IFrequenciaRepository _frequenciaRepository;
         private readonly IVFrequenciaRepository _vFrequenciaRepository;
 
-        public AlunoService(
+        public CriancaService(
             INotificador notificador,
-            IObjectExtensionGenerics<AlunoEntity> objectExtensionGenerics,
-            IAlunoRepository alunoRepository,
+            IObjectExtensionGenerics<CriancaEntity> objectExtensionGenerics,
+            ICriancaRepository alunoRepository,
             ITurmaRepository turmaRepository,
             IMatriculaRepository matriculaRepository,
             IMatriculaService matriculaService,
@@ -45,7 +44,7 @@ namespace TRILHAR.Business.Services
             _vFrequenciaRepository = vFrequenciaRepository;
         }
 
-        public async Task<AlunoOutput?> GetByCodigoCadastroAsync(string codigoCadastro)
+        public async Task<CriancaOutput?> GetByCodigoCadastroAsync(string codigoCadastro)
         {
             var model = await _alunoRepository.GetByCodigoCadastroAsync(codigoCadastro);
             if (model == null)
@@ -53,7 +52,7 @@ namespace TRILHAR.Business.Services
                 return null;
             }
 
-            var retorno = _mapper.Map<AlunoOutput>(model);
+            var retorno = _mapper.Map<CriancaOutput>(model);
 
             // Obter matrículas e selecionar a ativa
             var matriculas = await _matriculaService.ListarPorCodigoAluno(model.Codigo);
@@ -62,7 +61,7 @@ namespace TRILHAR.Business.Services
             return retorno;
         }
 
-        public async Task<PagedResult<AlunoOutput>> GetByListarPorFiltroPaginacaoAsync(AlunoInput input)
+        public async Task<PagedResult<CriancaOutput>> GetByListarPorFiltroPaginacaoAsync(CriancaInput input)
         {
             var query = await _alunoRepository.GetAllAsync();
             query = query.OrderByDescending(x => x.CodigoCadastro);
@@ -181,16 +180,16 @@ namespace TRILHAR.Business.Services
             }
 
             var listaSemDuplicidade = query.Distinct(
-                new GenericComparer<AlunoEntity>(
+                new GenericComparer<CriancaEntity>(
                     (x, y) => x.Codigo == y.Codigo && x.CodigoCadastro == y.CodigoCadastro,
                     obj => HashCode.Combine(obj.Codigo, obj.CodigoCadastro)
                 )
             ).ToList();
 
             var retorno = _alunoRepository.RetornaPagedResultAsync(listaSemDuplicidade, input.page, input.pageSize, input.isPaginacao);
-            var retornoAlunoOutput = new PagedResult<AlunoOutput>()
+            var retornoAlunoOutput = new PagedResult<CriancaOutput>()
             {
-                Dados = _mapper.Map<List<AlunoOutput>>(retorno.Dados),
+                Dados = _mapper.Map<List<CriancaOutput>>(retorno.Dados),
                 PaginaAtual = retorno.PaginaAtual,
                 TamanhoPagina = retorno.TamanhoPagina,
                 TotalItens = retorno.TotalItens,
@@ -208,9 +207,9 @@ namespace TRILHAR.Business.Services
             return retornoAlunoOutput;
         }
 
-        public async Task<int> InsertAsync(AlunoInput entity)
+        public async Task<int> InsertAsync(CriancaInput entity)
         {
-            var model = _mapper.Map<AlunoInput, AlunoEntity>(entity);
+            var model = _mapper.Map<CriancaInput, CriancaEntity>(entity);
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
             
@@ -227,12 +226,12 @@ namespace TRILHAR.Business.Services
             return await _alunoRepository.InsertAsync(model);
         }
 
-        public async Task<int> InsertAsync(IEnumerable<AlunoInput> list)
+        public async Task<int> InsertAsync(IEnumerable<CriancaInput> list)
         {
-            var models = new List<AlunoEntity>();
+            var models = new List<CriancaEntity>();
             foreach (var item in list)
             {
-                var model = _mapper.Map<AlunoInput, AlunoEntity>(item);
+                var model = _mapper.Map<CriancaInput, CriancaEntity>(item);
                 
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
                 
@@ -252,9 +251,9 @@ namespace TRILHAR.Business.Services
             return await _alunoRepository.InsertAsync(models);
         }
 
-        public async Task<bool> UpdateAsync(AlunoInput entity)
+        public async Task<bool> UpdateAsync(CriancaInput entity)
         {
-            var model = _mapper.Map<AlunoInput, AlunoEntity>(entity);
+            var model = _mapper.Map<CriancaInput, CriancaEntity>(entity);
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
 
@@ -267,12 +266,12 @@ namespace TRILHAR.Business.Services
             return await _alunoRepository.UpdateAsync(model);
         }
 
-        public async Task<bool> UpdateAsync(IEnumerable<AlunoInput> list)
+        public async Task<bool> UpdateAsync(IEnumerable<CriancaInput> list)
         {
-            var models = new List<AlunoEntity>();
+            var models = new List<CriancaEntity>();
             foreach (var item in list)
             {
-                var model = _mapper.Map<AlunoInput, AlunoEntity>(item);
+                var model = _mapper.Map<CriancaInput, CriancaEntity>(item);
                 
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
 
@@ -288,7 +287,7 @@ namespace TRILHAR.Business.Services
             return await _alunoRepository.UpdateAsync(models);
         }
 
-        private AlunoEntity TratamentoCamposComunsInsertUpdate(AlunoEntity model)
+        private CriancaEntity TratamentoCamposComunsInsertUpdate(CriancaEntity model)
         {
             if (model.NomeCrianca != null)
             {

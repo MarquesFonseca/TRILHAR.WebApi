@@ -5,12 +5,7 @@ using TRILHAR.Business.Entities;
 using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
-using TRILHAR.Business.IO;
-using TRILHAR.Business.IO.Aluno;
 using TRILHAR.Business.IO.Matricula;
-using TRILHAR.Business.IO.Turma;
-using TRILHAR.Business.Pagination;
-using TRILHAR.Infra.Data.Repositories;
 
 namespace TRILHAR.Services.Api.Controllers
 {
