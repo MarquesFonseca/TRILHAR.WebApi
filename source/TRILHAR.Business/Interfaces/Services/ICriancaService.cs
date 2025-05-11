@@ -7,6 +7,7 @@ namespace TRILHAR.Business.Interfaces.Services
 {
     public interface ICriancaService : IServiceGenericsBase<CriancaEntity>
     {
+        Task<CriancaOutput?> GetByCodigoAsync(int codigo);
         Task<CriancaOutput?> GetByCodigoCadastroAsync(string codigoCadastro);
         Task<PagedResult<CriancaOutput>> GetByListarPorFiltroPaginacaoAsync(CriancaInput input);
         Task<int> InsertAsync(CriancaInput entity);
