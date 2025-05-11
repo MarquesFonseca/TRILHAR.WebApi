@@ -44,6 +44,23 @@ namespace TRILHAR.Business.Services
             _vFrequenciaRepository = vFrequenciaRepository;
         }
 
+        public async Task<CriancaOutput?> GetByCodigoAsync(int codigo)
+        {
+            var model = await _alunoRepository.GetByCodigoAsync(codigo);
+            if (model == null)
+            {
+                return null;
+            }
+
+            var retorno = _mapper.Map<CriancaOutput>(model);
+
+            // Obter matrículas e selecionar a ativa
+            var matriculas = await _matriculaService.ListarPorCodigoAluno(retorno.Codigo);
+            retorno.Matricula = matriculas?.FirstOrDefault(x => x.Ativo);
+
+            return retorno;
+        }
+
         public async Task<CriancaOutput?> GetByCodigoCadastroAsync(string codigoCadastro)
         {
             var model = await _alunoRepository.GetByCodigoCadastroAsync(codigoCadastro);
@@ -197,12 +214,12 @@ namespace TRILHAR.Business.Services
             };
 
             //por enquanto não retornar a matricula para não sobregarregar o resultado.
-            //foreach (var item in retornoAlunoOutput.Dados)
-            //{
-            //    // Obter matrículas e selecionar a ativa
-            //    var matriculas = await _matriculaService.ListarPorCodigoAluno(item.Codigo);
-            //    item.Matricula = matriculas?.FirstOrDefault(x => x.Ativo);
-            //}
+            foreach (var item in retornoAlunoOutput.Dados)
+            {
+                // Obter matrículas e selecionar a ativa
+                var matriculas = await _matriculaService.ListarPorCodigoAluno(item.Codigo);
+                item.Matricula = matriculas?.FirstOrDefault(x => x.Ativo);
+            }
 
             return retornoAlunoOutput;
         }

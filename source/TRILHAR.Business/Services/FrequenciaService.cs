@@ -57,7 +57,9 @@ namespace TRILHAR.Business.Services
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
             model.CodigoUsuarioLogado = null;
-            model.DataCadastro = model.DataAtualizacao = DateTime.Now;
+            model.DataCadastro =
+            model.DataAtualizacao =
+            model.DataFrequencia = DateTime.Now;
 
             return await _frequenciaRepository.InsertAsync(model);
         }
@@ -70,7 +72,9 @@ namespace TRILHAR.Business.Services
                 var model = _mapper.Map<FrequenciaInput, FrequenciaEntity>(item);
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
                 model.CodigoUsuarioLogado = null;
-                model.DataCadastro = model.DataAtualizacao = DateTime.Now;
+                model.DataCadastro =
+                model.DataAtualizacao =
+                model.DataFrequencia = DateTime.Now;
                 models.Add(model);
             }
 

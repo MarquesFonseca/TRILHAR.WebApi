@@ -22,8 +22,8 @@ namespace TRILHAR.Services.Api.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ILogger<CriancaEntity> _logger;
-        private readonly ICriancaService _alunoService;
-        private readonly ICriancaRepository _alunoRepository;
+        private readonly ICriancaService _criancaService;
+        private readonly ICriancaRepository _criancaRepository;
         private readonly IMatriculaService _matriculaService;
 
         /// <summary>
@@ -32,22 +32,22 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="notificador"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        /// <param name="alunoService"></param>
-        /// <param name="alunoRepository"></param>
+        /// <param name="criancaService"></param>
+        /// <param name="criancaRepository"></param>
         /// <param name="matriculaService"></param>
         /// 
         public CriancaController(
             INotificador notificador, 
             IMapper mapper, 
             ILogger<CriancaEntity> logger, 
-            ICriancaService alunoService, 
-            ICriancaRepository alunoRepository, 
+            ICriancaService criancaService, 
+            ICriancaRepository criancaRepository, 
             IMatriculaService matriculaService) : base(notificador)
         {
             _mapper = mapper;
             _logger = logger;
-            _alunoService = alunoService;
-            _alunoRepository = alunoRepository;
+            _criancaService = criancaService;
+            _criancaRepository = criancaRepository;
             _matriculaService = matriculaService;
         }
 
@@ -62,7 +62,7 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get()
         {
-            var resultado = await _alunoService.GetAllAsync();
+            var resultado = await _criancaService.GetAllAsync();
             if (resultado == null || !resultado.Any())
             {
                 _logger.LogWarning("Registro não encontrado.");
@@ -85,7 +85,7 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = await _alunoService.GetByCodigoAsync(id);
+            var resultado = await _criancaService.GetByCodigoAsync(id);
             if (resultado == null)
             {
                 _logger.LogWarning("Aluno com ID {Id} não encontrado.", id);
@@ -93,10 +93,7 @@ namespace TRILHAR.Services.Api.Controllers
                 return CustomResponse(isNotFound: true);
             }
 
-            var listaMatriculas = await _matriculaService.ListarPorCodigoAluno(resultado.Codigo);
-            var alunoOutput = _mapper.Map<CriancaOutput>(resultado);
-            alunoOutput.Matricula = listaMatriculas?.FirstOrDefault(x => x.Ativo);
-            return CustomResponse(alunoOutput);
+            return CustomResponse(resultado);
         }
 
         /// <summary>
@@ -111,7 +108,7 @@ namespace TRILHAR.Services.Api.Controllers
         public async Task<IActionResult> ListarPorFiltro([FromQuery] CriancaPorFiltroInput input)
         {
             var alunoInput = _mapper.Map<CriancaInput>(input);
-            var resultado = await _alunoService.GetByListarPorFiltroPaginacaoAsync(alunoInput);
+            var resultado = await _criancaService.GetByListarPorFiltroPaginacaoAsync(alunoInput);
 
             if (resultado == null || !resultado.Dados.Any())
             {
@@ -137,7 +134,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _alunoService.GetByCodigoCadastroAsync(codigo);
+            var resultado = await _criancaService.GetByCodigoCadastroAsync(codigo);
             if (resultado == null)
             {
                 _logger.LogWarning("Aluno com código de cadastro {Id} não encontrado.", codigo);
@@ -154,7 +151,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="registro">Informe o registro</param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriancaOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> CreateAlunoAsync([FromBody] CriancaInput registro)
@@ -162,9 +159,16 @@ namespace TRILHAR.Services.Api.Controllers
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             _logger.LogInformation("Criando novo aluno: {@Aluno}", registro);
-            var resultado = await _alunoService.InsertAsync(registro);
-
-            return CustomResponse(resultado);
+            var resultado = await _criancaService.InsertAsync(registro);
+            if (resultado == 0)
+            {
+                _logger.LogWarning("Aluno não criado. {registro}", registro);
+                NotificarErro("Não foi possível criar um novo registro.");
+                NotificarErro("Registro não encontrado.");
+                return CustomResponse(isNotFound: true);
+            }
+            var criancaOutput = await _criancaService.GetByCodigoAsync(resultado);            
+            return CustomResponse(criancaOutput);
         }
 
         /// <summary>
@@ -182,7 +186,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var reg = await _alunoRepository.GetByCodigoAsync(id);
+            var reg = await _criancaRepository.GetByCodigoAsync(id);
             if (reg == null)
             {
                 _logger.LogWarning("Tentativa de atualização para aluno ID {Id}, mas não encontrado.", id);
@@ -193,7 +197,7 @@ namespace TRILHAR.Services.Api.Controllers
             input.DataCadastro = reg.DataCadastro;
 
             _logger.LogInformation("Atualizando aluno ID {Id}: {@Input}", id, input);
-            var resultado = await _alunoService.UpdateAsync(input);
+            var resultado = await _criancaService.UpdateAsync(input);
             return CustomResponse(resultado);
         }
     }
