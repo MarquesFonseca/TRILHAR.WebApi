@@ -244,29 +244,39 @@ namespace TRILHAR.Services.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> UpdateMatriculaAsync(int id, [FromBody] MatriculaInput input)
         {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
+            if (!ModelState.IsValid) return CustomResponse(ModelState);            
 
-            var listaMatriculasAluno = await _matriculaService.ListarPorCodigoAluno(id);
-
-            //desativa todas as matriculas do aluno que estão ativas
-            foreach (var item in listaMatriculasAluno)
+            var listaMatriculasAluno = await _matriculaService.ListarPorCodigoAluno(input.CodigoAluno);
+            if (listaMatriculasAluno != null)
             {
-                if (item.Ativo == true)
+                //desativa todas as matriculas do aluno que estão ativas
+                foreach (var item in listaMatriculasAluno)
                 {
-                    var itemUpdate = _mapper.Map<MatriculaInput>(item);
-                    itemUpdate.Ativo = false;
-                    itemUpdate.DataAtualizacao = DateTime.Now;
-                    await _matriculaService.UpdateAsync(itemUpdate);
-                }
+                    if (item.Ativo == true)
+                    {
+                        var itemUpdate = _mapper.Map<MatriculaInput>(item);
+                        itemUpdate.Ativo = false;
+                        itemUpdate.DataAtualizacao = DateTime.Now;
+                        await _matriculaService.UpdateAsync(itemUpdate);
+                    }
 
-                //antes de desativar, ver se possue frequencia... se não houver nenhuma apagar a matricula ao inves de alterar para inativo
-                var freqAlunoTurma = await _frequenciaService.GetByAlunoAndTurmaAsync(input.CodigoAluno, item.CodigoTurma);
-                if (freqAlunoTurma == null || !freqAlunoTurma.Any())
-                {
-                    //se não existir nenhuma frequencia remove a matricula
-                    var itemDelete = _mapper.Map<MatriculaEntity>(item);
-                    await _matriculaRepository.DeleteAsync(itemDelete);
+                    //antes de desativar, ver se possue frequencia... se não houver nenhuma apagar a matricula ao inves de alterar para inativo
+                    var freqAlunoTurma = await _frequenciaService.GetByAlunoAndTurmaAsync(input.CodigoAluno, item.CodigoTurma);
+                    if (freqAlunoTurma == null || !freqAlunoTurma.Any(x => x.Presenca == true))
+                    {
+                        //se não existir nenhuma frequencia remove a matricula
+                        var itemDelete = _mapper.Map<MatriculaEntity>(item);
+                        await _matriculaRepository.DeleteAsync(itemDelete);
+                    }
                 }
+            }
+
+            if (input.CodigoTurma == 0)
+            {
+                //retornar pois não foi selecionado a turma portanto o usuario que deixar sem matricula. 
+                //como já desativou todas acima não existe matricula ativa no momento. 
+                //retornar...
+                return CustomResponse(true);
             }
 
             var listaMatriculasAlunoTurma = await _matriculaService.ListarPorCodigoAlunoCodigoTurma(input.CodigoAluno, input.CodigoTurma);
@@ -277,8 +287,8 @@ namespace TRILHAR.Services.Api.Controllers
                     var itemUpdate = _mapper.Map<MatriculaInput>(item);
                     itemUpdate.Ativo = true;
                     itemUpdate.DataAtualizacao = DateTime.Now;
-                    await _matriculaService.UpdateAsync(itemUpdate);
-                    return CustomResponse(true);
+                    var retorno = await _matriculaService.UpdateAsync(itemUpdate);
+                    return CustomResponse(retorno);
                 }
             }
             else
@@ -290,8 +300,8 @@ namespace TRILHAR.Services.Api.Controllers
                 input.Ativo = true;
                 input.CodigoUsuarioLogado = null;
                 input.DataAtualizacao = input.DataCadastro = DateTime.Now;
-                await _matriculaService.InsertAsync(input);
-                return CustomResponse(true);
+                var retorno = await _matriculaService.InsertAsync(input);
+                return CustomResponse(retorno);
             }
 
             return CustomResponse(false);
