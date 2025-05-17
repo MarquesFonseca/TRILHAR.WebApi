@@ -4,21 +4,10 @@ on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 jobs:
-  cleanup-artifacts:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Limpar artefatos antigos
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: publish  # Nome do artefato a ser excluído
-          failOnError: false
-          
-  build:
-    needs: cleanup-artifacts  # Executar após a limpeza
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -45,31 +34,14 @@ jobs:
       - name: Criar app_offline.htm temporariamente
         run: echo "<h1>Aplica&ccedil;&atilde;o temporariamente indispon&iacute;vel para manuten&ccedil;&atilde;o.</h1>" > ./source/TRILHAR.Services.Api/publish/app_offline.htm
 
-      - name: Subindo artefatos
-        uses: actions/upload-artifact@v4
-        with:
-          name: publish
-          path: ./source/TRILHAR.Services.Api/publish
-          retention-days: 3  # Opcional: limita a retenção a 3 dias
-
-  ftp-deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Baixando artefatos
-        uses: actions/download-artifact@v4
-        with:
-          name: publish
-          path: ./artifact
-
+      # Deploy direto via FTP sem criar artefato
       - name: Deploy com aplicação offline
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./artifact/
+          local-dir: ./source/TRILHAR.Services.Api/publish/
           server-dir: httpdocs/webapp/
           exclude: |
             **/*.log
@@ -77,7 +49,7 @@ jobs:
           retry-delay: 30
 
       - name: Remover app_offline.htm (reativar site)
-        run: rm ./artifact/app_offline.htm
+        run: rm ./source/TRILHAR.Services.Api/publish/app_offline.htm
 
       - name: Reenviar para remover o app_offline.htm do servidor
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -85,7 +57,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./artifact/
+          local-dir: ./source/TRILHAR.Services.Api/publish/
           server-dir: httpdocs/webapp/
           exclude: |
             **/*.log
