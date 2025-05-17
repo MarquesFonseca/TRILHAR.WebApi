@@ -51,33 +51,6 @@ namespace TRILHAR.Services.Api.Controllers
             _matriculaService = matriculaService;
         }
 
-
-        /// <summary>
-        /// Retorna o Registro por codigo
-        /// </summary>
-        /// <param name="id">Informe o id.</param>
-        /// <returns>Retorna aluno</returns>
-        [HttpGet("teste-novo/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriancaOutput))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Getteste(int id)
-        {
-            var resultado = await _criancaService.GetByCodigoAsync(id);
-            if (resultado == null)
-            {
-                _logger.LogWarning("Aluno com ID {Id} não encontrado.", id);
-                NotificarErro("Registro não encontrado.");
-                return CustomResponse(isNotFound: true);
-            }
-
-            return CustomResponse(resultado);
-        }
-
-
-
-
         /// <summary>
         /// Retorna todos os Registro
         /// </summary>
