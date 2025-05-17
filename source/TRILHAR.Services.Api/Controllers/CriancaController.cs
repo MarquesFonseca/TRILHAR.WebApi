@@ -57,7 +57,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <param name="id">Informe o id.</param>
         /// <returns>Retorna aluno</returns>
-        [HttpGet("teste/{id}")]
+        [HttpGet("teste-novo/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriancaOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
