@@ -8,7 +8,17 @@ on:
   workflow_dispatch:
 
 jobs:
+  cleanup-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Limpar artefatos antigos
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          name: publish  # Nome do artefato a ser excluído
+          failOnError: false
+          
   build:
+    needs: cleanup-artifacts  # Executar após a limpeza
     runs-on: ubuntu-latest
 
     steps:
@@ -40,6 +50,7 @@ jobs:
         with:
           name: publish
           path: ./source/TRILHAR.Services.Api/publish
+          retention-days: 3  # Opcional: limita a retenção a 3 dias
 
   ftp-deploy:
     needs: build
