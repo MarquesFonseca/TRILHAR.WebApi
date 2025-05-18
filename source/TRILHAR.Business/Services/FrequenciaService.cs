@@ -208,13 +208,8 @@ namespace TRILHAR.Business.Services
             var listaFrequecias = new List<VFrequenciaEntity>();
             listaFrequecias.AddRange(listaFrequenciasPresentes);
             listaFrequecias.AddRange(listaFrequenciasAusentes);
-            listaFrequecias
-                .OrderByDescending(freq => freq.DataFrequencia)
-                .OrderByDescending(turma => turma.TurmaIdadeInicialAluno)
-                .ThenBy(turma => turma.TurmaSemestreLetivo)
-                .ThenBy(turma => turma.TurmaAnoLetivo)
-                .ThenBy(aluno => aluno.AlunoNomeCrianca);
-            var resultado = _mapper.Map<IEnumerable<VFrequenciaOutput>>(listaFrequecias);
+            var listaFrequeciasOrdenada = listaFrequecias.OrderByDescending(freq => freq.DataFrequencia).ToList();
+            var resultado = _mapper.Map<IEnumerable<VFrequenciaOutput>>(listaFrequeciasOrdenada);
 
             return resultado.Any() ? resultado : null;
         }        
