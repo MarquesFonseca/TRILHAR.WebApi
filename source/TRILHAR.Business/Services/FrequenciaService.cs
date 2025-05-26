@@ -8,6 +8,7 @@ using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO;
 using TRILHAR.Business.IO.Frequencia;
 using TRILHAR.Business.IO.Matricula;
+using TRILHAR.Business.Extensions;
 
 namespace TRILHAR.Business.Services
 {
@@ -178,6 +179,10 @@ namespace TRILHAR.Business.Services
                 TurmaIdadeFinalAlunoFormatada = x.TurmaIdadeFinalAluno.ToShortDateString(),
                 QtdRestante = RetornaQtdRestante(x.Qtd, x.TurmaLimiteMaximo),//x.TurmaLimiteMaximo - x.Qtd,
                 QtdRestanteFormatada = RetornaQtdRestanteFormatada(x.Qtd, x.TurmaLimiteMaximo),
+                QtdAlergia = RetornaQtdAlergiasAsync(x.DataFrequencia, x.CodigoTurma).Result,
+                QtdRestricaoAlimentar = RetornaQtdRestricaoAlimentarAsync(x.DataFrequencia, x.CodigoTurma).Result,
+                QtdNecessidadesEspeciais = RetornaQtdNecessidadesEspeciaisAsync(x.DataFrequencia, x.CodigoTurma).Result,
+                QtdAniversariantes = RetornaQtdAniversariantesAsync(x.DataFrequencia, x.CodigoTurma).Result,
             });
 
             return retorno;
@@ -388,5 +393,101 @@ namespace TRILHAR.Business.Services
             return "=";
         }
 
+        private async Task<int> RetornaQtdAlergiasAsync(DateTime dataFrequencia, int codigoTurma)
+        {
+            var dataFormatada = string.Format("{0:D4}-{1:D2}-{2:D2}", dataFrequencia.Date.Year, dataFrequencia.Date.Month, dataFrequencia.Date.Day);
+            var inputCondicaoParametros = new InputCondicaoParametros
+            {
+                Condicao = "" +
+                $"CONVERT(DATE, DataFrequencia) = CONVERT(DATE, '{dataFormatada}') AND " +
+                "CodigoTurma = @CodigoTurma AND " +
+                "Presenca = @Presenca AND " +
+                "AlunoAlergia = @AlunoAlergia",
+                Parametros = new Dictionary<string, object?>
+                {
+                    { "@CodigoTurma", codigoTurma },
+                    { "@Presenca", Convert.ToBoolean(1) },
+                    { "@AlunoAlergia", Convert.ToBoolean(1) }
+                }
+            };
+
+            var listaFrequecias = await _vFrequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);            
+
+            var retorno = listaFrequecias.Count();
+            return retorno;
+        }
+
+        private async Task<int> RetornaQtdRestricaoAlimentarAsync(DateTime dataFrequencia, int codigoTurma)
+        {
+            var dataFormatada = string.Format("{0:D4}-{1:D2}-{2:D2}", dataFrequencia.Date.Year, dataFrequencia.Date.Month, dataFrequencia.Date.Day);
+            var inputCondicaoParametros = new InputCondicaoParametros
+            {
+                Condicao = "" +
+                $"CONVERT(DATE, DataFrequencia) = CONVERT(DATE, '{dataFormatada}') AND " +
+                "CodigoTurma = @CodigoTurma AND " +
+                "Presenca = @Presenca AND " +
+                "AlunoRestricaoAlimentar = @AlunoRestricaoAlimentar",
+                Parametros = new Dictionary<string, object?>
+                {
+                    { "@CodigoTurma", codigoTurma },
+                    { "@Presenca", Convert.ToBoolean(1) },
+                    { "@AlunoRestricaoAlimentar", Convert.ToBoolean(1) }
+                }
+            };
+
+            var listaFrequecias = await _vFrequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+
+            var retorno = listaFrequecias.Count();
+            return retorno;
+        }
+
+        private async Task<int> RetornaQtdNecessidadesEspeciaisAsync(DateTime dataFrequencia, int codigoTurma)
+        {
+            var dataFormatada = string.Format("{0:D4}-{1:D2}-{2:D2}", dataFrequencia.Date.Year, dataFrequencia.Date.Month, dataFrequencia.Date.Day);
+            var inputCondicaoParametros = new InputCondicaoParametros
+            {
+                Condicao = "" +
+                $"CONVERT(DATE, DataFrequencia) = CONVERT(DATE, '{dataFormatada}') AND " +
+                "CodigoTurma = @CodigoTurma AND " +
+                "Presenca = @Presenca AND " +
+                "AlunoDeficienciaOuSituacaoAtipica = @AlunoDeficienciaOuSituacaoAtipica",
+                Parametros = new Dictionary<string, object?>
+                {
+                    { "@CodigoTurma", codigoTurma },
+                    { "@Presenca", Convert.ToBoolean(1) },
+                    { "@AlunoDeficienciaOuSituacaoAtipica", Convert.ToBoolean(1) }
+                }
+            };
+
+            var listaFrequecias = await _vFrequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+
+            var retorno = listaFrequecias.Count();
+            return retorno;
+        }
+        
+        private async Task<int> RetornaQtdAniversariantesAsync(DateTime dataFrequencia, int codigoTurma)
+        {
+            var dataFormatada = string.Format("{0:D4}-{1:D2}-{2:D2}", dataFrequencia.Date.Year, dataFrequencia.Date.Month, dataFrequencia.Date.Day);
+            var inputCondicaoParametros = new InputCondicaoParametros
+            {
+                Condicao = "" +
+                $"Presenca = @Presenca AND " +
+                $"CodigoTurma = @CodigoTurma AND " +
+                $"CONVERT(DATE, DataFrequencia) = CONVERT(DATE, '{dataFormatada}') AND " +
+                $"MONTH(AlunoDataNascimento) = MONTH('{dataFormatada}') AND " +
+                $"DAY(AlunoDataNascimento) = DAY('{dataFormatada}')",
+                Parametros = new Dictionary<string, object?>
+                {
+                    { "@CodigoTurma", codigoTurma },
+                    { "@Presenca", Convert.ToBoolean(1) }
+                }
+            };
+
+            var listaFrequecias = await _vFrequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+
+            var retorno = listaFrequecias.Count();
+
+            return retorno;
+        }
     }
 }

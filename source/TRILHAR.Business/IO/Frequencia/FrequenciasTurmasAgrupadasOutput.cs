@@ -10,5 +10,9 @@ namespace TRILHAR.Business.IO.Frequencia
         public string TurmaIdadeFinalAlunoFormatada { get; set; } = string.Empty;
         public int QtdRestante { get; set; } = 0;
         public string QtdRestanteFormatada { get; set; } = string.Empty;
+        public int QtdAlergia { get; set; } = 0;
+        public int QtdRestricaoAlimentar { get; set; } = 0;
+        public int QtdNecessidadesEspeciais { get; set; } = 0;
+        public int QtdAniversariantes { get; set; } = 0;
     }
 }
