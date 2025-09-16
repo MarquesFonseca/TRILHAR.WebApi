@@ -6,6 +6,7 @@ using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO.Matricula;
+using TRILHAR.Business.Pagination;
 
 namespace TRILHAR.Services.Api.Controllers
 {
@@ -146,6 +147,30 @@ namespace TRILHAR.Services.Api.Controllers
         }
 
         /// <summary>
+        /// Retorna todos por parametros e paginação
+        /// </summary>
+        /// <returns>Retorna todos alunos</returns>
+        [HttpGet("filtro")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<VMatriculaOutput>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> ListarPorFiltro([FromQuery] VMatriculaInput registro)
+        {
+            var vMatriculaInput = _mapper.Map<VMatriculaInput>(registro);
+            var resultado = await _vMatriculaService.GetByListarPorFiltroPaginacaoAsync(vMatriculaInput);
+
+            if (resultado == null || !resultado.Dados.Any())
+            {
+                _logger.LogInformation("Filtro aplicado não retornou resultados.");
+                NotificarErro("Nenhum resultado encontrado.");
+                return CustomResponse(isNotFound: true);
+            }
+
+            return CustomResponse(resultado);
+        }
+
+        /// <summary>
         /// Retorna o Registro por CodigoAluno
         /// </summary>
         /// <param name="codigoAluno"></param>
@@ -282,7 +307,7 @@ namespace TRILHAR.Services.Api.Controllers
             var listaMatriculasAlunoTurma = await _matriculaService.ListarPorCodigoAlunoCodigoTurma(input.CodigoAluno, input.CodigoTurma);
             if (listaMatriculasAlunoTurma != null && listaMatriculasAlunoTurma.Any())
             {
-                foreach (var item in listaMatriculasAluno)
+                foreach (var item in listaMatriculasAlunoTurma)
                 {
                     var itemUpdate = _mapper.Map<MatriculaInput>(item);
                     itemUpdate.Ativo = true;
