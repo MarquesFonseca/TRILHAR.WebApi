@@ -214,11 +214,14 @@ namespace TRILHAR.Business.Services
             };
 
             //por enquanto não retornar a matricula para não sobregarregar o resultado.
-            foreach (var item in retornoAlunoOutput.Dados)
+            if (input.isPaginacao)
             {
-                // Obter matrículas e selecionar a ativa
-                var matriculas = await _matriculaService.ListarPorCodigoAluno(item.Codigo);
-                item.Matricula = matriculas?.FirstOrDefault(x => x.Ativo);
+                foreach (var item in retornoAlunoOutput.Dados)
+                {
+                    // Obter matrículas e selecionar a ativa
+                    var matriculas = await _matriculaService.ListarPorCodigoAluno(item.Codigo);
+                    item.Matricula = matriculas?.FirstOrDefault(x => x.Ativo);
+                }
             }
 
             return retornoAlunoOutput;
