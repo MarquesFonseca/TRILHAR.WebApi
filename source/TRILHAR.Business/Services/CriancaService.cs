@@ -16,8 +16,9 @@ namespace TRILHAR.Business.Services
         private readonly IObjectExtensionGenerics<CriancaEntity> _objectExtensionGenerics;
         private readonly ICriancaRepository _alunoRepository;
         private readonly ITurmaRepository _turmaRepository;
-        private readonly IMatriculaRepository _matriculaRepository;
         private readonly IMatriculaService _matriculaService;
+        private readonly IMatriculaRepository _matriculaRepository;
+        private readonly IVMatriculaService _vMatriculaService;
         private readonly IVMatriculaRepository _vMatriculaRepository;
         private readonly IFrequenciaRepository _frequenciaRepository;
         private readonly IVFrequenciaRepository _vFrequenciaRepository;
@@ -27,21 +28,25 @@ namespace TRILHAR.Business.Services
             IObjectExtensionGenerics<CriancaEntity> objectExtensionGenerics,
             ICriancaRepository alunoRepository,
             ITurmaRepository turmaRepository,
-            IMatriculaRepository matriculaRepository,
             IMatriculaService matriculaService,
+            IMatriculaRepository matriculaRepository,
+            IVMatriculaService vMatriculaService,
             IVMatriculaRepository vMatriculaRepository,
             IFrequenciaRepository frequenciaRepository,
             IVFrequenciaRepository vFrequenciaRepository,
-            IMapper mapper) : base(notificador, mapper, alunoRepository)
+            IMapper mapper
+            ) : base(notificador, mapper, alunoRepository)
         {
             _objectExtensionGenerics = objectExtensionGenerics;
             _alunoRepository = alunoRepository;
             _turmaRepository = turmaRepository;
-            _matriculaRepository = matriculaRepository;
             _matriculaService = matriculaService;
+            _matriculaRepository = matriculaRepository;
+            _vMatriculaService = vMatriculaService;
             _vMatriculaRepository = vMatriculaRepository;
             _frequenciaRepository = frequenciaRepository;
             _vFrequenciaRepository = vFrequenciaRepository;
+            
         }
 
         public async Task<CriancaOutput?> GetByCodigoAsync(int codigo)
@@ -55,8 +60,8 @@ namespace TRILHAR.Business.Services
             var retorno = _mapper.Map<CriancaOutput>(model);
 
             // Obter matrículas e selecionar a ativa
-            var matriculas = await _matriculaService.ListarPorCodigoAluno(retorno.Codigo);
-            retorno.Matricula = matriculas?.FirstOrDefault(x => x.Ativo);
+            var matriculas = await _vMatriculaService.ListarPorCodigoAluno(retorno.Codigo);
+            retorno.Matricula = matriculas?.FirstOrDefault(x => x.Ativo && x.TurmaAtivo);
 
             return retorno;
         }
@@ -72,8 +77,8 @@ namespace TRILHAR.Business.Services
             var retorno = _mapper.Map<CriancaOutput>(model);
 
             // Obter matrículas e selecionar a ativa
-            var matriculas = await _matriculaService.ListarPorCodigoAluno(model.Codigo);
-            retorno.Matricula = matriculas?.FirstOrDefault(x => x.Ativo);
+            var matriculas = await _vMatriculaService.ListarPorCodigoAluno(model.Codigo);
+            retorno.Matricula = matriculas?.FirstOrDefault(x => x.Ativo && x.TurmaAtivo);
 
             return retorno;
         }
@@ -219,8 +224,8 @@ namespace TRILHAR.Business.Services
                 foreach (var item in retornoAlunoOutput.Dados)
                 {
                     // Obter matrículas e selecionar a ativa
-                    var matriculas = await _matriculaService.ListarPorCodigoAluno(item.Codigo);
-                    item.Matricula = matriculas?.FirstOrDefault(x => x.Ativo);
+                    var matriculas = await _vMatriculaService.ListarPorCodigoAluno(item.Codigo);
+                    item.Matricula = matriculas?.FirstOrDefault(x => x.Ativo && x.TurmaAtivo);
                 }
             }
 
