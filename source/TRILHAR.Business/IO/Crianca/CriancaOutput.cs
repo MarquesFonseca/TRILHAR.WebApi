@@ -4,6 +4,6 @@ namespace TRILHAR.Business.IO.Crianca
 {
     public class CriancaOutput : CriancaEntity
     {
-        public MatriculaEntity? Matricula { get; set; } = null;
+        public VMatriculaEntity? Matricula { get; set; } = null;
     }
 }
