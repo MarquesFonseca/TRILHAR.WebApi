@@ -62,6 +62,16 @@ namespace TRILHAR.Business.Services
             model.DataAtualizacao =
             model.DataFrequencia = DateTime.Now;
 
+            var retorno = await this.GetByAlunoAndTurmaAndDateAsync(model.CodigoAluno, model.CodigoTurma, DateTime.Now);
+            if(retorno != null && retorno.Any())
+            {
+                var primeiro = retorno.First();
+                model.Codigo = primeiro.Codigo;
+                var ret = await _frequenciaRepository.UpdateAsync(model);
+                if(ret) return model.Codigo;
+                else return 0;
+            }
+
             return await _frequenciaRepository.InsertAsync(model);
         }
 
@@ -294,7 +304,7 @@ namespace TRILHAR.Business.Services
         }
 
         //9
-        public async Task<IEnumerable<VFrequenciaOutput>?> GetByAlunoAndTurmaAndDateAsync(int codigoAluno, int codigoTurma, DateTime dataFrequencia, bool Presenca = true)
+        public async Task<IEnumerable<VFrequenciaOutput>?> GetByAlunoAndTurmaAndDateAsync(int codigoAluno, int codigoTurma, DateTime dataFrequencia)
         {
             var dataFormatada = string.Format("{0:D4}-{1:D2}-{2:D2}", dataFrequencia.Date.Year, dataFrequencia.Date.Month, dataFrequencia.Date.Day);
             var inputCondicaoParametros = new InputCondicaoParametros
@@ -302,13 +312,11 @@ namespace TRILHAR.Business.Services
                 Condicao = "" +
                 $"CodigoAluno = @CodigoAluno AND " +
                 $"CodigoTurma = @CodigoTurma AND " +
-                $"CONVERT(DATE, DataFrequencia) = CONVERT(DATE, '{dataFormatada}') AND " +
-                $"Presenca = @Presenca",
+                $"CONVERT(DATE, DataFrequencia) = CONVERT(DATE, '{dataFormatada}') ",
                 Parametros = new Dictionary<string, object?>
                 {
                     { "@CodigoAluno", codigoAluno },
-                    { "@CodigoTurma", codigoTurma },
-                    { "@Presenca", Presenca }
+                    { "@CodigoTurma", codigoTurma }
                 }
             };
 
