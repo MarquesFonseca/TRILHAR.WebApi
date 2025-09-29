@@ -59,17 +59,24 @@ namespace TRILHAR.Business.Services
             model = _objectExtensionGenerics.TrataCamposNulls(model);
             model.CodigoUsuarioLogado = null;
             model.DataCadastro =
-            model.DataAtualizacao =
-            model.DataFrequencia = DateTime.Now;
+            model.DataAtualizacao = DateTime.Now;
+            model.DataFrequencia = input.DataFrequencia?? DateTime.Now;
 
-            var retorno = await this.GetByAlunoAndTurmaAndDateAsync(model.CodigoAluno, model.CodigoTurma, DateTime.Now);
+            //obs. trás somente os presentes
+            var retorno = await this.GetByAlunoAndTurmaAndDateAsync(model.CodigoAluno, model.CodigoTurma, input.DataFrequencia ?? DateTime.Now);
             if(retorno != null && retorno.Any())
             {
                 var primeiro = retorno.First();
-                model.Codigo = primeiro.Codigo;
-                var ret = await _frequenciaRepository.UpdateAsync(model);
-                if(ret) return model.Codigo;
-                else return 0;
+                if (primeiro.Presenca) return primeiro.Codigo;
+                else
+                {
+                    model.Codigo = primeiro.Codigo;
+                    model.DataAtualizacao = DateTime.Now;
+                    model.DataFrequencia = input.DataFrequencia ?? DateTime.Now;
+                    var ret = await _frequenciaRepository.UpdateAsync(model);
+                    if (ret) return model.Codigo;
+                    else return 0;
+                }
             }
 
             return await _frequenciaRepository.InsertAsync(model);
