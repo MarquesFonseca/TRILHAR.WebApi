@@ -31,5 +31,8 @@ namespace TRILHAR.Business.Interfaces.Services
         //8
         Task<IEnumerable<VFrequenciaOutput>?> GetByAlunoAndTurmaAsync(int codigoAluno, int codigoTurma);
 
+        //9
+        Task<IEnumerable<VFrequenciaOutput>?> GetByAlunoAndTurmaAndDateAsync(int codigoAluno, int codigoTurma, DateTime dataFrequencia, bool Presenca = true);
+
     }
 }

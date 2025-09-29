@@ -293,6 +293,38 @@ namespace TRILHAR.Business.Services
             return resultado.Any() ? resultado : null;
         }
 
+        //9
+        public async Task<IEnumerable<VFrequenciaOutput>?> GetByAlunoAndTurmaAndDateAsync(int codigoAluno, int codigoTurma, DateTime dataFrequencia, bool Presenca = true)
+        {
+            var dataFormatada = string.Format("{0:D4}-{1:D2}-{2:D2}", dataFrequencia.Date.Year, dataFrequencia.Date.Month, dataFrequencia.Date.Day);
+            var inputCondicaoParametros = new InputCondicaoParametros
+            {
+                Condicao = "" +
+                $"CodigoAluno = @CodigoAluno AND " +
+                $"CodigoTurma = @CodigoTurma AND " +
+                $"CONVERT(DATE, DataFrequencia) = CONVERT(DATE, '{dataFormatada}') AND " +
+                $"Presenca = @Presenca",
+                Parametros = new Dictionary<string, object?>
+                {
+                    { "@CodigoAluno", codigoAluno },
+                    { "@CodigoTurma", codigoTurma },
+                    { "@Presenca", Presenca }
+                }
+            };
+
+            var listaFrequecias = await _vFrequenciaRepository.RetornaListaByCondicaoAsync(inputCondicaoParametros);
+            listaFrequecias
+                .OrderByDescending(freq => freq.DataFrequencia)
+                .OrderByDescending(turma => turma.TurmaIdadeInicialAluno)
+                .ThenBy(turma => turma.TurmaSemestreLetivo)
+                .ThenBy(turma => turma.TurmaAnoLetivo)
+                .ThenBy(aluno => aluno.AlunoNomeCrianca);
+            var resultado = _mapper.Map<IEnumerable<VFrequenciaOutput>>(listaFrequecias);
+
+            return resultado.Any() ? resultado : null;
+        }
+
+
         public async Task<List<VFrequenciaEntity>> RetornaListaAusentesByAndDataAsync(DateTime dataFrequencia, IEnumerable<VFrequenciaEntity> listaFrequeciasPresentes)
         {
             var listaFrequenciasAusentes = new List<VFrequenciaEntity>();
