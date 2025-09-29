@@ -60,10 +60,16 @@ namespace TRILHAR.Business.Services
             model.CodigoUsuarioLogado = null;
             model.DataCadastro =
             model.DataAtualizacao = DateTime.Now;
-            model.DataFrequencia = input.DataFrequencia?? DateTime.Now;
+            model.DataFrequencia = new DateTime(
+                input.DataFrequencia.Value.Year, 
+                input.DataFrequencia.Value.Month, 
+                input.DataFrequencia.Value.Day, 
+                model.DataAtualizacao.Value.Hour, 
+                model.DataAtualizacao.Value.Minute, 
+                model.DataAtualizacao.Value.Second);
 
             //obs. trás somente os presentes
-            var retorno = await this.GetByAlunoAndTurmaAndDateAsync(model.CodigoAluno, model.CodigoTurma, input.DataFrequencia ?? DateTime.Now);
+            var retorno = await this.GetByAlunoAndTurmaAndDateAsync(model.CodigoAluno, model.CodigoTurma, model.DataFrequencia??DateTime.Now);
             if(retorno != null && retorno.Any())
             {
                 var primeiro = retorno.First();
