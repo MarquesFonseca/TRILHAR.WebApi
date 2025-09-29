@@ -267,6 +267,31 @@ namespace TRILHAR.Services.Api.Controllers
         }
         
         /// <summary>
+        /// Retorna todas as frequências do aluno, turma e data da frequencia.
+        /// </summary>
+        /// <param name="codigoAluno"></param>
+        /// <param name="codigoTurma"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpGet("alunos/{codigoAluno}/turmas/{codigoTurma}/data/{data}")]//9
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VFrequenciaOutput>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> GetByAlunoAndTurmaAndDateAsync([FromRoute] int codigoAluno, [FromRoute] int codigoTurma, [FromRoute] DateTime data)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var resultado = await _frequenciaService.GetByAlunoAndTurmaAndDateAsync(codigoAluno, codigoTurma, data);
+            if (resultado == null || !resultado.Any())
+            {
+                NotificarErro("Registro não encontrado!");
+                return CustomResponse(isNotFound: true);
+            }
+            return CustomResponse(resultado);
+        }
+        
+        /// <summary>
         /// Incluir novo Registro
         /// </summary>
         /// <param name="registro">Informe o registro</param>
