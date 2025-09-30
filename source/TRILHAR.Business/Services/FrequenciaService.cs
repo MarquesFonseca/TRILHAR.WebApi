@@ -68,11 +68,11 @@ namespace TRILHAR.Business.Services
                 model.DataAtualizacao.Value.Minute, 
                 model.DataAtualizacao.Value.Second);
 
-            //obs. trás somente os presentes
             var retorno = await this.GetByAlunoAndTurmaAndDateAsync(model.CodigoAluno, model.CodigoTurma, model.DataFrequencia??DateTime.Now);
-            if(retorno != null && retorno.Any())
+            
+            if(retorno != null && retorno.Any(x => x.Presenca))
             {
-                var primeiro = retorno.First();
+                var primeiro = retorno.Where(x => x.Presenca).First();
                 if (primeiro.Presenca) return primeiro.Codigo;
                 else
                 {
