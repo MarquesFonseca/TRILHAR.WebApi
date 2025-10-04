@@ -178,7 +178,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="codigoTurma"></param>
         /// <param name="data"></param>
         /// <returns>Frequencias Presentes + Frequencias Ausentes</returns>
-        [HttpGet("turmas/{codigoTurma}/data/{data}")]//5
+        [HttpGet("turma/{codigoTurma}/data/{data}")]//5
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VFrequenciaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -224,7 +224,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// </summary>
         /// <param name="codigoTurma"></param>
         /// <returns></returns>
-        [HttpGet("turmas/{codigoTurma}")]//7
+        [HttpGet("turma/{codigoTurma}")]//7
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VFrequenciaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -248,7 +248,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="codigoAluno"></param>
         /// <param name="codigoTurma"></param>
         /// <returns></returns>
-        [HttpGet("alunos/{codigoAluno}/turmas/{codigoTurma}")]//8
+        [HttpGet("aluno/{codigoAluno}/turma/{codigoTurma}")]//8
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VFrequenciaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -273,7 +273,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="codigoTurma"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        [HttpGet("alunos/{codigoAluno}/turmas/{codigoTurma}/data/{data}")]//9
+        [HttpGet("aluno/{codigoAluno}/turma/{codigoTurma}/data/{data}")]//9
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VFrequenciaOutput>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
