@@ -29,6 +29,7 @@ namespace TRILHAR.Services.Api.Controllers
         private readonly IVMatriculaRepository _vMatriculaRepository;
         private readonly IFrequenciaService _frequenciaService;
         private readonly IFrequenciaRepository _frequenciaRepository;
+        private readonly IVFrequenciaService _vFrequenciaService;
 
         /// <summary>
         /// Construtor
@@ -42,6 +43,7 @@ namespace TRILHAR.Services.Api.Controllers
         /// <param name="vMatriculaRepository"></param>
         /// <param name="frequenciaService"></param>
         /// <param name="frequenciaRepository"></param>
+        /// <param name="vFrequenciaService"></param>
         public MatriculaController(
             INotificador notificador,
             IMapper mapper,
@@ -51,7 +53,8 @@ namespace TRILHAR.Services.Api.Controllers
             IVMatriculaService vMatriculaService,
             IVMatriculaRepository vMatriculaRepository,
             IFrequenciaService frequenciaService,
-            IFrequenciaRepository frequenciaRepository) : base(notificador)
+            IFrequenciaRepository frequenciaRepository,
+            IVFrequenciaService vFrequenciaService) : base(notificador)
         {
             _mapper = mapper;
             _logger = logger;
@@ -61,6 +64,7 @@ namespace TRILHAR.Services.Api.Controllers
             _vMatriculaRepository = vMatriculaRepository;
             _frequenciaService = frequenciaService;
             _frequenciaRepository = frequenciaRepository;
+            _vFrequenciaService = vFrequenciaService;
         }
 
         /// <summary>
@@ -287,7 +291,7 @@ namespace TRILHAR.Services.Api.Controllers
                     }
 
                     //antes de desativar, ver se possue frequencia... se não houver nenhuma apagar a matricula ao inves de alterar para inativo
-                    var freqAlunoTurma = await _frequenciaService.GetByAlunoAndTurmaAsync(input.CodigoAluno, item.CodigoTurma);
+                    var freqAlunoTurma = await _vFrequenciaService.GetByAlunoAndTurmaAsync(input.CodigoAluno, item.CodigoTurma);
                     if (freqAlunoTurma == null || !freqAlunoTurma.Any(x => x.Presenca == true))
                     {
                         //se não existir nenhuma frequencia remove a matricula
