@@ -61,29 +61,12 @@ namespace TRILHAR.Business.Services
             model.DataCadastro =
             model.DataAtualizacao = DateTime.Now;
             model.DataFrequencia = new DateTime(
-                input.DataFrequencia.Value.Year, 
-                input.DataFrequencia.Value.Month, 
-                input.DataFrequencia.Value.Day, 
-                model.DataAtualizacao.Value.Hour, 
-                model.DataAtualizacao.Value.Minute, 
+                input.DataFrequencia.Value.Year,
+                input.DataFrequencia.Value.Month,
+                input.DataFrequencia.Value.Day,
+                model.DataAtualizacao.Value.Hour,
+                model.DataAtualizacao.Value.Minute,
                 model.DataAtualizacao.Value.Second);
-
-            var retorno = await _vFrequenciaService.GetByAlunoAndTurmaAndDateAsync(model.CodigoAluno, model.CodigoTurma, model.DataFrequencia??DateTime.Now);
-            
-            if(retorno != null && retorno.Any(x => x.Presenca))
-            {
-                var primeiro = retorno.Where(x => x.Presenca).First();
-                if (primeiro.Presenca) return primeiro.Codigo;
-                else
-                {
-                    model.Codigo = primeiro.Codigo;
-                    model.DataAtualizacao = DateTime.Now;
-                    model.DataFrequencia = input.DataFrequencia ?? DateTime.Now;
-                    var ret = await _frequenciaRepository.UpdateAsync(model);
-                    if (ret) return model.Codigo;
-                    else return 0;
-                }
-            }
 
             return await _frequenciaRepository.InsertAsync(model);
         }
@@ -110,9 +93,9 @@ namespace TRILHAR.Business.Services
             var model = _mapper.Map<FrequenciaInput, FrequenciaEntity>(input);
 
             model = _objectExtensionGenerics.TrataCamposNulls(model);
-            
+
             model.DataAtualizacao = DateTime.Now;
-            
+
             return await _frequenciaRepository.UpdateAsync(model);
         }
 
@@ -122,16 +105,16 @@ namespace TRILHAR.Business.Services
             foreach (var item in inputs)
             {
                 var model = _mapper.Map<FrequenciaInput, FrequenciaEntity>(item);
-                
+
                 model = _objectExtensionGenerics.TrataCamposNulls(model);
-                
+
                 model.DataAtualizacao = DateTime.Now;
-                
+
                 models.Add(model);
             }
 
             return await _frequenciaRepository.UpdateAsync(models);
         }
 
-        }
+    }
 }
