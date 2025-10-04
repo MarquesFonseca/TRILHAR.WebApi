@@ -1,6 +1,4 @@
-﻿using TRILHAR.Business.Entities;
-
-namespace TRILHAR.Business.IO.Matricula
+﻿namespace TRILHAR.Business.IO.VMatricula
 {
     public class VMatriculaInput
     {

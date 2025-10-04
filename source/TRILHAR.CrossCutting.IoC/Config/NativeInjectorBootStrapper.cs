@@ -49,7 +49,9 @@ namespace TRILHAR.CrossCutting.IoC.Config
             services.AddScoped<IObjectExtensionGenerics<VFrequenciaEntity>, ObjectExtensionGenerics<VFrequenciaEntity>>();
             services.AddScoped<IVFrequenciaService, VFrequenciaService>();
             services.AddScoped<IVFrequenciaRepository, VFrequenciaRepository>();
-            
+            services.AddScoped<IVFrequenciaCompletaRepository, VFrequenciaCompletaRepository>();
+
+
             services.AddScoped<IObjectExtensionGenerics<VMatriculaEntity>, ObjectExtensionGenerics<VMatriculaEntity>>();
             services.AddScoped<IVMatriculaService,    VMatriculaService>();
             services.AddScoped<IVMatriculaRepository, VMatriculaRepository>();

@@ -7,6 +7,7 @@ using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO;
 using TRILHAR.Business.IO.Matricula;
+using TRILHAR.Business.IO.VMatricula;
 using TRILHAR.Business.Pagination;
 
 namespace TRILHAR.Business.Services

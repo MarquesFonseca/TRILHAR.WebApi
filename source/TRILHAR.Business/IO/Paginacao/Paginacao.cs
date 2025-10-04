@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TRILHAR.Business.IO.Paginacao
+﻿namespace TRILHAR.Business.IO.Paginacao
 {
     public class Paginacao<T>
     {

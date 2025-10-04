@@ -6,7 +6,7 @@ using TRILHAR.Business.Interfaces.Notificador;
 using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO.Frequencia;
-using TRILHAR.Business.IO.Matricula;
+using TRILHAR.Business.IO.VFrequencia;
 
 namespace TRILHAR.Services.Api.Controllers
 {
@@ -140,7 +140,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _frequenciaService.GetByDateAsync(data);//SPFrequenciasPorData @DataFrequencia
+            var resultado = await _vFrequenciaService.GetByDateAsync(data);//SPFrequenciasPorData @DataFrequencia
             if (resultado == null || !resultado.Any())
             {
                 NotificarErro("Registro não encontrado!");
@@ -163,7 +163,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _frequenciaService.GetTurmasAgrupadasByDateAsync(data);//SPFrequenciasTodasTurmasAgrupadasDia @DataFrequencia
+            var resultado = await _vFrequenciaService.GetTurmasAgrupadasByDateAsync(data);//SPFrequenciasTodasTurmasAgrupadasDia @DataFrequencia
             if (resultado == null || !resultado.Any())
             {
                 NotificarErro("Registro não encontrado!");
@@ -187,7 +187,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _frequenciaService.GetByTurmasAndDateAsync(codigoTurma, data);
+            var resultado = await _vFrequenciaService.GetByTurmasAndDateAsync(codigoTurma, data);
             if (resultado == null || !resultado.Any())
             {
                 NotificarErro("Registro não encontrado!");
@@ -210,7 +210,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _frequenciaService.GetByAlunoAsync(codigoAluno);
+            var resultado = await _vFrequenciaService.GetByAlunoAsync(codigoAluno);
             if (resultado == null || !resultado.Any())
             {
                 NotificarErro("Registro não encontrado!");
@@ -233,7 +233,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _frequenciaService.GetByTurmaAsync(codigoTurma);
+            var resultado = await _vFrequenciaService.GetByTurmaAsync(codigoTurma);
             if (resultado == null || !resultado.Any())
             {
                 NotificarErro("Registro não encontrado!");
@@ -257,7 +257,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _frequenciaService.GetByAlunoAndTurmaAsync(codigoAluno, codigoTurma);
+            var resultado = await _vFrequenciaService.GetByAlunoAndTurmaAsync(codigoAluno, codigoTurma);
             if (resultado == null || !resultado.Any())
             {
                 NotificarErro("Registro não encontrado!");
@@ -282,7 +282,7 @@ namespace TRILHAR.Services.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _frequenciaService.GetByAlunoAndTurmaAndDateAsync(codigoAluno, codigoTurma, data);
+            var resultado = await _vFrequenciaService.GetByAlunoAndTurmaAndDateAsync(codigoAluno, codigoTurma, data);
             if (resultado == null || !resultado.Any())
             {
                 NotificarErro("Registro não encontrado!");
