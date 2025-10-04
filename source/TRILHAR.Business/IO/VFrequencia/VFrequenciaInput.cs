@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TRILHAR.Business.Entities;
+﻿using TRILHAR.Business.Entities;
 
-namespace TRILHAR.Business.IO.Matricula
+namespace TRILHAR.Business.IO.VFrequencia
 {
     public class VFrequenciaInput : VFrequenciaEntity
     {

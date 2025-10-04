@@ -7,8 +7,7 @@ using TRILHAR.Business.Interfaces.Repositories;
 using TRILHAR.Business.Interfaces.Services;
 using TRILHAR.Business.IO;
 using TRILHAR.Business.IO.Frequencia;
-using TRILHAR.Business.IO.Matricula;
-using TRILHAR.Business.Extensions;
+using TRILHAR.Business.IO.VFrequencia;
 
 namespace TRILHAR.Business.Services
 {

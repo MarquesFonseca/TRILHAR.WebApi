@@ -1,7 +1,6 @@
 ﻿using TRILHAR.Business.Entities;
-using TRILHAR.Business.Enums;
 using TRILHAR.Business.IO.Frequencia;
-using TRILHAR.Business.IO.Matricula;
+using TRILHAR.Business.IO.VFrequencia;
 
 namespace TRILHAR.Business.Interfaces.Services
 {

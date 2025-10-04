@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TRILHAR.Business.Entities;
-using TRILHAR.Business.IO.Matricula;
+using TRILHAR.Business.IO.VMatricula;
 using TRILHAR.Business.Pagination;
 
 namespace TRILHAR.Business.AutoMapper
